@@ -1,19 +1,42 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, SlidersHorizontal } from 'lucide-react';
+import { Plus, SlidersHorizontal, ScanLine, Download } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import SearchBar from '../components/SearchBar';
 import FilterBar from '../components/FilterBar';
 import MaterialCard from '../components/MaterialCard';
 import EmptyState from '../components/EmptyState';
+import BarcodeScanner from '../components/BarcodeScanner';
+import Toast from '../components/Toast';
 import { Package } from 'lucide-react';
+import { exportMaterialsCSV } from '../services/exportUtils';
 
 export default function MaterialList() {
   const navigate = useNavigate();
-  const { materials, categories } = useStore();
+  const { materials, categories, suppliers } = useStore();
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState(null);
   const [showLowStock, setShowLowStock] = useState(false);
+  const [scanning, setScanning] = useState(false);
+  const [toast, setToast] = useState(null);
+
+  function handleScannedCode(code) {
+    setScanning(false);
+    const norm = code.trim().toLowerCase();
+    const match = materials.find(m =>
+      m.active && (
+        m.barcode?.toLowerCase() === norm ||
+        m.article_number?.toLowerCase() === norm ||
+        m.manufacturer_number?.toLowerCase() === norm
+      )
+    );
+    if (match) {
+      navigate(`/material/${match.id}`);
+    } else {
+      setSearch(code);
+      setToast({ message: `Kein Material mit Code "${code}" gefunden.`, type: 'error' });
+    }
+  }
 
   const filtered = useMemo(() => {
     let result = materials.filter(m => m.active);
@@ -24,7 +47,9 @@ export default function MaterialList() {
         m.name.toLowerCase().includes(q) ||
         m.article_number.toLowerCase().includes(q) ||
         m.description?.toLowerCase().includes(q) ||
-        m.storage_location?.toLowerCase().includes(q)
+        m.storage_location?.toLowerCase().includes(q) ||
+        m.barcode?.toLowerCase().includes(q) ||
+        m.manufacturer_number?.toLowerCase().includes(q)
       );
     }
 
@@ -46,6 +71,20 @@ export default function MaterialList() {
         <div className="flex items-center gap-sm">
           <button
             className="page-header-action"
+            onClick={() => setScanning(true)}
+            title="Barcode scannen"
+          >
+            <ScanLine size={20} />
+          </button>
+          <button
+            className="page-header-action"
+            onClick={() => exportMaterialsCSV(materials, categories, suppliers)}
+            title="Als CSV exportieren"
+          >
+            <Download size={20} />
+          </button>
+          <button
+            className="page-header-action"
             onClick={() => setShowLowStock(!showLowStock)}
             style={showLowStock ? { background: 'rgba(239,68,68,0.3)' } : {}}
             title="Nur kritische Artikel"
@@ -59,6 +98,13 @@ export default function MaterialList() {
       </header>
 
       <div className="page-content">
+        {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+        {scanning && (
+          <BarcodeScanner
+            onDetected={handleScannedCode}
+            onClose={() => setScanning(false)}
+          />
+        )}
         <SearchBar
           value={search}
           onChange={setSearch}

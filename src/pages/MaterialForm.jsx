@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
-import { ChevronLeft, Save } from 'lucide-react';
+import { ChevronLeft, Save, ScanLine } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import { UNITS } from '../data/constants';
 import Toast from '../components/Toast';
+import BarcodeScanner from '../components/BarcodeScanner';
 
 export default function MaterialForm() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { materials, categories, suppliers, addMaterial, editMaterial } = useStore();
   const [toast, setToast] = useState(null);
+  const [scanning, setScanning] = useState(false);
 
   const isNew = id === 'neu';
   const existing = !isNew ? materials.find(m => m.id === id) : null;
@@ -18,6 +20,7 @@ export default function MaterialForm() {
   const [form, setForm] = useState({
     article_number: '',
     manufacturer_number: '',
+    barcode: '',
     name: '',
     category_id: categories[0]?.id || '',
     description: '',
@@ -77,6 +80,17 @@ export default function MaterialForm() {
       <div className="page-content">
         {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
 
+        {scanning && (
+          <BarcodeScanner
+            onDetected={(code) => {
+              handleChange('barcode', code);
+              setScanning(false);
+              setToast({ message: `Barcode erkannt: ${code}`, type: 'success' });
+            }}
+            onClose={() => setScanning(false)}
+          />
+        )}
+
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label className="form-label">Artikelname *</label>
@@ -110,6 +124,28 @@ export default function MaterialForm() {
               />
               <span className="form-helper">Für präzise Sonepar-Suche</span>
             </div>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Barcode (EAN/GTIN)</label>
+            <div className="input-with-action">
+              <input
+                type="text"
+                value={form.barcode}
+                onChange={e => handleChange('barcode', e.target.value)}
+                placeholder="z.B. 4011233567890"
+                inputMode="numeric"
+              />
+              <button
+                type="button"
+                className="btn btn-outline btn-icon-action"
+                onClick={() => setScanning(true)}
+                title="Barcode scannen"
+              >
+                <ScanLine size={20} />
+              </button>
+            </div>
+            <span className="form-helper">Für schnelles Scannen mit der Kamera</span>
           </div>
 
           <div className="form-group">

@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Download } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import { MOVEMENT_TYPES } from '../data/constants';
 import SearchBar from '../components/SearchBar';
@@ -8,10 +8,11 @@ import FilterBar from '../components/FilterBar';
 import MovementRow from '../components/MovementRow';
 import EmptyState from '../components/EmptyState';
 import { ArrowDownUp } from 'lucide-react';
+import { exportMovementsCSV } from '../services/exportUtils';
 
 export default function MovementLog() {
   const navigate = useNavigate();
-  const { movements } = useStore();
+  const { movements, materials, projects } = useStore();
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState(null);
 
@@ -44,7 +45,14 @@ export default function MovementLog() {
           <ChevronLeft size={22} />
         </button>
         <h1>Lagerbewegungen</h1>
-        <div style={{ width: 44 }} />
+        <button
+          className="page-header-action"
+          onClick={() => exportMovementsCSV(filtered, materials, projects)}
+          title="Als CSV exportieren"
+          disabled={filtered.length === 0}
+        >
+          <Download size={20} />
+        </button>
       </header>
 
       <div className="page-content">

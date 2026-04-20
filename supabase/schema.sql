@@ -34,6 +34,7 @@ CREATE TABLE materials (
   id TEXT PRIMARY KEY,
   article_number TEXT,
   manufacturer_number TEXT,
+  barcode TEXT,
   name TEXT NOT NULL,
   category_id TEXT REFERENCES categories(id) ON DELETE SET NULL,
   description TEXT,
@@ -79,6 +80,7 @@ CREATE TABLE movements (
 CREATE INDEX idx_materials_category ON materials(category_id);
 CREATE INDEX idx_materials_supplier ON materials(supplier_id);
 CREATE INDEX idx_materials_active ON materials(active);
+CREATE INDEX idx_materials_barcode ON materials(barcode);
 CREATE INDEX idx_movements_material ON movements(material_id);
 CREATE INDEX idx_movements_project ON movements(project_id);
 CREATE INDEX idx_movements_created ON movements(created_at DESC);
@@ -108,3 +110,12 @@ CREATE POLICY "Allow all for suppliers" ON suppliers FOR ALL USING (true) WITH C
 CREATE POLICY "Allow all for materials" ON materials FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Allow all for projects" ON projects FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Allow all for movements" ON movements FOR ALL USING (true) WITH CHECK (true);
+
+-- ============================================================
+-- MIGRATION: barcode-Spalte nachträglich hinzufügen
+-- Falls Schema bereits existiert und nicht neu angelegt wurde,
+-- diesen Block separat ausführen:
+-- ------------------------------------------------------------
+-- ALTER TABLE materials ADD COLUMN IF NOT EXISTS barcode TEXT;
+-- CREATE INDEX IF NOT EXISTS idx_materials_barcode ON materials(barcode);
+-- ============================================================

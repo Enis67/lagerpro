@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import {
   ChevronLeft, PackagePlus, PackageMinus, PackageCheck, PenLine,
-  BookmarkPlus, BookmarkMinus, Minus, Plus, Check, Search
+  BookmarkPlus, BookmarkMinus, Minus, Plus, Check, Search, ScanLine
 } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import { MOVEMENT_TYPES, UNIT_LABELS, DEFAULT_USER } from '../data/constants';
 import SearchBar from '../components/SearchBar';
 import Toast from '../components/Toast';
+import BarcodeScanner from '../components/BarcodeScanner';
 
 const iconMap = {
   eingang: PackagePlus, entnahme: PackageMinus, rueckgabe: PackageCheck,
@@ -27,6 +28,27 @@ export default function QuickBooking() {
   const [search, setSearch] = useState('');
   const [projectSearch, setProjectSearch] = useState('');
   const [toast, setToast] = useState(null);
+  const [scanning, setScanning] = useState(false);
+
+  function handleScannedCode(code) {
+    setScanning(false);
+    const norm = code.trim().toLowerCase();
+    const match = materials.find(m =>
+      m.active && (
+        m.barcode?.toLowerCase() === norm ||
+        m.article_number?.toLowerCase() === norm ||
+        m.manufacturer_number?.toLowerCase() === norm
+      )
+    );
+    if (match) {
+      setSelectedMaterial(match);
+      setStep(3);
+      setToast({ message: `${match.name} gefunden ✓`, type: 'success' });
+    } else {
+      setSearch(code);
+      setToast({ message: `Kein Material mit Code "${code}" gefunden.`, type: 'error' });
+    }
+  }
 
   const activeProjects = projects.filter(p => p.status !== 'abgeschlossen');
 
@@ -88,6 +110,12 @@ export default function QuickBooking() {
 
       <div className="page-content">
         {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+        {scanning && (
+          <BarcodeScanner
+            onDetected={handleScannedCode}
+            onClose={() => setScanning(false)}
+          />
+        )}
 
         {/* Steps Indicator */}
         <div className="booking-steps">
@@ -133,11 +161,21 @@ export default function QuickBooking() {
         {/* Step 2: Material auswählen */}
         {step === 2 && (
           <div>
-            <SearchBar
-              value={search}
-              onChange={setSearch}
-              placeholder="Material suchen..."
-            />
+            <div className="input-with-action" style={{ marginBottom: 'var(--space-md)' }}>
+              <SearchBar
+                value={search}
+                onChange={setSearch}
+                placeholder="Material suchen..."
+              />
+              <button
+                type="button"
+                className="btn btn-outline btn-icon-action"
+                onClick={() => setScanning(true)}
+                title="Barcode scannen"
+              >
+                <ScanLine size={20} />
+              </button>
+            </div>
             <div className="list">
               {filteredMaterials.map(m => (
                 <div

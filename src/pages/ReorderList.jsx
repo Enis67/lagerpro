@@ -1,10 +1,11 @@
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ShoppingCart, ExternalLink, Mail } from 'lucide-react';
+import { ChevronLeft, ShoppingCart, ExternalLink, Mail, Download } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import { UNIT_LABELS } from '../data/constants';
 import EmptyState from '../components/EmptyState';
 import { CheckCircle } from 'lucide-react';
 import { openSoneparForMaterial, getSoneparSearchUrl, generateOrderMailto } from '../services/sonepar';
+import { exportReorderCSV } from '../services/exportUtils';
 
 export default function ReorderList() {
   const navigate = useNavigate();
@@ -51,7 +52,14 @@ export default function ReorderList() {
           <ChevronLeft size={22} />
         </button>
         <h1>Nachbestellen</h1>
-        <div style={{ width: 44 }} />
+        <button
+          className="page-header-action"
+          onClick={() => exportReorderCSV(reorderItems)}
+          title="Als CSV exportieren"
+          disabled={reorderItems.length === 0}
+        >
+          <Download size={20} />
+        </button>
       </header>
 
       <div className="page-content">
