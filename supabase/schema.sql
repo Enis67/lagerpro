@@ -97,15 +97,50 @@ CREATE TRIGGER materials_updated_at
   BEFORE UPDATE ON materials
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
+-- ── Benutzer ──────────────────────────────────────────────
+CREATE TABLE users (
+  id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  email TEXT NOT NULL,
+  name TEXT NOT NULL,
+  role TEXT DEFAULT 'monteur' CHECK (role IN ('admin', 'monteur')),
+  active BOOLEAN DEFAULT true,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- ── Row Level Security ──────────────────────────────────────
 ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE suppliers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE materials ENABLE ROW LEVEL SECURITY;
 ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
 ALTER TABLE movements ENABLE ROW LEVEL SECURITY;
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Allow all for categories" ON categories FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Allow all for suppliers" ON suppliers FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Allow all for materials" ON materials FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Allow all for projects" ON projects FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Allow all for movements" ON movements FOR ALL USING (true) WITH CHECK (true);
+-- Alle authentifizierten Benutzer können lesen/schreiben
+CREATE POLICY "Allow all for categories" ON categories FOR ALL TO authenticated USING (true) WITH CHECK (true);
+CREATE POLICY "Allow all for suppliers" ON suppliers FOR ALL TO authenticated USING (true) WITH CHECK (true);
+CREATE POLICY "Allow all for materials" ON materials FOR ALL TO authenticated USING (true) WITH CHECK (true);
+CREATE POLICY "Allow all for projects" ON projects FOR ALL TO authenticated USING (true) WITH CHECK (true);
+CREATE POLICY "Allow all for movements" ON movements FOR ALL TO authenticated USING (true) WITH CHECK (true);
+CREATE POLICY "Allow own user read" ON users FOR SELECT TO authenticated USING (true);
+CREATE POLICY "Allow own user update" ON users FOR UPDATE TO authenticated USING (auth.uid() = id);
+
+-- ── Trigger: Neuen Auth-User automatisch in users einfügen ─
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO public.users (id, email, name, role, active)
+  VALUES (
+    NEW.id,
+    NEW.email,
+    COALESCE(NEW.raw_user_meta_data->>'name', NEW.email),
+    COALESCE(NEW.raw_user_meta_data->>'role', 'monteur'),
+    true
+  );
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();

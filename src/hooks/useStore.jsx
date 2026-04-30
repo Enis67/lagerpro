@@ -2,6 +2,7 @@
 // Unterstützt Supabase (Cloud) mit localStorage-Fallback (Offline)
 import { createContext, useContext, useReducer, useEffect, useCallback, useRef } from 'react';
 import { isSupabaseAvailable } from '../services/supabase.js';
+import { useAuth } from './useAuth.jsx';
 import * as cloudDs from '../services/supabaseDataService.js';
 import * as localDs from '../services/dataService.js';
 
@@ -64,6 +65,7 @@ function loadAllLocal() {
 export function StoreProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const initRef = useRef(false);
+  const { userId, isAuthenticated } = useAuth();
 
   // ── Initialisierung ─────────────────────────────────
   useEffect(() => {
@@ -85,7 +87,7 @@ export function StoreProvider({ children }) {
 
     async function init() {
       try {
-        if (useCloud) {
+        if (useCloud && isAuthenticated) {
           // Timeout: Falls Cloud zu langsam, Fallback auf localStorage
           const timeoutPromise = new Promise((_, reject) =>
             setTimeout(() => reject(new Error('Cloud-Timeout nach 8s')), 8000)
@@ -97,7 +99,6 @@ export function StoreProvider({ children }) {
         }
       } catch (err) {
         console.error('[LagerPro] Init-Fehler:', err);
-        // Fallback auf localStorage bei Cloud-Fehler
         console.log('[LagerPro] Fallback auf localStorage...');
         dispatch({ type: 'INIT', payload: await initLocal() });
         dispatch({ type: 'SET_ERROR', payload: 'Cloud nicht erreichbar – Offline-Modus aktiv' });
@@ -105,12 +106,12 @@ export function StoreProvider({ children }) {
     }
 
     init();
-  }, []);
+  }, [isAuthenticated]);
 
   // ── Refresh ─────────────────────────────────────────
   const refresh = useCallback(async () => {
     try {
-      if (useCloud) {
+      if (useCloud && isAuthenticated) {
         dispatch({ type: 'SET_SYNCING', payload: true });
         const data = await loadAllCloud();
         dispatch({ type: 'REFRESH', payload: data });
@@ -122,12 +123,12 @@ export function StoreProvider({ children }) {
       console.error('[LagerPro] Refresh-Fehler:', err);
       dispatch({ type: 'SET_ERROR', payload: 'Synchronisierung fehlgeschlagen' });
     }
-  }, []);
+  }, [isAuthenticated]);
 
   // ── Helper für async Actions ────────────────────────
   const asyncAction = useCallback(async (cloudFn, localFn) => {
     try {
-      if (useCloud) {
+      if (useCloud && isAuthenticated) {
         await cloudFn();
       } else {
         localFn();
@@ -138,7 +139,7 @@ export function StoreProvider({ children }) {
       dispatch({ type: 'SET_ERROR', payload: err.message });
       throw err;
     }
-  }, [refresh]);
+  }, [refresh, isAuthenticated]);
 
   // ── Material Actions ────────────────────────────────
   const addMaterial = useCallback(async (material) => {
@@ -186,11 +187,12 @@ export function StoreProvider({ children }) {
 
   // ── Movement Actions ────────────────────────────────
   const addMovement = useCallback(async (movement) => {
+    const enriched = { ...movement, user_id: userId || movement.user_id };
     await asyncAction(
-      () => cloudDs.createMovement(movement),
-      () => localDs.createMovement(movement)
+      () => cloudDs.createMovement(enriched),
+      () => localDs.createMovement(enriched)
     );
-  }, [asyncAction]);
+  }, [asyncAction, userId]);
 
   // ── Category Actions ────────────────────────────────
   const addCategory = useCallback(async (category) => {

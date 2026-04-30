@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Tag, Truck, ShoppingCart, ArrowDownUp, RotateCcw, ChevronRight, BarChart3, Download } from 'lucide-react';
+import { Tag, Truck, ShoppingCart, ArrowDownUp, RotateCcw, ChevronRight, BarChart3, Download, LogOut, ScanBarcode, Users } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
+import { useAuth } from '../hooks/useAuth';
+import { signOut } from '../services/supabase';
 import { exportMaterialsCSV } from '../services/csvExport';
 import ConfirmDialog from '../components/ConfirmDialog';
 import Toast from '../components/Toast';
@@ -9,7 +11,9 @@ import Toast from '../components/Toast';
 export default function Settings() {
   const navigate = useNavigate();
   const { categories, suppliers, materials, resetData, isCloud, syncing, error, clearError } = useStore();
+  const { userName, isAdmin, isAuthenticated } = useAuth();
   const [showReset, setShowReset] = useState(false);
+  const [showLogout, setShowLogout] = useState(false);
   const [toast, setToast] = useState(null);
 
   async function handleReset() {
@@ -19,6 +23,16 @@ export default function Settings() {
       setToast({ message: 'Alle Daten zurückgesetzt!', type: 'info' });
     } catch (err) {
       setToast({ message: 'Fehler: ' + err.message, type: 'error' });
+    }
+  }
+
+  async function handleLogout() {
+    try {
+      await signOut();
+      setShowLogout(false);
+      window.location.href = '/login';
+    } catch (err) {
+      setToast({ message: 'Logout fehlgeschlagen: ' + err.message, type: 'error' });
     }
   }
 
@@ -32,6 +46,12 @@ export default function Settings() {
   }
 
   const menuItems = [
+    {
+      icon: ScanBarcode,
+      label: 'Inventur (Bulk-Scan)',
+      sub: 'Mehrfach-Scan mit Bestandsabgleich',
+      onClick: () => navigate('/inventur'),
+    },
     {
       icon: ShoppingCart,
       label: 'Nachbestellliste',
@@ -80,7 +100,7 @@ export default function Settings() {
       <div className="page-content">
         {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
 
-        {/* Logo / Branding */}
+        {/* Logo / Branding + User */}
         <div style={{
           textAlign: 'center',
           padding: 'var(--space-2xl)',
@@ -101,12 +121,34 @@ export default function Settings() {
           }}>
             Materialverwaltung für Elektrobetriebe
           </div>
+
+          {/* User-Info */}
+          {isAuthenticated && (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 'var(--space-sm)',
+              marginTop: 'var(--space-md)',
+              padding: 'var(--space-sm) var(--space-md)',
+              background: 'var(--color-primary-50)',
+              borderRadius: 'var(--radius-lg)',
+              fontSize: 'var(--font-size-sm)',
+              color: 'var(--color-primary)',
+              fontWeight: 600,
+            }}>
+              <Users size={14} />
+              {userName}
+              {isAdmin && <span style={{ fontSize: 'var(--font-size-xs)', opacity: 0.7 }}>(Admin)</span>}
+            </div>
+          )}
+
           <div style={{
             fontSize: 'var(--font-size-xs)',
             color: 'var(--color-text-tertiary)',
             marginTop: 'var(--space-xs)',
           }}>
-            Version 2.5 {isCloud ? '☁️ Cloud' : '💾 Offline'}
+            Version 2.6 {isCloud ? '☁️ Cloud' : '💾 Offline'}
           </div>
           {isCloud && (
             <div style={{
@@ -187,14 +229,27 @@ export default function Settings() {
               <li>✅ Kategorie- & Lieferanten-Verwaltung</li>
               <li>✅ KI-Sprachbuchung</li>
               <li>✅ Quick-Repeat Buchung</li>
-              <li>🔐 Multi-User Login & Rollen</li>
-              <li>📦 Bulk-Scan Inventur</li>
+              <li>✅ Multi-User Login & Rollen</li>
+              <li>✅ Bulk-Scan Inventur</li>
             </ul>
           </div>
         </div>
 
+        {/* Logout */}
+        {isAuthenticated && (
+          <div style={{ marginTop: 'var(--space-2xl)' }}>
+            <button
+              className="btn btn-outline btn-full"
+              style={{ color: 'var(--color-danger)', borderColor: 'var(--color-danger)' }}
+              onClick={() => setShowLogout(true)}
+            >
+              <LogOut size={16} /> Abmelden
+            </button>
+          </div>
+        )}
+
         {/* Reset */}
-        <div style={{ marginTop: 'var(--space-3xl)', paddingBottom: 'var(--space-2xl)' }}>
+        <div style={{ marginTop: 'var(--space-xl)', paddingBottom: 'var(--space-2xl)' }}>
           <button
             className="btn btn-outline btn-full"
             style={{ color: 'var(--color-danger)', borderColor: 'var(--color-danger)' }}
@@ -215,6 +270,17 @@ export default function Settings() {
             danger
             onCancel={() => setShowReset(false)}
             onConfirm={handleReset}
+          />
+        )}
+
+        {showLogout && (
+          <ConfirmDialog
+            title="Abmelden?"
+            message="Möchtest du dich wirklich abmelden?"
+            confirmText="Abmelden"
+            danger
+            onCancel={() => setShowLogout(false)}
+            onConfirm={handleLogout}
           />
         )}
       </div>
