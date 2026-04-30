@@ -1,14 +1,18 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ShoppingCart, ExternalLink, Mail } from 'lucide-react';
+import { ChevronLeft, ShoppingCart, ExternalLink, FileDown, Download } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import { UNIT_LABELS } from '../data/constants';
 import EmptyState from '../components/EmptyState';
+import Toast from '../components/Toast';
 import { CheckCircle } from 'lucide-react';
 import { openSoneparForMaterial, getSoneparSearchUrl, generateOrderMailto } from '../services/sonepar';
+import { generateReorderPDF, generateFullReorderPDF } from '../services/pdfExport';
 
 export default function ReorderList() {
   const navigate = useNavigate();
   const { materials, suppliers } = useStore();
+  const [toast, setToast] = useState(null);
 
   const reorderItems = materials
     .filter(m => m.active && m.current_stock <= m.min_stock)
@@ -28,12 +32,10 @@ export default function ReorderList() {
   });
 
   function handleOrderAllSonepar(items) {
-    // Öffne Sonepar für den ersten Artikel – der Nutzer kann dann die anderen suchen
-    // In der Praxis öffnet man einen Artikel nach dem anderen
     items.forEach((item, i) => {
       setTimeout(() => {
         window.open(getSoneparSearchUrl(item), '_blank', 'noopener,noreferrer');
-      }, i * 300); // Leichte Verzögerung damit der Browser nicht blockt
+      }, i * 300);
     });
   }
 
@@ -44,6 +46,24 @@ export default function ReorderList() {
     window.location.href = url;
   }
 
+  function handlePDFSingle(items, supplierName) {
+    try {
+      generateReorderPDF(items, supplierName);
+      setToast({ message: `PDF für ${supplierName} erstellt ✓`, type: 'success' });
+    } catch (err) {
+      setToast({ message: 'PDF-Fehler: ' + err.message, type: 'error' });
+    }
+  }
+
+  function handlePDFAll() {
+    try {
+      generateFullReorderPDF(bySupplier);
+      setToast({ message: 'Gesamt-PDF erstellt ✓', type: 'success' });
+    } catch (err) {
+      setToast({ message: 'PDF-Fehler: ' + err.message, type: 'error' });
+    }
+  }
+
   return (
     <>
       <header className="page-header">
@@ -51,10 +71,16 @@ export default function ReorderList() {
           <ChevronLeft size={22} />
         </button>
         <h1>Nachbestellen</h1>
-        <div style={{ width: 44 }} />
+        {reorderItems.length > 0 && (
+          <button className="page-header-action" onClick={handlePDFAll} title="Gesamt-PDF exportieren">
+            <FileDown size={18} />
+          </button>
+        )}
       </header>
 
       <div className="page-content">
+        {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+
         {reorderItems.length > 0 ? (
           <>
             <div style={{
@@ -89,7 +115,15 @@ export default function ReorderList() {
                         <div className="reorder-card-header" onClick={() => navigate(`/material/${item.id}`)}>
                           <div>
                             <div className="reorder-card-name">{item.name}</div>
-                            <div className="reorder-card-number">{item.article_number}</div>
+                            <div className="reorder-card-number" style={{ fontFamily: 'monospace', color: 'var(--color-primary)' }}>
+                              {item.manufacturer_number?.trim() || item.article_number}
+                            </div>
+                            {item.manufacturer_number?.trim() && (
+                              <div className="reorder-card-number">Art.-Nr: {item.article_number}</div>
+                            )}
+                            {item.storage_location && (
+                              <div className="reorder-card-number">📍 {item.storage_location}</div>
+                            )}
                           </div>
                           <span className="stock-badge stock-badge--critical">
                             <span className="stock-dot stock-dot--critical" />
@@ -125,6 +159,16 @@ export default function ReorderList() {
 
                   {/* Sammel-Aktionen pro Lieferant */}
                   <div className="reorder-supplier-actions">
+                    {/* PDF-Export pro Lieferant */}
+                    <button
+                      className="btn btn-outline btn-sm"
+                      style={{ gap: '6px' }}
+                      onClick={() => handlePDFSingle(items, supplierName)}
+                    >
+                      <FileDown size={16} />
+                      PDF-Bestellliste
+                    </button>
+
                     {isSonepar && items.length > 1 && (
                       <button
                         className="btn btn-sonepar-group"

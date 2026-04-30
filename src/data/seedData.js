@@ -29,13 +29,13 @@ export const seedSuppliers = [
 export const seedMaterials = [
   // LS-Schalter (Hager)
   {
-    id: uuid(), article_number: 'LS-B10-1', manufacturer_number: 'MBN110', name: 'LS-Schalter B10 1-polig',
+    id: uuid(), article_number: 'LS-B10-1', manufacturer_number: 'MBN110', ean_code: '3250613110109', name: 'LS-Schalter B10 1-polig',
     category_id: 'cat-01', description: 'Hager MBN110 Leitungsschutzschalter B-Charakteristik 10A 1-polig',
     unit: 'stueck', current_stock: 25, reserved_stock: 4, min_stock: 10, reorder_quantity: 20,
     storage_location: 'Regal A1', supplier_id: 'sup-01', purchase_price: 4.85, packaging_unit: '1 Stück', active: true,
   },
   {
-    id: uuid(), article_number: 'LS-B16-1', manufacturer_number: 'MBN116', name: 'LS-Schalter B16 1-polig',
+    id: uuid(), article_number: 'LS-B16-1', manufacturer_number: 'MBN116', ean_code: '3250613110161', name: 'LS-Schalter B16 1-polig',
     category_id: 'cat-01', description: 'Hager MBN116 Leitungsschutzschalter B-Charakteristik 16A 1-polig',
     unit: 'stueck', current_stock: 42, reserved_stock: 12, min_stock: 15, reorder_quantity: 30,
     storage_location: 'Regal A1', supplier_id: 'sup-01', purchase_price: 4.95, packaging_unit: '1 Stück', active: true,

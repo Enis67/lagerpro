@@ -18,6 +18,7 @@ export default function MaterialForm() {
   const [form, setForm] = useState({
     article_number: '',
     manufacturer_number: '',
+    ean_code: '',
     name: '',
     category_id: categories[0]?.id || '',
     description: '',
@@ -110,6 +111,18 @@ export default function MaterialForm() {
               />
               <span className="form-helper">Für präzise Sonepar-Suche</span>
             </div>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">EAN / GTIN (Barcode)</label>
+            <input
+              type="text"
+              value={form.ean_code}
+              onChange={e => handleChange('ean_code', e.target.value)}
+              placeholder="z.B. 4012233331126"
+              inputMode="numeric"
+            />
+            <span className="form-helper">13-stellige Nummer vom Produkt-Barcode – wird vom Scanner automatisch erkannt</span>
           </div>
 
           <div className="form-group">

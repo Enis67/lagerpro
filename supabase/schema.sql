@@ -34,6 +34,7 @@ CREATE TABLE materials (
   id TEXT PRIMARY KEY,
   article_number TEXT,
   manufacturer_number TEXT,
+  ean_code TEXT,
   name TEXT NOT NULL,
   category_id TEXT REFERENCES categories(id) ON DELETE SET NULL,
   description TEXT,

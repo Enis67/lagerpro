@@ -70,25 +70,36 @@ export function StoreProvider({ children }) {
     if (initRef.current) return;
     initRef.current = true;
 
+    async function initCloud() {
+      console.log('[LagerPro] ☁️ Cloud-Modus (Supabase)');
+      await cloudDs.seedDatabase();
+      const data = await loadAllCloud();
+      return data;
+    }
+
+    async function initLocal() {
+      console.log('[LagerPro] 💾 Offline-Modus (localStorage)');
+      localDs.initializeData();
+      return loadAllLocal();
+    }
+
     async function init() {
       try {
         if (useCloud) {
-          console.log('[LagerPro] ☁️ Cloud-Modus (Supabase)');
-          // Seed-Daten in Cloud hochladen falls leer
-          await cloudDs.seedDatabase();
-          const data = await loadAllCloud();
+          // Timeout: Falls Cloud zu langsam, Fallback auf localStorage
+          const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Cloud-Timeout nach 8s')), 8000)
+          );
+          const data = await Promise.race([initCloud(), timeoutPromise]);
           dispatch({ type: 'INIT', payload: data });
         } else {
-          console.log('[LagerPro] 💾 Offline-Modus (localStorage)');
-          localDs.initializeData();
-          dispatch({ type: 'INIT', payload: loadAllLocal() });
+          dispatch({ type: 'INIT', payload: await initLocal() });
         }
       } catch (err) {
         console.error('[LagerPro] Init-Fehler:', err);
         // Fallback auf localStorage bei Cloud-Fehler
         console.log('[LagerPro] Fallback auf localStorage...');
-        localDs.initializeData();
-        dispatch({ type: 'INIT', payload: loadAllLocal() });
+        dispatch({ type: 'INIT', payload: await initLocal() });
         dispatch({ type: 'SET_ERROR', payload: 'Cloud nicht erreichbar – Offline-Modus aktiv' });
       }
     }

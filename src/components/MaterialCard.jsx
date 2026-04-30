@@ -4,15 +4,38 @@ import { useStore } from '../hooks/useStore';
 import StockBadge from './StockBadge';
 import { UNIT_LABELS } from '../data/constants';
 
-export default function MaterialCard({ material }) {
+/**
+ * Gibt die beste Artikelkennung für ein Material zurück.
+ * Priorität: Herstellernr. (wenn vorhanden) > Artikelnr.
+ * Zeigt immer die Herstellernr. prominent, Artikelnr. daneben.
+ */
+function getSmartId(material) {
+  const hasManufacturer = material.manufacturer_number && material.manufacturer_number.trim();
+  if (hasManufacturer) {
+    return {
+      primary: material.manufacturer_number,
+      secondary: material.article_number,
+      label: 'Hersteller',
+    };
+  }
+  return {
+    primary: material.article_number,
+    secondary: null,
+    label: 'Art.-Nr.',
+  };
+}
+
+export default function MaterialCard({ material, onClick }) {
   const navigate = useNavigate();
-  const { getCategoryName, getCategoryColor } = useStore();
+  const { getCategoryName, getCategoryColor, getSupplierName } = useStore();
   const available = material.current_stock - material.reserved_stock;
+  const smartId = getSmartId(material);
+  const supplierName = getSupplierName(material.supplier_id);
 
   return (
     <div
       className="material-card"
-      onClick={() => navigate(`/material/${material.id}`)}
+      onClick={onClick || (() => navigate(`/material/${material.id}`))}
       role="button"
       tabIndex={0}
     >
@@ -25,12 +48,18 @@ export default function MaterialCard({ material }) {
       <div className="material-card-content">
         <div className="material-card-name">{material.name}</div>
         <div className="material-card-meta">
+          <span className="material-card-id">{smartId.primary}</span>
+          {smartId.secondary && (
+            <span className="material-card-id-secondary">{smartId.secondary}</span>
+          )}
+        </div>
+        <div className="material-card-tags">
           <span className="category-badge">
             <span className="category-dot" style={{ background: getCategoryColor(material.category_id) }} />
             {getCategoryName(material.category_id)}
           </span>
-          {material.article_number && (
-            <span className="text-xs text-tertiary">{material.article_number}</span>
+          {material.storage_location && (
+            <span className="material-card-location">📍 {material.storage_location}</span>
           )}
         </div>
       </div>

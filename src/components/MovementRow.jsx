@@ -27,10 +27,18 @@ function formatTime(isoString) {
 }
 
 export default function MovementRow({ movement }) {
-  const { getMaterialName, getProjectName } = useStore();
+  const { materials, getProjectName } = useStore();
   const Icon = iconMap[movement.type] || PenLine;
   const color = MOVEMENT_TYPE_COLORS[movement.type] || '#6B7280';
-  const material = getMaterialName(movement.material_id);
+  
+  // Material-Objekt holen für automatische Anzeige
+  const material = materials.find(m => m.id === movement.material_id);
+  const materialName = material?.name || 'Unbekannt';
+  
+  // Smart ID: Herstellernr. bevorzugen wenn vorhanden
+  const smartId = material?.manufacturer_number?.trim()
+    ? material.manufacturer_number
+    : material?.article_number || '';
 
   const isPositive = ['eingang', 'rueckgabe'].includes(movement.type);
   const isNeutral = ['korrektur', 'reservierung', 'reservierung_aufloesen'].includes(movement.type);
@@ -43,15 +51,24 @@ export default function MovementRow({ movement }) {
         <Icon size={18} />
       </div>
       <div className="movement-content">
-        <div className="movement-title">{material || 'Unbekannt'}</div>
+        <div className="movement-title">{materialName}</div>
         <div className="movement-meta">
-          {MOVEMENT_TYPE_LABELS[movement.type]}
-          {movement.project_id && ` · ${getProjectName(movement.project_id)}`}
-          {' · '}{formatTime(movement.created_at)}
+          <span className="movement-meta-type">{MOVEMENT_TYPE_LABELS[movement.type]}</span>
+          {smartId && <span className="movement-meta-id">{smartId}</span>}
+          {movement.project_id && <span> · {getProjectName(movement.project_id)}</span>}
+          <span className="movement-meta-time"> · {formatTime(movement.created_at)}</span>
         </div>
+        {movement.note && (
+          <div className="movement-note">{movement.note}</div>
+        )}
       </div>
       <div className={`movement-quantity ${qtyClass}`}>
         {qtyPrefix}{movement.quantity}
+        {material && (
+          <div className="movement-quantity-unit">
+            {UNIT_LABELS[material.unit] || material.unit}
+          </div>
+        )}
       </div>
     </div>
   );

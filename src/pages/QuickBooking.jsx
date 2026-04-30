@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import {
   ChevronLeft, PackagePlus, PackageMinus, PackageCheck, PenLine,
-  BookmarkPlus, BookmarkMinus, Minus, Plus, Check, Search
+  BookmarkPlus, BookmarkMinus, Minus, Plus, Check, ScanBarcode
 } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import { MOVEMENT_TYPES, UNIT_LABELS, DEFAULT_USER } from '../data/constants';
 import SearchBar from '../components/SearchBar';
 import Toast from '../components/Toast';
+import BarcodeScanner from '../components/BarcodeScanner';
 
 const iconMap = {
   eingang: PackagePlus, entnahme: PackageMinus, rueckgabe: PackageCheck,
@@ -17,7 +18,7 @@ const iconMap = {
 
 export default function QuickBooking() {
   const navigate = useNavigate();
-  const { materials, projects, addMovement } = useStore();
+  const { materials, projects, addMovement, getSupplierName } = useStore();
   const [step, setStep] = useState(1);
   const [bookingType, setBookingType] = useState('entnahme');
   const [selectedMaterial, setSelectedMaterial] = useState(null);
@@ -27,13 +28,15 @@ export default function QuickBooking() {
   const [search, setSearch] = useState('');
   const [projectSearch, setProjectSearch] = useState('');
   const [toast, setToast] = useState(null);
+  const [showScanner, setShowScanner] = useState(false);
 
   const activeProjects = projects.filter(p => p.status !== 'abgeschlossen');
 
   const filteredMaterials = materials.filter(m =>
     m.active && (
       m.name.toLowerCase().includes(search.toLowerCase()) ||
-      m.article_number.toLowerCase().includes(search.toLowerCase())
+      m.article_number.toLowerCase().includes(search.toLowerCase()) ||
+      (m.manufacturer_number && m.manufacturer_number.toLowerCase().includes(search.toLowerCase()))
     )
   );
 
@@ -72,6 +75,14 @@ export default function QuickBooking() {
     } catch (err) {
       setToast({ message: 'Fehler beim Buchen: ' + err.message, type: 'error' });
     }
+  }
+
+  function handleScanResult(material) {
+    setSelectedMaterial(material);
+    setShowScanner(false);
+    setToast({ message: `${material.name} erkannt ✓`, type: 'success' });
+    // Direkt zu Schritt 3 springen
+    setStep(3);
   }
 
   const stepTitles = ['Buchungsart', 'Material', 'Menge & Buchen'];
@@ -133,39 +144,68 @@ export default function QuickBooking() {
         {/* Step 2: Material auswählen */}
         {step === 2 && (
           <div>
-            <SearchBar
-              value={search}
-              onChange={setSearch}
-              placeholder="Material suchen..."
-            />
+            {/* Suche + Scanner */}
+            <div className="search-scanner-row">
+              <div style={{ flex: 1 }}>
+                <SearchBar
+                  value={search}
+                  onChange={setSearch}
+                  placeholder="Material suchen..."
+                />
+              </div>
+              <button
+                className="btn-scanner"
+                onClick={() => setShowScanner(true)}
+                title="Barcode scannen"
+              >
+                <ScanBarcode size={22} />
+              </button>
+            </div>
+
             <div className="list">
-              {filteredMaterials.map(m => (
-                <div
-                  key={m.id}
-                  className={`card card-clickable ${selectedMaterial?.id === m.id ? '' : ''}`}
-                  style={selectedMaterial?.id === m.id ? {
-                    border: '2px solid var(--color-primary)',
-                    background: 'var(--color-primary-50)'
-                  } : {}}
-                  onClick={() => {
-                    setSelectedMaterial(m);
-                    if (needsProject && activeProjects.length > 0) {
-                      // Zeige Baustellen-Auswahl inline
-                    }
-                  }}
-                >
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <div className="font-semibold">{m.name}</div>
-                      <div className="text-sm text-secondary">{m.article_number} · {UNIT_LABELS[m.unit]}</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-bold">{m.current_stock - m.reserved_stock}</div>
-                      <div className="text-xs text-tertiary">verfügbar</div>
+              {filteredMaterials.map(m => {
+                const smartId = m.manufacturer_number?.trim()
+                  ? m.manufacturer_number
+                  : m.article_number;
+                const secondaryId = m.manufacturer_number?.trim()
+                  ? m.article_number
+                  : null;
+                return (
+                  <div
+                    key={m.id}
+                    className={`card card-clickable ${selectedMaterial?.id === m.id ? '' : ''}`}
+                    style={selectedMaterial?.id === m.id ? {
+                      border: '2px solid var(--color-primary)',
+                      background: 'var(--color-primary-50)'
+                    } : {}}
+                    onClick={() => {
+                      setSelectedMaterial(m);
+                      if (needsProject && activeProjects.length > 0) {
+                        // Zeige Baustellen-Auswahl inline
+                      }
+                    }}
+                  >
+                    <div className="flex justify-between items-center">
+                      <div style={{ minWidth: 0, flex: 1 }}>
+                        <div className="font-semibold">{m.name}</div>
+                        <div className="text-sm" style={{ fontFamily: 'monospace', color: 'var(--color-primary)' }}>{smartId}</div>
+                        <div className="text-xs text-tertiary" style={{ marginTop: 2 }}>
+                          {secondaryId && <span>{secondaryId} · </span>}
+                          {m.storage_location && <span>📍 {m.storage_location} · </span>}
+                          {UNIT_LABELS[m.unit]}
+                        </div>
+                      </div>
+                      <div className="text-right" style={{ flexShrink: 0, marginLeft: 'var(--space-md)' }}>
+                        <div className="font-bold" style={{
+                          color: m.current_stock <= m.min_stock ? 'var(--color-danger)' :
+                            m.current_stock <= m.min_stock * 1.5 ? 'var(--color-warning)' : 'var(--color-text)'
+                        }}>{m.current_stock - m.reserved_stock}</div>
+                        <div className="text-xs text-tertiary">verfügbar</div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
               {filteredMaterials.length === 0 && (
                 <div className="text-center text-secondary" style={{ padding: 'var(--space-4xl)' }}>
                   Kein Material gefunden
@@ -179,19 +219,42 @@ export default function QuickBooking() {
                 </button>
               </div>
             )}
+
+            {/* Barcode Scanner Overlay */}
+            {showScanner && (
+              <BarcodeScanner
+                materials={materials.filter(m => m.active)}
+                onScan={handleScanResult}
+                onClose={() => setShowScanner(false)}
+              />
+            )}
           </div>
         )}
 
         {/* Step 3: Menge, Baustelle, Buchen */}
         {step === 3 && selectedMaterial && (
           <div>
-            {/* Ausgewähltes Material */}
+            {/* Ausgewähltes Material – alle Details automatisch */}
             <div className="card mb-lg">
               <div className="text-sm text-secondary mb-md">Ausgewähltes Material</div>
               <div className="font-bold">{selectedMaterial.name}</div>
-              <div className="text-sm text-secondary">{selectedMaterial.article_number}</div>
-              <div className="text-sm mt-sm">
-                Verfügbar: <strong>{selectedMaterial.current_stock - selectedMaterial.reserved_stock} {UNIT_LABELS[selectedMaterial.unit]}</strong>
+              <div style={{ fontFamily: 'monospace', color: 'var(--color-primary)', fontSize: 'var(--font-size-sm)', marginTop: 2 }}>
+                {selectedMaterial.manufacturer_number?.trim() || selectedMaterial.article_number}
+              </div>
+              <div className="text-xs text-tertiary" style={{ marginTop: 4, display: 'flex', flexWrap: 'wrap', gap: 'var(--space-sm)' }}>
+                {selectedMaterial.manufacturer_number?.trim() && (
+                  <span>Art: {selectedMaterial.article_number}</span>
+                )}
+                {selectedMaterial.storage_location && (
+                  <span>📍 {selectedMaterial.storage_location}</span>
+                )}
+                {selectedMaterial.supplier_id && (
+                  <span>🏢 {getSupplierName(selectedMaterial.supplier_id)}</span>
+                )}
+              </div>
+              <div className="text-sm mt-sm" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span>Verfügbar: <strong>{selectedMaterial.current_stock - selectedMaterial.reserved_stock} {UNIT_LABELS[selectedMaterial.unit]}</strong></span>
+                <span className="text-xs text-tertiary">Min: {selectedMaterial.min_stock}</span>
               </div>
             </div>
 

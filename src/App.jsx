@@ -12,6 +12,9 @@ import ProjectForm from './pages/ProjectForm';
 import ReorderList from './pages/ReorderList';
 import MovementLog from './pages/MovementLog';
 import Settings from './pages/Settings';
+import Statistics from './pages/Statistics';
+import CategoryManager from './pages/CategoryManager';
+import SupplierManager from './pages/SupplierManager';
 
 export default function App() {
   return (
@@ -29,6 +32,9 @@ export default function App() {
             <Route path="/baustellen/:id/edit" element={<ProjectForm />} />
             <Route path="/nachbestellen" element={<ReorderList />} />
             <Route path="/bewegungen" element={<MovementLog />} />
+            <Route path="/statistiken" element={<Statistics />} />
+            <Route path="/kategorien" element={<CategoryManager />} />
+            <Route path="/lieferanten" element={<SupplierManager />} />
             <Route path="/mehr" element={<Settings />} />
           </Route>
         </Routes>

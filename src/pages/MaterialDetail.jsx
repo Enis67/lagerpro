@@ -47,6 +47,21 @@ export default function MaterialDetail() {
         </button>
         <h1 style={{ fontSize: 'var(--font-size-lg)' }} className="truncate">{material.name}</h1>
         <div className="flex items-center gap-sm">
+          <span style={{
+            fontFamily: 'monospace',
+            fontSize: 'var(--font-size-xs)',
+            opacity: 0.85,
+            color: 'white',
+            background: 'rgba(255,255,255,0.15)',
+            padding: '2px 8px',
+            borderRadius: 'var(--radius-sm)',
+            maxWidth: 110,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}>
+            {material.manufacturer_number?.trim() || material.article_number}
+          </span>
           <button className="page-header-action" onClick={() => navigate(`/material/${id}/edit`)}>
             <Edit size={18} />
           </button>
@@ -116,6 +131,14 @@ export default function MaterialDetail() {
                 <div className="detail-item-label">Herstellernr.</div>
                 <div className="detail-item-value" style={{ fontFamily: 'monospace', fontWeight: 600 }}>
                   {material.manufacturer_number}
+                </div>
+              </div>
+            )}
+            {material.ean_code && (
+              <div className="detail-item">
+                <div className="detail-item-label">EAN / GTIN</div>
+                <div className="detail-item-value" style={{ fontFamily: 'monospace', fontSize: 'var(--font-size-sm)' }}>
+                  {material.ean_code}
                 </div>
               </div>
             )}

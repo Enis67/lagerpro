@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Tag, Truck, MapPin, ShoppingCart, ArrowDownUp, RotateCcw, ChevronRight } from 'lucide-react';
+import { Tag, Truck, ShoppingCart, ArrowDownUp, RotateCcw, ChevronRight, BarChart3, Download } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
+import { exportMaterialsCSV } from '../services/csvExport';
 import ConfirmDialog from '../components/ConfirmDialog';
 import Toast from '../components/Toast';
 
 export default function Settings() {
   const navigate = useNavigate();
-  const { categories, suppliers, resetData, isCloud, syncing, error, clearError } = useStore();
+  const { categories, suppliers, materials, resetData, isCloud, syncing, error, clearError } = useStore();
   const [showReset, setShowReset] = useState(false);
   const [toast, setToast] = useState(null);
 
@@ -18,6 +19,15 @@ export default function Settings() {
       setToast({ message: 'Alle Daten zurückgesetzt!', type: 'info' });
     } catch (err) {
       setToast({ message: 'Fehler: ' + err.message, type: 'error' });
+    }
+  }
+
+  function handleExportMaterials() {
+    try {
+      exportMaterialsCSV(materials, categories, suppliers);
+      setToast({ message: 'Materialbestand als CSV exportiert ✓', type: 'success' });
+    } catch (err) {
+      setToast({ message: 'Export fehlgeschlagen: ' + err.message, type: 'error' });
     }
   }
 
@@ -35,18 +45,28 @@ export default function Settings() {
       onClick: () => navigate('/bewegungen'),
     },
     {
+      icon: BarChart3,
+      label: 'Statistiken',
+      sub: 'Lagerwert, Trends, Top-Verbraucher',
+      onClick: () => navigate('/statistiken'),
+    },
+    {
+      icon: Download,
+      label: 'Materialbestand exportieren',
+      sub: `${materials.length} Artikel als CSV`,
+      onClick: handleExportMaterials,
+    },
+    {
       icon: Tag,
       label: 'Kategorien',
-      sub: `${categories.length} Kategorien`,
-      onClick: () => {},
-      disabled: true,
+      sub: `${categories.length} Kategorien verwalten`,
+      onClick: () => navigate('/kategorien'),
     },
     {
       icon: Truck,
       label: 'Lieferanten',
-      sub: `${suppliers.length} Lieferanten`,
-      onClick: () => {},
-      disabled: true,
+      sub: `${suppliers.length} Lieferanten verwalten`,
+      onClick: () => navigate('/lieferanten'),
     },
   ];
 
@@ -86,7 +106,7 @@ export default function Settings() {
             color: 'var(--color-text-tertiary)',
             marginTop: 'var(--space-xs)',
           }}>
-            Version 2.0 {isCloud ? '☁️ Cloud' : '💾 Offline'}
+            Version 2.5 {isCloud ? '☁️ Cloud' : '💾 Offline'}
           </div>
           {isCloud && (
             <div style={{
@@ -146,9 +166,9 @@ export default function Settings() {
           })}
         </div>
 
-        {/* Phase 2 Vorschau */}
+        {/* Roadmap */}
         <div className="section" style={{ marginTop: 'var(--space-3xl)' }}>
-          <h3 className="detail-section-title">Kommt in Phase 2</h3>
+          <h3 className="detail-section-title">Roadmap</h3>
           <div className="card" style={{ background: 'var(--color-primary-50)' }}>
             <ul style={{
               listStyle: 'none',
@@ -158,12 +178,17 @@ export default function Settings() {
               flexDirection: 'column',
               gap: 'var(--space-sm)',
             }}>
+              <li>✅ Cloud-Sync mit Supabase</li>
+              <li>✅ PWA Installation</li>
+              <li>✅ Barcode-Scanner + EAN</li>
+              <li>✅ PDF/CSV-Export</li>
+              <li>✅ Statistik-Dashboard</li>
+              <li>✅ Smart-ID Automatisierung</li>
+              <li>✅ Kategorie- & Lieferanten-Verwaltung</li>
+              <li>✅ KI-Sprachbuchung</li>
+              <li>✅ Quick-Repeat Buchung</li>
               <li>🔐 Multi-User Login & Rollen</li>
-              <li>☁️ Cloud-Sync mit Supabase</li>
-              <li>📱 PWA Installation</li>
-              <li>📷 Barcode-Scanner</li>
-              <li>🎤 KI-Sprachbuchung</li>
-              <li>📊 Berichte & Export</li>
+              <li>📦 Bulk-Scan Inventur</li>
             </ul>
           </div>
         </div>
