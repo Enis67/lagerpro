@@ -52,21 +52,20 @@ export async function signOut() {
   if (error) throw error;
 }
 
+/**
+ * Holt aktuellen Benutzer direkt aus Auth (keine users-Tabelle nötig).
+ * Name und Rolle werden aus user_metadata gelesen.
+ */
 export async function getCurrentUser() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
-  const { data: profile } = await supabase
-    .from('users')
-    .select('*')
-    .eq('id', user.id)
-    .single();
-  return profile || { id: user.id, email: user.email, name: user.user_metadata?.name || user.email, role: user.user_metadata?.role || 'monteur' };
-}
-
-export async function getAllUsers() {
-  const { data, error } = await supabase.from('users').select('*').order('name');
-  if (error) throw error;
-  return data || [];
+  return {
+    id: user.id,
+    email: user.email,
+    name: user.user_metadata?.name || user.email,
+    role: user.user_metadata?.role || 'monteur',
+    active: true,
+  };
 }
 
 export function onAuthStateChange(callback) {
@@ -74,3 +73,10 @@ export function onAuthStateChange(callback) {
     callback(session?.user || null);
   });
 }
+
+/*
+  HINWEIS: Die users-Tabelle in supabase/schema.sql ist optional.
+  Für erweiterte Features (Admin sieht alle User, User-Verwaltung)
+  kann sie später über den Supabase SQL Editor eingespielt werden.
+  Der Auth-Trigger (handle_new_user) macht dann automatisch Einträge.
+*/
