@@ -9,9 +9,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'icons/*.png'],
       manifest: {
-        name: 'LagerPro – Materialverwaltung',
+        name: 'LagerPro - Materialverwaltung',
         short_name: 'LagerPro',
-        description: 'Material- & Lagerverwaltung für Elektrobetriebe',
+        description: 'Material- und Lagerverwaltung fuer Elektrobetriebe',
         theme_color: '#1B2A4A',
         background_color: '#F8FAFC',
         display: 'standalone',

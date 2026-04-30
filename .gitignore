@@ -4,3 +4,5 @@ dist/
 .env.local
 *.log
 .claude/
+start-handy.bat
+Q_AND_A.md

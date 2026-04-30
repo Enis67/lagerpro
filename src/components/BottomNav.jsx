@@ -6,7 +6,7 @@ const navItems = [
   { to: '/', icon: Home, label: 'Home' },
   { to: '/material', icon: Package, label: 'Material' },
   { to: '/buchen', icon: Zap, label: 'Buchen', primary: true },
-  { to: '/assistent', icon: Bot, label: 'KI' },
+  { to: '/baustellen', icon: HardHat, label: 'Baustellen' },
   { to: '/mehr', icon: Menu, label: 'Mehr' },
 ];
 
