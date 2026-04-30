@@ -1,7 +1,7 @@
 // Global State Management via React Context
 // Unterstützt Supabase (Cloud) mit localStorage-Fallback (Offline)
 import { createContext, useContext, useReducer, useEffect, useCallback, useRef } from 'react';
-import { isSupabaseAvailable } from '../services/supabase.js';
+import { isSupabaseAvailable, supabase } from '../services/supabase.js';
 import { useAuth } from './useAuth.jsx';
 import * as cloudDs from '../services/supabaseDataService.js';
 import * as localDs from '../services/dataService.js';
@@ -188,11 +188,35 @@ export function StoreProvider({ children }) {
   // ── Movement Actions ────────────────────────────────
   const addMovement = useCallback(async (movement) => {
     const enriched = { ...movement, user_id: userId || movement.user_id };
-    await asyncAction(
-      () => cloudDs.createMovement(enriched),
-      () => localDs.createMovement(enriched)
-    );
-  }, [asyncAction, userId]);
+    try {
+      if (useCloud && isAuthenticated && supabase) {
+        // Prüfe ob Material in Cloud existiert (Foreign Key Check)
+        const { data: matExists } = await supabase
+          .from('materials')
+          .select('id')
+          .eq('id', enriched.material_id)
+          .single();
+        if (!matExists) {
+          // Material nicht in Cloud – nur lokal speichern
+          console.warn('[LagerPro] Material nicht in Cloud, speichere Bewegung lokal');
+          localDs.createMovement(enriched);
+          await refresh();
+          return;
+        }
+        await cloudDs.createMovement(enriched);
+        await refresh();
+      } else {
+        localDs.createMovement(enriched);
+        await refresh();
+      }
+    } catch (err) {
+      console.error('[LagerPro] Bewegung fehlgeschlagen:', err);
+      // Fallback: lokal speichern
+      localDs.createMovement(enriched);
+      await refresh();
+      throw err;
+    }
+  }, [refresh, isAuthenticated, userId]);
 
   // ── Category Actions ────────────────────────────────
   const addCategory = useCallback(async (category) => {
@@ -250,6 +274,16 @@ export function StoreProvider({ children }) {
   const clearError = useCallback(() => {
     dispatch({ type: 'CLEAR_ERROR' });
   }, []);
+
+  // Auto-clear errors after 8 seconds
+  useEffect(() => {
+    if (state.error) {
+      const timer = setTimeout(() => {
+        dispatch({ type: 'CLEAR_ERROR' });
+      }, 8000);
+      return () => clearTimeout(timer);
+    }
+  }, [state.error]);
 
   const value = {
     ...state,

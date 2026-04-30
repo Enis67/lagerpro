@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import {
   ChevronLeft, PackagePlus, PackageMinus, PackageCheck, PenLine,
-  BookmarkPlus, BookmarkMinus, Minus, Plus, Check, ScanBarcode
+  BookmarkPlus, BookmarkMinus, Minus, Plus, Check, ScanBarcode, Trash2
 } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import { MOVEMENT_TYPES, UNIT_LABELS, DEFAULT_USER } from '../data/constants';
@@ -18,12 +18,12 @@ const iconMap = {
 
 export default function QuickBooking() {
   const navigate = useNavigate();
-  const { materials, projects, addMovement, getSupplierName } = useStore();
+  const { materials, projects, categories, addMovement, getCategoryName } = useStore();
   const [step, setStep] = useState(1);
   const [bookingType, setBookingType] = useState('entnahme');
-  const [selectedMaterial, setSelectedMaterial] = useState(null);
+  const [selectedMaterials, setSelectedMaterials] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
-  const [quantity, setQuantity] = useState(1);
+  const [quantities, setQuantities] = useState({});
   const [note, setNote] = useState('');
   const [search, setSearch] = useState('');
   const [projectSearch, setProjectSearch] = useState('');
@@ -47,28 +47,68 @@ export default function QuickBooking() {
 
   const needsProject = ['entnahme', 'reservierung', 'reservierung_aufloesen'].includes(bookingType);
 
+  function toggleMaterial(material) {
+    setSelectedMaterials(prev => {
+      const exists = prev.find(m => m.id === material.id);
+      if (exists) {
+        // Entfernen
+        const updated = prev.filter(m => m.id !== material.id);
+        setQuantities(q => {
+          const newQ = { ...q };
+          delete newQ[material.id];
+          return newQ;
+        });
+        return updated;
+      } else {
+        // Hinzufügen mit Default-Menge 1
+        setQuantities(q => ({ ...q, [material.id]: 1 }));
+        return [...prev, material];
+      }
+    });
+  }
+
+  function updateQuantity(materialId, delta) {
+    setQuantities(prev => ({
+      ...prev,
+      [materialId]: Math.max(1, (prev[materialId] || 1) + delta)
+    }));
+  }
+
+  function removeSelected(id) {
+    setSelectedMaterials(prev => prev.filter(m => m.id !== id));
+    setQuantities(prev => {
+      const newQ = { ...prev };
+      delete newQ[id];
+      return newQ;
+    });
+  }
+
   async function handleBook() {
-    if (!selectedMaterial || quantity <= 0) return;
+    if (selectedMaterials.length === 0) return;
 
     try {
-      await addMovement({
-        id: uuid(),
-        material_id: selectedMaterial.id,
-        project_id: selectedProject?.id || null,
-        user_id: DEFAULT_USER.id,
-        type: bookingType,
-        quantity: Number(quantity),
-        note,
+      for (const material of selectedMaterials) {
+        await addMovement({
+          id: uuid(),
+          material_id: material.id,
+          project_id: selectedProject?.id || null,
+          user_id: DEFAULT_USER.id,
+          type: bookingType,
+          quantity: Number(quantities[material.id] || 1),
+          note,
+        });
+      }
+
+      setToast({
+        message: `${selectedMaterials.length} Buchung(en) erfolgreich! ✓`,
+        type: 'success'
       });
 
-      setToast({ message: 'Buchung erfolgreich! ✓', type: 'success' });
-
       setTimeout(() => {
-        // Reset für nächste Buchung
         setStep(1);
-        setSelectedMaterial(null);
+        setSelectedMaterials([]);
         setSelectedProject(null);
-        setQuantity(1);
+        setQuantities({});
         setNote('');
         setSearch('');
       }, 1500);
@@ -78,11 +118,12 @@ export default function QuickBooking() {
   }
 
   function handleScanResult(material) {
-    setSelectedMaterial(material);
+    if (!selectedMaterials.find(m => m.id === material.id)) {
+      setSelectedMaterials(prev => [...prev, material]);
+      setQuantities(prev => ({ ...prev, [material.id]: 1 }));
+    }
     setShowScanner(false);
     setToast({ message: `${material.name} erkannt ✓`, type: 'success' });
-    // Direkt zu Schritt 3 springen
-    setStep(3);
   }
 
   const stepTitles = ['Buchungsart', 'Material', 'Menge & Buchen'];
@@ -119,108 +160,58 @@ export default function QuickBooking() {
 
         {/* Step 1: Buchungsart */}
         {step === 1 && (
-          <div>
-            <div className="booking-type-grid">
-              {MOVEMENT_TYPES.map(type => {
-                const Icon = iconMap[type.value];
-                return (
-                  <button
-                    key={type.value}
-                    className={`booking-type-btn ${bookingType === type.value ? 'active' : ''}`}
-                    onClick={() => setBookingType(type.value)}
+          <div className="list">
+            {MOVEMENT_TYPES.map(type => {
+              const Icon = iconMap[type.id];
+              const isSelected = bookingType === type.id;
+              return (
+                <button
+                  key={type.id}
+                  className={`card card-clickable ${isSelected ? 'ring-2' : ''}`}
+                  onClick={() => { setBookingType(type.id); setStep(2); }}
+                  style={{
+                    width: '100%',
+                    textAlign: 'left',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    border: isSelected ? '2px solid var(--color-primary)' : undefined,
+                  }}
+                >
+                  <div style={{
+                    width: 40, height: 40, borderRadius: 12,
+                    background: isSelected ? 'var(--color-primary)' : 'var(--color-primary-50)',
+                    color: isSelected ? 'white' : 'var(--color-primary)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}
                   >
-                    <Icon size={24} style={{ color: type.color }} />
-                    {type.label}
-                  </button>
-                );
-              })}
-            </div>
-            <button className="btn btn-primary btn-full btn-lg" onClick={() => setStep(2)}>
-              Weiter → Material wählen
-            </button>
+                    <Icon size={20} />
+                  </div>
+                  <div>
+                    <div className="font-semibold">{type.label}</div>
+                    <div className="text-sm text-secondary">{type.description}</div>
+                  </div>
+                </button>
+              );
+            })}
           </div>
         )}
 
-        {/* Step 2: Material auswählen */}
+        {/* Step 2: Material-Auswahl */}
         {step === 2 && (
-          <div>
-            {/* Suche + Scanner */}
-            <div className="search-scanner-row">
-              <div style={{ flex: 1 }}>
-                <SearchBar
-                  value={search}
-                  onChange={setSearch}
-                  placeholder="Material suchen..."
-                />
-              </div>
-              <button
-                className="btn-scanner"
-                onClick={() => setShowScanner(true)}
-                title="Barcode scannen"
-              >
-                <ScanBarcode size={22} />
+          <>
+            <div style={{ display: 'flex', gap: 'var(--space-sm)', marginBottom: 'var(--space-md)' }}>
+              <SearchBar
+                placeholder="Material suchen..."
+                value={search}
+                onChange={setSearch}
+                style={{ flex: 1 }}
+              />
+              <button className="btn btn-primary btn-square" onClick={() => setShowScanner(true)}>
+                <ScanBarcode size={20} />
               </button>
             </div>
 
-            <div className="list">
-              {filteredMaterials.map(m => {
-                const smartId = m.manufacturer_number?.trim()
-                  ? m.manufacturer_number
-                  : m.article_number;
-                const secondaryId = m.manufacturer_number?.trim()
-                  ? m.article_number
-                  : null;
-                return (
-                  <div
-                    key={m.id}
-                    className={`card card-clickable ${selectedMaterial?.id === m.id ? '' : ''}`}
-                    style={selectedMaterial?.id === m.id ? {
-                      border: '2px solid var(--color-primary)',
-                      background: 'var(--color-primary-50)'
-                    } : {}}
-                    onClick={() => {
-                      setSelectedMaterial(m);
-                      if (needsProject && activeProjects.length > 0) {
-                        // Zeige Baustellen-Auswahl inline
-                      }
-                    }}
-                  >
-                    <div className="flex justify-between items-center">
-                      <div style={{ minWidth: 0, flex: 1 }}>
-                        <div className="font-semibold">{m.name}</div>
-                        <div className="text-sm" style={{ fontFamily: 'monospace', color: 'var(--color-primary)' }}>{smartId}</div>
-                        <div className="text-xs text-tertiary" style={{ marginTop: 2 }}>
-                          {secondaryId && <span>{secondaryId} · </span>}
-                          {m.storage_location && <span>📍 {m.storage_location} · </span>}
-                          {UNIT_LABELS[m.unit]}
-                        </div>
-                      </div>
-                      <div className="text-right" style={{ flexShrink: 0, marginLeft: 'var(--space-md)' }}>
-                        <div className="font-bold" style={{
-                          color: m.current_stock <= m.min_stock ? 'var(--color-danger)' :
-                            m.current_stock <= m.min_stock * 1.5 ? 'var(--color-warning)' : 'var(--color-text)'
-                        }}>{m.current_stock - m.reserved_stock}</div>
-                        <div className="text-xs text-tertiary">verfügbar</div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-              {filteredMaterials.length === 0 && (
-                <div className="text-center text-secondary" style={{ padding: 'var(--space-4xl)' }}>
-                  Kein Material gefunden
-                </div>
-              )}
-            </div>
-            {selectedMaterial && (
-              <div style={{ position: 'sticky', bottom: 'var(--space-lg)', paddingTop: 'var(--space-lg)' }}>
-                <button className="btn btn-primary btn-full btn-lg" onClick={() => setStep(3)}>
-                  Weiter → Menge eingeben
-                </button>
-              </div>
-            )}
-
-            {/* Barcode Scanner Overlay */}
             {showScanner && (
               <BarcodeScanner
                 materials={materials.filter(m => m.active)}
@@ -228,120 +219,184 @@ export default function QuickBooking() {
                 onClose={() => setShowScanner(false)}
               />
             )}
-          </div>
-        )}
 
-        {/* Step 3: Menge, Baustelle, Buchen */}
-        {step === 3 && selectedMaterial && (
-          <div>
-            {/* Ausgewähltes Material – alle Details automatisch */}
-            <div className="card mb-lg">
-              <div className="text-sm text-secondary mb-md">Ausgewähltes Material</div>
-              <div className="font-bold">{selectedMaterial.name}</div>
-              <div style={{ fontFamily: 'monospace', color: 'var(--color-primary)', fontSize: 'var(--font-size-sm)', marginTop: 2 }}>
-                {selectedMaterial.manufacturer_number?.trim() || selectedMaterial.article_number}
-              </div>
-              <div className="text-xs text-tertiary" style={{ marginTop: 4, display: 'flex', flexWrap: 'wrap', gap: 'var(--space-sm)' }}>
-                {selectedMaterial.manufacturer_number?.trim() && (
-                  <span>Art: {selectedMaterial.article_number}</span>
-                )}
-                {selectedMaterial.storage_location && (
-                  <span>📍 {selectedMaterial.storage_location}</span>
-                )}
-                {selectedMaterial.supplier_id && (
-                  <span>🏢 {getSupplierName(selectedMaterial.supplier_id)}</span>
-                )}
-              </div>
-              <div className="text-sm mt-sm" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span>Verfügbar: <strong>{selectedMaterial.current_stock - selectedMaterial.reserved_stock} {UNIT_LABELS[selectedMaterial.unit]}</strong></span>
-                <span className="text-xs text-tertiary">Min: {selectedMaterial.min_stock}</span>
-              </div>
-            </div>
-
-            {/* Menge */}
-            <div className="quantity-input">
-              <button
-                className="quantity-btn"
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-              >
-                <Minus size={22} />
-              </button>
-              <input
-                type="number"
-                className="quantity-value"
-                value={quantity}
-                onChange={e => setQuantity(Math.max(0, parseInt(e.target.value) || 0))}
-                min="0"
-                inputMode="numeric"
-              />
-              <button
-                className="quantity-btn"
-                onClick={() => setQuantity(quantity + 1)}
-              >
-                <Plus size={22} />
-              </button>
-            </div>
-            <div className="quantity-unit">{UNIT_LABELS[selectedMaterial.unit]}</div>
-
-            {/* Baustelle (optional) */}
-            {needsProject && (
-              <div className="form-group">
-                <label className="form-label">Baustelle (optional)</label>
-                <SearchBar
-                  value={projectSearch}
-                  onChange={setProjectSearch}
-                  placeholder="Baustelle suchen..."
-                />
-                <div className="list" style={{ maxHeight: 200, overflowY: 'auto' }}>
-                  {selectedProject && (
-                    <div
-                      className="card"
-                      style={{ border: '2px solid var(--color-primary)', background: 'var(--color-primary-50)', marginBottom: 'var(--space-sm)' }}
-                    >
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <div className="font-semibold">{selectedProject.name}</div>
-                          <div className="text-sm text-secondary">{selectedProject.customer}</div>
-                        </div>
-                        <button className="btn btn-sm btn-ghost" onClick={() => setSelectedProject(null)}>✕</button>
-                      </div>
-                    </div>
-                  )}
-                  {!selectedProject && filteredProjects.map(p => (
-                    <div
-                      key={p.id}
-                      className="card card-clickable"
-                      style={{ marginBottom: 'var(--space-sm)' }}
-                      onClick={() => setSelectedProject(p)}
-                    >
-                      <div className="font-semibold">{p.name}</div>
-                      <div className="text-sm text-secondary">{p.customer}</div>
-                    </div>
-                  ))}
-                </div>
+            {/* Ausgewählte Materialien */}
+            {selectedMaterials.length > 0 && (
+              <div className="card mb-md" style={{ background: 'var(--color-primary-50)' }}>
+                <div className="font-semibold mb-sm">{selectedMaterials.length} ausgewählt</div>
+                {selectedMaterials.map(m => (
+                  <div key={m.id} className="flex justify-between items-center py-sm">
+                    <div>{m.name}</div>
+                    <button className="btn btn-ghost btn-sm" onClick={() => removeSelected(m.id)}>
+                      <Trash2 size={14} style={{ color: 'var(--color-danger)' }} />
+                    </button>
+                  </div>
+                ))}
               </div>
             )}
 
+            <div className="list">
+              {filteredMaterials.map(material => {
+                const isSelected = selectedMaterials.find(m => m.id === material.id);
+                const categoryColor = categories.find(c => c.id === material.category_id)?.color || '#6B7280';
+                return (
+                  <button
+                    key={material.id}
+                    className={`card card-clickable ${isSelected ? 'ring-2' : ''}`}
+                    onClick={() => toggleMaterial(material)}
+                    style={{
+                      width: '100%',
+                      textAlign: 'left',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      border: isSelected ? '2px solid var(--color-primary)' : undefined,
+                    }}
+                  >
+                    <div style={{
+                      width: 20, height: 20, borderRadius: 4,
+                      border: '2px solid var(--color-primary)',
+                      background: isSelected ? 'var(--color-primary)' : 'transparent',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      flexShrink: 0,
+                    }}
+                    >
+                      {isSelected && <Check size={14} color="white" />}
+                    </div>
+
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div className="flex items-center gap-sm">
+                        <div style={{
+                          width: 8, height: 8, borderRadius: '50%',
+                          background: categoryColor,
+                          flexShrink: 0,
+                        }} />
+                        <span className="font-semibold">{material.name}</span>
+                      </div>
+                      <div className="text-xs text-tertiary">
+                        {material.article_number} · {getCategoryName(material.category_id)}
+                      </div>
+                    </div>
+
+                    <div className="text-sm" style={{ color: material.current_stock <= material.min_stock ? 'var(--color-danger)' : 'var(--color-text-secondary)' }}>
+                      {material.current_stock} {UNIT_LABELS[material.unit]}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {filteredMaterials.length === 0 && search && (
+              <div className="text-center text-secondary" style={{ padding: '48px 24px' }}>
+                Kein Material gefunden.
+              </div>
+            )}
+
+            <div style={{ height: 80 }} />
+          </>
+        )}
+
+        {/* Step 3: Menge & Buchen */}
+        {step === 3 && (
+          <>
+            {/* Projekt-Auswahl (falls benötigt) */}
+            {needsProject && (
+              <div className="card mb-lg">
+                <div className="font-semibold mb-md">Baustelle</div>
+                <SearchBar
+                  placeholder="Baustelle suchen..."
+                  value={projectSearch}
+                  onChange={setProjectSearch}
+                />
+                <div className="list mt-md" style={{ maxHeight: 200, overflowY: 'auto' }}>
+                  {filteredProjects.map(project => (
+                    <button
+                      key={project.id}
+                      className="card card-clickable"
+                      onClick={() => setSelectedProject(project)}
+                      style={{
+                        width: '100%',
+                        textAlign: 'left',
+                        border: selectedProject?.id === project.id ? '2px solid var(--color-primary)' : undefined,
+                      }}
+                    >
+                      <div className="font-semibold">{project.name}</div>
+                      <div className="text-xs text-tertiary">{project.customer} · {project.location}</div>
+                    </button>
+                  ))}
+                </div>
+                {filteredProjects.length === 0 && projectSearch && (
+                  <div className="text-sm text-secondary mt-sm">Keine Baustelle gefunden.</div>
+                )}
+              </div>
+            )}
+
+            {/* Mengen für jedes Material */}
+            <div className="font-semibold mb-md">Menge</div>
+            <div className="list">
+              {selectedMaterials.map(material => (
+                <div key={material.id} className="card">
+                  <div className="flex justify-between items-center mb-md">
+                    <span className="font-semibold">{material.name}</span>
+                    <button className="btn btn-ghost btn-sm" onClick={() => removeSelected(material.id)}>
+                      <Trash2 size={14} style={{ color: 'var(--color-danger)' }} />
+                    </button>
+                  </div>
+                  <div className="flex items-center gap-md">
+                    <button className="quantity-btn" onClick={() => updateQuantity(material.id, -1)}>
+                      <Minus size={18} />
+                    </button>
+                    <span className="quantity-value">{quantities[material.id] || 1}</span>
+                    <span className="text-sm text-secondary">{UNIT_LABELS[material.unit]}</span>
+                    <button className="quantity-btn" onClick={() => updateQuantity(material.id, 1)}>
+                      <Plus size={18} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
             {/* Notiz */}
-            <div className="form-group">
-              <label className="form-label">Notiz (optional)</label>
-              <input
-                type="text"
+            <div className="card mt-lg">
+              <div className="font-semibold mb-sm">Notiz (optional)</div>
+              <textarea
                 value={note}
                 onChange={e => setNote(e.target.value)}
-                placeholder="z.B. UV-Erweiterung 2. OG"
+                placeholder="z.B. Bestellnummer, Grund..."
+                rows={3}
               />
             </div>
 
-            {/* Buchen Button */}
+            {/* Buchungs-Button */}
             <button
-              className="btn btn-accent btn-full btn-lg"
+              className="btn btn-primary btn-full btn-lg"
               onClick={handleBook}
-              disabled={quantity <= 0}
-              style={{ marginTop: 'var(--space-lg)' }}
+              disabled={selectedMaterials.length === 0 || (needsProject && !selectedProject)}
+              style={{ marginTop: 'var(--space-xl)' }}
             >
               <Check size={20} />
-              {MOVEMENT_TYPES.find(t => t.value === bookingType)?.label} buchen
+              {selectedMaterials.length} Buchung{selectedMaterials.length !== 1 && 'en'} speichern
+            </button>
+          </>
+        )}
+
+        {/* Weiter-Button (Step 2 → 3) */}
+        {step === 2 && selectedMaterials.length > 0 && (
+          <div style={{
+            position: 'fixed',
+            bottom: 80,
+            left: 0,
+            right: 0,
+            padding: 'var(--space-md) var(--space-lg)',
+            background: 'var(--color-bg)',
+            borderTop: '1px solid var(--color-border)',
+            zIndex: 50,
+          }}>
+            <button
+              className="btn btn-primary btn-full btn-lg"
+              onClick={() => setStep(3)}
+            >
+              Weiter ({selectedMaterials.length} Material{selectedMaterials.length !== 1 && 'ien'})
             </button>
           </div>
         )}
