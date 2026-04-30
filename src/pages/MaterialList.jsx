@@ -75,7 +75,7 @@ export default function MaterialList() {
     <>
       <header className="page-header">
         <h1>Material</h1>
-        <button className="page-header-action" onClick={() => navigate('/material/new/edit')}>
+        <button className="page-header-action" onClick={() => navigate('/material/neu')}>
           <Plus size={20} />
         </button>
       </header>

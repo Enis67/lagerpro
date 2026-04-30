@@ -38,9 +38,11 @@ function AppRoutes() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/buchen" element={<QuickBooking />} />
         <Route path="/material" element={<MaterialList />} />
+        <Route path="/material/neu" element={<MaterialForm />} />
         <Route path="/material/:id" element={<MaterialDetail />} />
         <Route path="/material/:id/edit" element={<MaterialForm />} />
         <Route path="/baustellen" element={<ProjectList />} />
+        <Route path="/baustellen/neu" element={<ProjectForm />} />
         <Route path="/baustellen/:id" element={<ProjectDetail />} />
         <Route path="/baustellen/:id/edit" element={<ProjectForm />} />
         <Route path="/nachbestellen" element={<ReorderList />} />
