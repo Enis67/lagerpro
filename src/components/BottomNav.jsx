@@ -1,12 +1,12 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import { Home, Package, Zap, HardHat, Menu } from 'lucide-react';
+import { Home, Package, Zap, HardHat, Menu, Bot } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 
 const navItems = [
   { to: '/', icon: Home, label: 'Home' },
   { to: '/material', icon: Package, label: 'Material' },
   { to: '/buchen', icon: Zap, label: 'Buchen', primary: true },
-  { to: '/baustellen', icon: HardHat, label: 'Baustellen' },
+  { to: '/assistent', icon: Bot, label: 'KI' },
   { to: '/mehr', icon: Menu, label: 'Mehr' },
 ];
 

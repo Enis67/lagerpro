@@ -18,6 +18,7 @@ import CategoryManager from './pages/CategoryManager';
 import SupplierManager from './pages/SupplierManager';
 import Auth from './pages/Auth';
 import InventoryScan from './pages/InventoryScan';
+import AiAssistant from './pages/AiAssistant';
 
 function RequireAuth({ children }) {
   const { isAuthenticated, loading } = useAuth();
@@ -48,6 +49,7 @@ function AppRoutes() {
         <Route path="/kategorien" element={<CategoryManager />} />
         <Route path="/lieferanten" element={<SupplierManager />} />
         <Route path="/inventur" element={<InventoryScan />} />
+        <Route path="/assistent" element={<AiAssistant />} />
         <Route path="/mehr" element={<Settings />} />
       </Route>
     </Routes>
