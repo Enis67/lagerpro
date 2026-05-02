@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import {
   AlertTriangle, ShoppingCart, ArrowDownUp, PackageMinus, ChevronRight,
-  RotateCcw, Mic, TrendingUp, DollarSign, BarChart3, Archive,
+  RotateCcw, Mic, TrendingUp, DollarSign, BarChart3, Archive, Wrench,
+  Zap, ScanBarcode, HardHat, Package, Calendar, ArrowUpRight,
 } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import KpiCard from '../components/KpiCard';
@@ -9,12 +10,17 @@ import MovementRow from '../components/MovementRow';
 import VoiceBooking from '../components/VoiceBooking';
 import Toast from '../components/Toast';
 import { UNIT_LABELS } from '../data/constants';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { v4 as uuid } from 'uuid';
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { materials, movements, projects, categories, addMovement, editMaterial, getMaterialName } = useStore();
+  const {
+    materials, movements, projects, categories,
+    addMovement, editMaterial, getMaterialName,
+    getStockLevel, getCriticalCount, getMyMaterials,
+    getTodaysWithdrawals,
+  } = useStore();
   const [showVoice, setShowVoice] = useState(false);
   const [toast, setToast] = useState(null);
 
@@ -42,7 +48,16 @@ export default function Dashboard() {
     .slice(0, 5);
 
   // Kritische Artikel
-  const criticalItems = materials.filter(m => m.active && m.current_stock <= m.min_stock);
+  const criticalItems = materials.filter(m => m.active && (m.current_stock || 0) <= m.min_stock);
+
+  // Werkzeug-Stats
+  const toolCategory = categories.find(c => c.name === 'Werkzeug');
+  const tools = useMemo(() => {
+    if (!toolCategory) return [];
+    return materials.filter(m => m.category_id === toolCategory.id);
+  }, [materials, toolCategory]);
+  const toolsMissing = tools.filter(t => (t.current_stock || 0) === 0).length;
+  const toolsAvailable = tools.filter(t => (t.current_stock || 0) > 0).length;
 
   // Kategorien-Verteilung
   const catCounts = {};
@@ -85,7 +100,7 @@ export default function Dashboard() {
       };
       await addMovement(movement);
       await editMaterial(lastMaterial.id, {
-        current_stock: Math.max(0, lastMaterial.current_stock - lastWithdrawal.quantity),
+        current_stock: Math.max(0, (lastMaterial.current_stock || 0) - lastWithdrawal.quantity),
       });
       if (navigator.vibrate) navigator.vibrate(100);
       setToast({ message: `${lastWithdrawal.quantity}× ${lastMaterial.name} gebucht ✓`, type: 'success' });
@@ -131,6 +146,19 @@ export default function Dashboard() {
       <div className="page-content">
         {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
 
+        {/* ── Schnellzugriff-Buttons ── */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: 'var(--space-sm)',
+          marginBottom: 'var(--space-lg)',
+        }}>
+          <QuickAction icon={Zap} label="Buchen" color="#F59E0B" onClick={() => navigate('/buchen')} />
+          <QuickAction icon={Wrench} label="Werkzeuge" color="#3B82F6" onClick={() => navigate('/werkzeuge')} />
+          <QuickAction icon={ScanBarcode} label="Inventur" color="#10B981" onClick={() => navigate('/inventur')} />
+          <QuickAction icon={HardHat} label="Baustellen" color="#8B5CF6" onClick={() => navigate('/baustellen')} />
+        </div>
+
         {/* KPI Grid */}
         <div className="kpi-grid">
           <KpiCard
@@ -143,7 +171,7 @@ export default function Dashboard() {
           />
           <KpiCard
             icon={DollarSign}
-            value={`${inventoryValue.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`}
+            value={`${inventoryValue.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} €`}
             label="Lagerwert"
             color="#10B981"
             bgColor="#ECFDF5"
@@ -154,7 +182,7 @@ export default function Dashboard() {
             label="Kritisch"
             color={criticalItems.length > 0 ? '#EF4444' : '#10B981'}
             bgColor={criticalItems.length > 0 ? '#FEF2F2' : '#ECFDF5'}
-            onClick={() => navigate('/order-list')}
+            onClick={() => navigate('/bestellliste')}
           />
           <KpiCard
             icon={ArrowDownUp}
@@ -165,6 +193,88 @@ export default function Dashboard() {
             onClick={() => navigate('/bewegungen')}
           />
         </div>
+
+        {/* Heutige Übersicht */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: 'var(--space-sm)',
+          marginBottom: 'var(--space-lg)',
+        }}>
+          <div style={{
+            background: 'var(--color-surface)',
+            borderRadius: 'var(--radius-lg)',
+            padding: 'var(--space-md)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 'var(--space-md)',
+          }}>
+            <div style={{
+              width: 40, height: 40, borderRadius: '50%',
+              background: '#FEF2F2',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <Calendar size={20} style={{ color: '#EF4444' }} />
+            </div>
+            <div>
+              <div style={{ fontSize: 'var(--font-size-lg)', fontWeight: 700 }}>{todaysWithdrawalCount}</div>
+              <div style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-text-secondary)' }}>Heutige Entnahmen</div>
+            </div>
+          </div>
+          <div style={{
+            background: 'var(--color-surface)',
+            borderRadius: 'var(--radius-lg)',
+            padding: 'var(--space-md)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 'var(--space-md)',
+          }}>
+            <div style={{
+              width: 40, height: 40, borderRadius: '50%',
+              background: '#ECFDF5',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <Wrench size={20} style={{ color: '#10B981' }} />
+            </div>
+            <div>
+              <div style={{ fontSize: 'var(--font-size-lg)', fontWeight: 700 }}>
+                {toolsAvailable}/{tools.length}
+              </div>
+              <div style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-text-secondary)' }}>
+                Werkzeuge verfügbar
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Werkzeug-Warnung */}
+        {toolsMissing > 0 && (
+          <div
+            onClick={() => navigate('/werkzeuge')}
+            style={{
+              background: '#FEF2F2',
+              border: '1px solid #FECACA',
+              borderRadius: 'var(--radius-lg)',
+              padding: 'var(--space-md) var(--space-lg)',
+              marginBottom: 'var(--space-lg)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 'var(--space-md)',
+              cursor: 'pointer',
+            }}
+          >
+            <AlertTriangle size={20} style={{ color: '#EF4444', flexShrink: 0 }} />
+            <div style={{ flex: 1 }}>
+              <div style={{ fontWeight: 600, fontSize: 'var(--font-size-sm)', color: '#DC2626' }}>
+                {toolsMissing} Werkzeug{toolsMissing > 1 ? 'e' : ''} fehlend
+              </div>
+              <div style={{ fontSize: 'var(--font-size-xs)', color: '#EF4444' }}>
+                Jetzt ansehen →
+              </div>
+            </div>
+            <ChevronRight size={16} style={{ color: '#EF4444' }} />
+          </div>
+        )}
 
         {/* Quick-Repeat letzte Buchung */}
         {lastMaterial && lastWithdrawal && (
@@ -292,7 +402,7 @@ export default function Dashboard() {
                 <AlertTriangle size={16} style={{ verticalAlign: 'text-bottom', marginRight: 4 }} />
                 Kritischer Bestand
               </h2>
-              <button className="section-action" onClick={() => navigate('/order-list')}>
+              <button className="section-action" onClick={() => navigate('/bestellliste')}>
                 Alle <ChevronRight size={14} style={{ verticalAlign: 'middle' }} />
               </button>
             </div>
@@ -306,7 +416,7 @@ export default function Dashboard() {
                     key={item.id}
                     className="card card-clickable"
                     onClick={() => navigate(`/material/${item.id}`)}
-                    style={{ borderLeft: `4px solid ${item.current_stock === 0 ? 'var(--color-danger)' : 'var(--color-warning)'}` }}
+                    style={{ borderLeft: `4px solid ${(item.current_stock || 0) === 0 ? 'var(--color-danger)' : 'var(--color-warning)'}` }}
                   >
                     <div className="flex justify-between items-center">
                       <div style={{ flex: 1, minWidth: 0 }}>
@@ -317,11 +427,11 @@ export default function Dashboard() {
                         )}
                       </div>
                       <div className="text-right" style={{ flexShrink: 0 }}>
-                        <div className="font-bold" style={{ color: item.current_stock === 0 ? 'var(--color-danger)' : 'var(--color-warning)', fontSize: '18px' }}>
-                          {item.current_stock}
+                        <div className="font-bold" style={{ color: (item.current_stock || 0) === 0 ? 'var(--color-danger)' : 'var(--color-warning)', fontSize: '18px' }}>
+                          {item.current_stock || 0}
                         </div>
                         <div className="text-xs text-tertiary">Min: {item.min_stock}</div>
-                        <div className="text-xs text-danger mt-xs">Fehlt: {item.min_stock - item.current_stock}</div>
+                        <div className="text-xs text-danger mt-xs">Fehlt: {item.min_stock - (item.current_stock || 0)}</div>
                       </div>
                     </div>
                   </div>
@@ -386,5 +496,45 @@ export default function Dashboard() {
         />
       )}
     </>
+  );
+}
+
+// ── Quick-Action Button ───────────────────────────
+function QuickAction({ icon: Icon, label, color, onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 'var(--space-xs)',
+        padding: 'var(--space-md) var(--space-sm)',
+        background: 'var(--color-surface)',
+        border: '1px solid var(--color-border)',
+        borderRadius: 'var(--radius-lg)',
+        cursor: 'pointer',
+        transition: 'transform 0.1s, box-shadow 0.1s',
+      }}
+      onMouseDown={e => e.currentTarget.style.transform = 'scale(0.96)'}
+      onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
+      onTouchStart={e => e.currentTarget.style.transform = 'scale(0.96)'}
+      onTouchEnd={e => e.currentTarget.style.transform = 'scale(1)'}
+    >
+      <div style={{
+        width: 44, height: 44, borderRadius: '50%',
+        background: `${color}15`,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}>
+        <Icon size={22} style={{ color }} />
+      </div>
+      <span style={{
+        fontSize: 'var(--font-size-xs)',
+        fontWeight: 600,
+        color: 'var(--color-text)',
+      }}>
+        {label}
+      </span>
+    </button>
   );
 }

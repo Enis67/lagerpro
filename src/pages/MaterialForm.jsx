@@ -5,6 +5,7 @@ import { ChevronLeft, Save } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import { UNITS } from '../data/constants';
 import Toast from '../components/Toast';
+import ImageUploader from '../components/ImageUploader';
 
 export default function MaterialForm() {
   const { id } = useParams();
@@ -32,11 +33,18 @@ export default function MaterialForm() {
     purchase_price: 0,
     packaging_unit: '',
     active: true,
+    images: [],
   });
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
     if (existing) {
       setForm({ ...existing });
+      // Lade Bilder aus localStorage
+      try {
+        const stored = localStorage.getItem(`material-images-${existing.id}`);
+        if (stored) setImages(JSON.parse(stored));
+      } catch { /* ignore */ }
     }
   }, [existing]);
 
@@ -225,6 +233,15 @@ export default function MaterialForm() {
                 placeholder="z.B. 10er Pack"
               />
             </div>
+          </div>
+
+          <div className="form-group" style={{ marginTop: 'var(--space-lg)' }}>
+            <label className="form-label">Artikelbilder</label>
+            <ImageUploader
+              materialId={isNew ? 'new' : id}
+              images={images}
+              onChange={setImages}
+            />
           </div>
 
           <button type="submit" className="btn btn-primary btn-full btn-lg" style={{ marginTop: 'var(--space-lg)' }}>

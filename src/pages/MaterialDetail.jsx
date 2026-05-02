@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { ChevronLeft, Edit, Trash2, Zap, ExternalLink } from 'lucide-react';
-import { useState } from 'react';
+import { ChevronLeft, Edit, Trash2, Zap, ExternalLink, Camera } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { useStore } from '../hooks/useStore';
 import { UNIT_LABELS } from '../data/constants';
 import { openSoneparForMaterial } from '../services/sonepar';
@@ -33,6 +33,15 @@ export default function MaterialDetail() {
   const materialMovements = movements.filter(m => m.material_id === material.id).slice(0, 10);
   const isCritical = (material.current_stock || 0) <= material.min_stock;
   const isWarning = (material.current_stock || 0) <= material.min_stock * 1.5;
+
+  // Bilder aus localStorage laden
+  const [images, setImages] = useState([]);
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(`material-images-${material.id}`);
+      if (stored) setImages(JSON.parse(stored));
+    } catch { /* ignore */ }
+  }, [material.id]);
 
   async function handleDelete() {
     await removeMaterial(material.id);
@@ -98,6 +107,35 @@ export default function MaterialDetail() {
             <div className="stock-bar-label" style={{ color: 'var(--color-info)' }}>Gesamt</div>
           </div>
         </div>
+
+        {/* Bilder-Galerie */}
+        {images.length > 0 && (
+          <div style={{
+            display: 'flex',
+            gap: 'var(--space-sm)',
+            overflowX: 'auto',
+            paddingBottom: 'var(--space-sm)',
+            marginBottom: 'var(--space-md)',
+          }}>
+            {images.map((img, idx) => (
+              <div key={idx} style={{
+                flexShrink: 0,
+                width: 120,
+                height: 120,
+                borderRadius: 'var(--radius-md)',
+                overflow: 'hidden',
+                border: '1px solid var(--color-border)',
+              }}>
+                <img
+                  src={img}
+                  alt={`Artikelbild ${idx + 1}`}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Schnell-Buchen Button */}
         <button

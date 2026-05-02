@@ -1,5 +1,6 @@
 import { Outlet, useNavigate } from 'react-router-dom';
 import BottomNav from './BottomNav';
+import PWAInstallPrompt from './PWAInstallPrompt';
 import { useStore } from '../hooks/useStore';
 import { Bot } from 'lucide-react';
 
@@ -81,6 +82,7 @@ export default function Layout() {
       >
         <Bot size={28} />
       </button>
+      <PWAInstallPrompt />
     </div>
   );
 }
