@@ -114,7 +114,7 @@ export default function Settings() {
       icon: FileText,
       label: 'Tagesrapport',
       sub: 'Entnahmen nach Baustelle und Material',
-      onClick: () => navigate('/tagesrapport'),
+      onClick: () => navigate('/tagesbericht'),
     },
     {
       icon: Download,

@@ -71,7 +71,7 @@ export default function ReorderList() {
         <button className="page-header-back" onClick={() => navigate(-1)}>
           <ChevronLeft size={22} />
         </button>
-        <h1>Nachbestellen</h1>
+        <h1>Nachbestellung</h1>
         {reorderItems.length > 0 && (
           <button className="page-header-action" onClick={handlePDFAll} title="Gesamt-PDF exportieren">
             <FileDown size={18} />

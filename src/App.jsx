@@ -67,13 +67,13 @@ function AppRoutes() {
           <Route path="/baustellen/neu" element={<ProjectForm />} />
           <Route path="/baustellen/:id" element={<ProjectDetail />} />
           <Route path="/baustellen/:id/edit" element={<ProjectForm />} />
-          <Route path="/nachbestellen" element={<ReorderList />} />
+          <Route path="/nachbestellung" element={<ReorderList />} />
           <Route path="/bestellliste" element={<OrderList />} />
           <Route path="/lieferung" element={<DeliveryBooking />} />
           <Route path="/mehrfach" element={<BatchBooking />} />
           <Route path="/bewegungen" element={<MovementLog />} />
           <Route path="/statistiken" element={<Statistics />} />
-          <Route path="/tagesrapport" element={<DailyReport />} />
+          <Route path="/tagesbericht" element={<DailyReport />} />
           <Route path="/kategorien" element={<CategoryManager />} />
           <Route path="/lieferanten" element={<SupplierManager />} />
           <Route path="/inventur" element={<InventoryScan />} />

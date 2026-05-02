@@ -95,7 +95,7 @@ export default function DailyReport() {
         <button className="page-header-back" onClick={() => navigate(-1)}>
           <ChevronLeft size={22} />
         </button>
-        <h1>Tagesrapport</h1>
+        <h1>Tagesbericht</h1>
         <div style={{ width: 44 }} />
       </header>
 

@@ -232,7 +232,7 @@ export default function AiAssistant() {
       if (intent === 'nav_inventur') setTimeout(() => navigate('/inventur'), 1500);
       if (intent === 'nav_booking') setTimeout(() => navigate('/buchen'), 1500);
       if (intent === 'nav_materials') setTimeout(() => navigate('/material'), 1500);
-      if (intent === 'nav_statistics') setTimeout(() => navigate('/statistiken'), 1500);
+      if (intent === 'nav_statistics') setTimeout(() => navigate('/statistik'), 1500);
     }, 600 + Math.random() * 400);
   }
 
