@@ -116,20 +116,15 @@ export default function Dashboard() {
     if (!lastWithdrawal || !lastMaterial) return;
     try {
       const movement = {
-        id: uuid(),
         material_id: lastMaterial.id,
         type: 'entnahme',
-        quantity: lastWithdrawal.quantity,
-        project_id: lastWithdrawal.project_id || null,
-        notes: `🔁 Wiederholung: ${lastWithdrawal.quantity}× ${lastMaterial.name}`,
-        created_at: new Date().toISOString(),
+        quantity: Math.abs(lastWithdrawal.quantity || 1),
+        construction_site_id: lastWithdrawal.construction_site_id || null,
+        note: `🔁 Wiederholung: ${lastMaterial.name}`,
       };
       await addMovement(movement);
-      await editMaterial(lastMaterial.id, {
-        current_stock: Math.max(0, (lastMaterial.current_stock || 0) - lastWithdrawal.quantity),
-      });
       if (navigator.vibrate) navigator.vibrate(100);
-      setToast({ message: `${lastWithdrawal.quantity}× ${lastMaterial.name} gebucht ✓`, type: 'success' });
+      setToast({ message: `${Math.abs(lastWithdrawal.quantity || 1)}× ${lastMaterial.name} gebucht ✓`, type: 'success' });
     } catch (err) {
       setToast({ message: 'Fehler: ' + err.message, type: 'error' });
     }
