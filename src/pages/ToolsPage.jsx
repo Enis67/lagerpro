@@ -43,8 +43,8 @@ export default function ToolsPage() {
       const tool = materials.find(m => m.id === toolId);
       await addMovement({
         material_id: toolId,
-        type,
-        quantity: type === 'out' ? 1 : 1,
+        type: type === 'out' ? 'entnahme' : 'zugang',
+        quantity: 1,
         note: `Werkzeug ${type === 'out' ? 'Ausgabe' : 'Rückgabe'}: ${tool.name}`,
       });
       setToast({ message: `${tool.name} ${type === 'out' ? 'ausgegeben' : 'zurückgebucht'} ✓`, type: 'success' });
@@ -120,10 +120,10 @@ export default function ToolsPage() {
                       {level === 'critical' && <AlertTriangle size={16} style={{ color: 'var(--color-danger)', flexShrink: 0 }} />}
                     </div>
                     <div style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-text-secondary)', marginTop: 'var(--space-xs)' }}>
-                      {tool.article_number} · {tool.manufacturer_number}
+                      {tool.article_number} · {(tool.current_stock || 0)} {tool.unit === 'stueck' ? 'Stück' : (tool.unit || 'Stk')}
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)', marginTop: 'var(--space-xs)' }}>
-                      <StockBadge level={level} stock={tool.current_stock} min={tool.min_stock} />
+                      <StockBadge material={tool} />
                       {tool.current_stock === 0 && (
                         <span style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-danger)', fontWeight: 600 }}>
                           NICHT VORHANDEN
