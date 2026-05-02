@@ -29,10 +29,10 @@ export default function MaterialDetail() {
     );
   }
 
-  const available = material.current_stock - material.reserved_stock;
+  const available = (material.current_stock || 0) - (material.reserved_stock || 0);
   const materialMovements = movements.filter(m => m.material_id === material.id).slice(0, 10);
-  const isCritical = material.current_stock <= material.min_stock;
-  const isWarning = material.current_stock <= material.min_stock * 1.5;
+  const isCritical = (material.current_stock || 0) <= material.min_stock;
+  const isWarning = (material.current_stock || 0) <= material.min_stock * 1.5;
 
   async function handleDelete() {
     await removeMaterial(material.id);

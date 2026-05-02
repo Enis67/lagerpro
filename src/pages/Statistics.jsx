@@ -12,11 +12,11 @@ export default function Statistics() {
     // ── Lagerwert ─────────────────────────────────
     const totalValue = materials
       .filter(m => m.active)
-      .reduce((sum, m) => sum + (m.current_stock * (m.purchase_price || 0)), 0);
+      .reduce((sum, m) => sum + ((m.current_stock || 0) * (m.purchase_price || 0)), 0);
 
     const totalItems = materials.filter(m => m.active).length;
-    const totalStock = materials.filter(m => m.active).reduce((sum, m) => sum + m.current_stock, 0);
-    const criticalCount = materials.filter(m => m.active && m.current_stock <= m.min_stock).length;
+    const totalStock = materials.filter(m => m.active).reduce((sum, m) => sum + (m.current_stock || 0), 0);
+    const criticalCount = materials.filter(m => m.active && (m.current_stock || 0) <= m.min_stock).length;
 
     // ── Top 5 meistgebuchte Materialien ───────────
     const materialBookings = {};
@@ -82,7 +82,7 @@ export default function Statistics() {
     materials.filter(m => m.active).forEach(m => {
       const catName = categories.find(c => c.id === m.category_id)?.name || 'Sonstige';
       if (!valueByCategory[catName]) valueByCategory[catName] = 0;
-      valueByCategory[catName] += m.current_stock * (m.purchase_price || 0);
+      valueByCategory[catName] += (m.current_stock || 0) * (m.purchase_price || 0);
     });
 
     const categoryValues = Object.entries(valueByCategory)
