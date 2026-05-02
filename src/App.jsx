@@ -27,6 +27,7 @@ const BatchBooking = lazy(() => import('./pages/BatchBooking'));
 const InventoryScan = lazy(() => import('./pages/InventoryScan'));
 const AiAssistant = lazy(() => import('./pages/AiAssistant'));
 const ToolsPage = lazy(() => import('./pages/ToolsPage'));
+const CsvImport = lazy(() => import('./components/CsvImport'));
 
 const PageLoader = () => (
   <div style={{ 
