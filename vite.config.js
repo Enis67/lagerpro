@@ -100,6 +100,20 @@ export default defineConfig({
       },
     }),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Vendor-Chunks separieren
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-ui': ['lucide-react'],
+          'vendor-data': ['uuid'],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 600,
+    sourcemap: false, // Produktions-Builds ohne Sourcemaps
+  },
   server: {
     port: 5173,
     open: true,

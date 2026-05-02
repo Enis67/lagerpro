@@ -1,6 +1,6 @@
 // Global State Management via React Context
 // Unterstützt Supabase (Cloud) mit localStorage-Fallback (Offline)
-import { createContext, useContext, useReducer, useEffect, useCallback, useRef } from 'react';
+import { createContext, useContext, useReducer, useEffect, useCallback, useRef, useMemo } from 'react';
 import { isSupabaseAvailable, supabase } from '../services/supabase.js';
 import { useAuth } from './useAuth.jsx';
 import * as cloudDs from '../services/supabaseDataService.js';
@@ -317,6 +317,75 @@ export function StoreProvider({ children }) {
     }
   }, [state.error]);
 
+  // ── Memoized Lookups (stabile Referenzen) ─────────────
+  const categoryMap = useMemo(() => {
+    const map = new Map();
+    state.categories.forEach(c => map.set(c.id, c));
+    return map;
+  }, [state.categories]);
+
+  const supplierMap = useMemo(() => {
+    const map = new Map();
+    state.suppliers.forEach(s => map.set(s.id, s));
+    return map;
+  }, [state.suppliers]);
+
+  const projectMap = useMemo(() => {
+    const map = new Map();
+    state.projects.forEach(p => map.set(p.id, p));
+    return map;
+  }, [state.projects]);
+
+  const materialMap = useMemo(() => {
+    const map = new Map();
+    state.materials.forEach(m => map.set(m.id, m));
+    return map;
+  }, [state.materials]);
+
+  // ── Memoized Computed Values ────────────────────────
+  const myMaterials = useMemo(() => {
+    return state.materials
+      .filter(m => m.active && (m.is_favorite || (m.usage_count || 0) > 0))
+      .sort((a, b) => {
+        if (a.is_favorite && !b.is_favorite) return -1;
+        if (!a.is_favorite && b.is_favorite) return 1;
+        return (b.usage_count || 0) - (a.usage_count || 0) || new Date(b.last_used || 0) - new Date(a.last_used || 0);
+      });
+  }, [state.materials]);
+
+  const reorderList = useMemo(() => {
+    return state.materials
+      .filter(m => m.active && (m.current_stock || 0) <= m.min_stock)
+      .map(m => ({
+        ...m,
+        suggested_quantity: m.reorder_quantity,
+        supplier_name: supplierMap.get(m.supplier_id)?.name || 'Unbekannt',
+      }));
+  }, [state.materials, supplierMap]);
+
+  const criticalCount = useMemo(() => {
+    return state.materials.filter(m => m.active && (m.current_stock || 0) <= m.min_stock).length;
+  }, [state.materials]);
+
+  const todaysWithdrawals = useMemo(() => {
+    const today = new Date().toDateString();
+    return state.movements.filter(m => m.type === 'entnahme' && new Date(m.created_at).toDateString() === today);
+  }, [state.movements]);
+
+  const stockLevelMap = useMemo(() => {
+    const map = new Map();
+    state.materials.forEach(m => {
+      const stock = m.current_stock || 0;
+      const min = m.min_stock || 0;
+      let level = 'ok';
+      if (stock === 0) level = 'critical';
+      else if (stock <= min) level = 'critical';
+      else if (stock <= min * 1.5) level = 'warning';
+      map.set(m.id, level);
+    });
+    return map;
+  }, [state.materials]);
+
   const value = {
     ...state,
     refresh,
@@ -329,34 +398,18 @@ export function StoreProvider({ children }) {
     resetData,
     toggleFavorite,
     incrementUsage,
-    // Computed
-    getCategoryName: (id) => state.categories.find(c => c.id === id)?.name || '',
-    getCategoryColor: (id) => state.categories.find(c => c.id === id)?.color || '#6B7280',
-    getSupplierName: (id) => state.suppliers.find(s => s.id === id)?.name || '',
-    getProjectName: (id) => state.projects.find(p => p.id === id)?.name || '',
-    getMaterialName: (id) => state.materials.find(m => m.id === id)?.name || '',
-    getMyMaterials: () => state.materials
-      .filter(m => m.active && (m.is_favorite || (m.usage_count || 0) > 0))
-      .sort((a, b) => {
-        // Favoriten zuerst, dann nach usage_count, dann nach last_used
-        if (a.is_favorite && !b.is_favorite) return -1;
-        if (!a.is_favorite && b.is_favorite) return 1;
-        return (b.usage_count || 0) - (a.usage_count || 0) || new Date(b.last_used || 0) - new Date(a.last_used || 0);
-      }),
-    getReorderList: () => {
-      return state.materials
-        .filter(m => m.active && m.current_stock <= m.min_stock)
-        .map(m => ({
-          ...m,
-          suggested_quantity: m.reorder_quantity,
-          supplier_name: state.suppliers.find(s => s.id === m.supplier_id)?.name || 'Unbekannt',
-        }));
-    },
-    getCriticalCount: () => state.materials.filter(m => m.active && m.current_stock <= m.min_stock).length,
-    getTodaysWithdrawals: () => {
-      const today = new Date().toDateString();
-      return state.movements.filter(m => m.type === 'entnahme' && new Date(m.created_at).toDateString() === today);
-    },
+    // Stabile Lookups
+    getCategoryName: useCallback((id) => categoryMap.get(id)?.name || '', [categoryMap]),
+    getCategoryColor: useCallback((id) => categoryMap.get(id)?.color || '#6B7280', [categoryMap]),
+    getSupplierName: useCallback((id) => supplierMap.get(id)?.name || '', [supplierMap]),
+    getProjectName: useCallback((id) => projectMap.get(id)?.name || '', [projectMap]),
+    getMaterialName: useCallback((id) => materialMap.get(id)?.name || '', [materialMap]),
+    getStockLevel: useCallback((id) => stockLevelMap.get(id) || 'ok', [stockLevelMap]),
+    // Memoized Arrays
+    getMyMaterials: useCallback(() => myMaterials, [myMaterials]),
+    getReorderList: useCallback(() => reorderList, [reorderList]),
+    getCriticalCount: useCallback(() => criticalCount, [criticalCount]),
+    getTodaysWithdrawals: useCallback(() => todaysWithdrawals, [todaysWithdrawals]),
   };
 
   return (

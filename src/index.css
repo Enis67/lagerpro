@@ -2145,3 +2145,107 @@ textarea {
   white-space: nowrap;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
+
+/* ════════════════════════════════════════════════════════════════
+   PERFORMANCE & MOBILE OPTIMIERUNGEN
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── Spinner für Lazy Loading ─────────────────────────── */
+@keyframes spin-loader {
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin-loader 0.7s linear infinite;
+}
+
+/* ── Smooth Scroll für iOS ──────────────────────────── */
+html {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* ── Better Tap Highlights (Mobile) ─────────────────── */
+button, a, input, select, textarea, [role="button"] {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* ── Prevent Text Selection on UI ───────────────────── */
+.bottom-nav, .page-header, .btn, .chip, .tab, .material-card, .project-card, .stats-kpi-card {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── Safe Area für Notch-Phones ─────────────────────── */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .page-header {
+    padding-top: calc(var(--space-md) + env(safe-area-inset-top));
+  }
+  .bottom-nav {
+    padding-bottom: calc(var(--space-sm) + env(safe-area-inset-bottom));
+  }
+  .page-content {
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  }
+}
+
+/* ── Reduced Motion Respect ─────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ── Dark Mode Support (System) ─────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #0F172A;
+    --color-surface: #1E293B;
+    --color-surface-elevated: #334155;
+    --color-border: #334155;
+    --color-border-light: #1E293B;
+    --color-text: #F1F5F9;
+    --color-text-secondary: #94A3B8;
+    --color-text-tertiary: #64748B;
+  }
+}
+
+/* ── Focus Visible für Accessibility ────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ── Prevent Layout Shift on Images ─────────────────── */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ── Custom Scrollbar (Desktop) ───────────────────── */
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-text-tertiary);
+  }
+}
