@@ -18,6 +18,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567892',
+    purchase_price: 9.51,
   },
   {
     id: '2',
@@ -37,6 +38,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567893',
+    purchase_price: 8.62,
   },
   {
     id: '3',
@@ -56,6 +58,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567894',
+    purchase_price: 8.18,
   },
   {
     id: '4',
@@ -75,6 +78,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567895',
+    purchase_price: 9.96,
   },
   {
     id: '5',
@@ -94,6 +98,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567896',
+    purchase_price: 10.43,
   },
   {
     id: '6',
@@ -113,6 +118,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567897',
+    purchase_price: 9.38,
   },
   {
     id: '7',
@@ -132,6 +138,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567898',
+    purchase_price: 7.92,
   },
   {
     id: '8',
@@ -151,6 +158,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567899',
+    purchase_price: 12.23,
   },
   {
     id: '9',
@@ -170,6 +178,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567900',
+    purchase_price: 11.09,
   },
   {
     id: '10',
@@ -189,6 +198,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567901',
+    purchase_price: 9.36,
   },
   {
     id: '11',
@@ -208,6 +218,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567902',
+    purchase_price: 12.79,
   },
   {
     id: '12',
@@ -227,6 +238,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567903',
+    purchase_price: 9.43,
   },
   {
     id: '13',
@@ -246,6 +258,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567904',
+    purchase_price: 11.56,
   },
   {
     id: '14',
@@ -265,6 +278,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567905',
+    purchase_price: 11.28,
   },
   {
     id: '15',
@@ -284,6 +298,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567906',
+    purchase_price: 12.93,
   },
   {
     id: '16',
@@ -303,6 +318,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567907',
+    purchase_price: 8.52,
   },
   {
     id: '17',
@@ -322,6 +338,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567908',
+    purchase_price: 10.24,
   },
   {
     id: '18',
@@ -341,6 +358,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567909',
+    purchase_price: 11.22,
   },
   {
     id: '19',
@@ -360,6 +378,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567910',
+    purchase_price: 11.72,
   },
   {
     id: '20',
@@ -379,6 +398,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567911',
+    purchase_price: 12.71,
   },
   {
     id: '21',
@@ -398,6 +418,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567912',
+    purchase_price: 10.17,
   },
   {
     id: '22',
@@ -417,6 +438,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567913',
+    purchase_price: 10.68,
   },
   {
     id: '23',
@@ -436,6 +458,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567914',
+    purchase_price: 7.32,
   },
   {
     id: '24',
@@ -455,6 +478,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567915',
+    purchase_price: 11.23,
   },
   {
     id: '25',
@@ -474,6 +498,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567916',
+    purchase_price: 10.32,
   },
   {
     id: '26',
@@ -493,6 +518,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567917',
+    purchase_price: 9.39,
   },
   {
     id: '27',
@@ -512,6 +538,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567918',
+    purchase_price: 12.89,
   },
   {
     id: '28',
@@ -531,6 +558,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567919',
+    purchase_price: 10.3,
   },
   {
     id: '29',
@@ -550,6 +578,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567920',
+    purchase_price: 9.63,
   },
   {
     id: '30',
@@ -569,6 +598,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567921',
+    purchase_price: 10.72,
   },
   {
     id: '31',
@@ -588,6 +618,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567922',
+    purchase_price: 8.55,
   },
   {
     id: '32',
@@ -607,6 +638,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567923',
+    purchase_price: 10.65,
   },
   {
     id: '33',
@@ -626,6 +658,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567924',
+    purchase_price: 7.26,
   },
   {
     id: '34',
@@ -645,6 +678,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567925',
+    purchase_price: 12.72,
   },
   {
     id: '35',
@@ -664,6 +698,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567926',
+    purchase_price: 10.5,
   },
   {
     id: '36',
@@ -683,6 +718,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567927',
+    purchase_price: 7.24,
   },
   {
     id: '37',
@@ -702,6 +738,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567928',
+    purchase_price: 7.69,
   },
   {
     id: '38',
@@ -721,6 +758,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567929',
+    purchase_price: 10.55,
   },
   {
     id: '39',
@@ -740,6 +778,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567930',
+    purchase_price: 10.53,
   },
   {
     id: '40',
@@ -759,6 +798,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567931',
+    purchase_price: 10.49,
   },
   {
     id: '41',
@@ -778,6 +818,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567932',
+    purchase_price: 0.12,
   },
   {
     id: '42',
@@ -797,6 +838,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567933',
+    purchase_price: 0.14,
   },
   {
     id: '43',
@@ -816,6 +858,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567934',
+    purchase_price: 0.11,
   },
   {
     id: '44',
@@ -835,6 +878,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567935',
+    purchase_price: 0.16,
   },
   {
     id: '45',
@@ -854,6 +898,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567936',
+    purchase_price: 0.17,
   },
   {
     id: '46',
@@ -873,6 +918,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567937',
+    purchase_price: 0.13,
   },
   {
     id: '47',
@@ -892,6 +938,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567938',
+    purchase_price: 0.14,
   },
   {
     id: '48',
@@ -911,6 +958,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567939',
+    purchase_price: 0.19,
   },
   {
     id: '49',
@@ -930,6 +978,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567940',
+    purchase_price: 0.14,
   },
   {
     id: '50',
@@ -949,6 +998,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567941',
+    purchase_price: 0.11,
   },
   {
     id: '51',
@@ -968,6 +1018,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567942',
+    purchase_price: 0.18,
   },
   {
     id: '52',
@@ -987,6 +1038,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567943',
+    purchase_price: 0.19,
   },
   {
     id: '53',
@@ -1006,6 +1058,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567944',
+    purchase_price: 0.17,
   },
   {
     id: '54',
@@ -1025,6 +1078,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567945',
+    purchase_price: 0.17,
   },
   {
     id: '55',
@@ -1044,6 +1098,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567946',
+    purchase_price: 0.13,
   },
   {
     id: '56',
@@ -1063,6 +1118,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567947',
+    purchase_price: 0.12,
   },
   {
     id: '57',
@@ -1082,6 +1138,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567948',
+    purchase_price: 0.12,
   },
   {
     id: '58',
@@ -1101,6 +1158,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567949',
+    purchase_price: 0.19,
   },
   {
     id: '59',
@@ -1120,6 +1178,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567950',
+    purchase_price: 0.17,
   },
   {
     id: '60',
@@ -1139,6 +1198,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567951',
+    purchase_price: 0.17,
   },
   {
     id: '61',
@@ -1158,6 +1218,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567952',
+    purchase_price: 11.05,
   },
   {
     id: '62',
@@ -1177,6 +1238,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567953',
+    purchase_price: 8.03,
   },
   {
     id: '63',
@@ -1196,6 +1258,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567954',
+    purchase_price: 7.1,
   },
   {
     id: '64',
@@ -1215,6 +1278,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567955',
+    purchase_price: 9.43,
   },
   {
     id: '65',
@@ -1234,6 +1298,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567956',
+    purchase_price: 10.65,
   },
   {
     id: '66',
@@ -1253,6 +1318,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567957',
+    purchase_price: 9.42,
   },
   {
     id: '67',
@@ -1272,6 +1338,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567958',
+    purchase_price: 12.04,
   },
   {
     id: '68',
@@ -1291,6 +1358,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567959',
+    purchase_price: 7.31,
   },
   {
     id: '69',
@@ -1310,6 +1378,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567960',
+    purchase_price: 12.2,
   },
   {
     id: '70',
@@ -1329,6 +1398,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567961',
+    purchase_price: 12.18,
   },
   {
     id: '71',
@@ -1348,6 +1418,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567962',
+    purchase_price: 7.74,
   },
   {
     id: '72',
@@ -1367,6 +1438,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567963',
+    purchase_price: 12.69,
   },
   {
     id: '73',
@@ -1386,6 +1458,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567964',
+    purchase_price: 9.08,
   },
   {
     id: '74',
@@ -1405,6 +1478,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567965',
+    purchase_price: 8.36,
   },
   {
     id: '75',
@@ -1424,6 +1498,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567966',
+    purchase_price: 7.33,
   },
   {
     id: '76',
@@ -1443,6 +1518,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567967',
+    purchase_price: 9.44,
   },
   {
     id: '77',
@@ -1462,6 +1538,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567968',
+    purchase_price: 8.36,
   },
   {
     id: '78',
@@ -1481,6 +1558,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567969',
+    purchase_price: 10.44,
   },
   {
     id: '79',
@@ -1500,6 +1578,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567970',
+    purchase_price: 10.96,
   },
   {
     id: '80',
@@ -1519,6 +1598,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567971',
+    purchase_price: 9.98,
   },
   {
     id: '81',
@@ -1538,6 +1618,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567972',
+    purchase_price: 7.43,
   },
   {
     id: '82',
@@ -1557,6 +1638,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567973',
+    purchase_price: 8.31,
   },
   {
     id: '83',
@@ -1576,6 +1658,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567974',
+    purchase_price: 8.79,
   },
   {
     id: '84',
@@ -1595,6 +1678,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567975',
+    purchase_price: 8.39,
   },
   {
     id: '85',
@@ -1614,6 +1698,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567976',
+    purchase_price: 8.2,
   },
   {
     id: '86',
@@ -1633,6 +1718,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567977',
+    purchase_price: 8.93,
   },
   {
     id: '87',
@@ -1652,6 +1738,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567978',
+    purchase_price: 9.76,
   },
   {
     id: '88',
@@ -1671,6 +1758,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567979',
+    purchase_price: 11.91,
   },
   {
     id: '89',
@@ -1690,6 +1778,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567980',
+    purchase_price: 12.11,
   },
   {
     id: '90',
@@ -1709,6 +1798,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567981',
+    purchase_price: 12.28,
   },
   {
     id: '91',
@@ -1728,6 +1818,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567982',
+    purchase_price: 7.59,
   },
   {
     id: '92',
@@ -1747,6 +1838,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567983',
+    purchase_price: 9.52,
   },
   {
     id: '93',
@@ -1766,6 +1858,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567984',
+    purchase_price: 8.12,
   },
   {
     id: '94',
@@ -1785,6 +1878,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567985',
+    purchase_price: 7.04,
   },
   {
     id: '95',
@@ -1804,6 +1898,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567986',
+    purchase_price: 7.86,
   },
   {
     id: '96',
@@ -1823,6 +1918,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567987',
+    purchase_price: 11.33,
   },
   {
     id: '97',
@@ -1842,6 +1938,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567988',
+    purchase_price: 11.14,
   },
   {
     id: '98',
@@ -1861,6 +1958,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567989',
+    purchase_price: 10.63,
   },
   {
     id: '99',
@@ -1880,6 +1978,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567990',
+    purchase_price: 9.67,
   },
   {
     id: '100',
@@ -1899,6 +1998,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567991',
+    purchase_price: 9.25,
   },
   {
     id: '101',
@@ -1918,6 +2018,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567992',
+    purchase_price: 27.08,
   },
   {
     id: '102',
@@ -1937,6 +2038,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567993',
+    purchase_price: 42.05,
   },
   {
     id: '103',
@@ -1956,6 +2058,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567994',
+    purchase_price: 33.78,
   },
   {
     id: '104',
@@ -1975,6 +2078,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567995',
+    purchase_price: 29.65,
   },
   {
     id: '105',
@@ -1994,6 +2098,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567996',
+    purchase_price: 45.4,
   },
   {
     id: '106',
@@ -2013,6 +2118,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567997',
+    purchase_price: 39.71,
   },
   {
     id: '107',
@@ -2032,6 +2138,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567998',
+    purchase_price: 32.48,
   },
   {
     id: '108',
@@ -2051,6 +2158,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '4001234567999',
+    purchase_price: 35.85,
   },
   {
     id: '109',
@@ -2070,6 +2178,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671000',
+    purchase_price: 26.06,
   },
   {
     id: '110',
@@ -2089,6 +2198,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671001',
+    purchase_price: 42.33,
   },
   {
     id: '111',
@@ -2108,6 +2218,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671002',
+    purchase_price: 32.95,
   },
   {
     id: '112',
@@ -2127,6 +2238,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671003',
+    purchase_price: 44.56,
   },
   {
     id: '113',
@@ -2146,6 +2258,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671004',
+    purchase_price: 28.67,
   },
   {
     id: '114',
@@ -2165,6 +2278,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671005',
+    purchase_price: 38.48,
   },
   {
     id: '115',
@@ -2184,6 +2298,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671006',
+    purchase_price: 31.34,
   },
   {
     id: '116',
@@ -2203,6 +2318,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671007',
+    purchase_price: 41.38,
   },
   {
     id: '117',
@@ -2222,6 +2338,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671008',
+    purchase_price: 41.86,
   },
   {
     id: '118',
@@ -2241,6 +2358,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671009',
+    purchase_price: 34.14,
   },
   {
     id: '119',
@@ -2260,6 +2378,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671010',
+    purchase_price: 24.77,
   },
   {
     id: '120',
@@ -2279,6 +2398,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671011',
+    purchase_price: 34.43,
   },
   {
     id: '121',
@@ -2298,6 +2418,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671012',
+    purchase_price: 12.27,
   },
   {
     id: '122',
@@ -2317,6 +2438,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671013',
+    purchase_price: 8.76,
   },
   {
     id: '123',
@@ -2336,6 +2458,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671014',
+    purchase_price: 12.09,
   },
   {
     id: '124',
@@ -2355,6 +2478,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671015',
+    purchase_price: 10.49,
   },
   {
     id: '125',
@@ -2374,6 +2498,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671016',
+    purchase_price: 9.81,
   },
   {
     id: '126',
@@ -2393,6 +2518,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671017',
+    purchase_price: 7.88,
   },
   {
     id: '127',
@@ -2412,6 +2538,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671018',
+    purchase_price: 10.14,
   },
   {
     id: '128',
@@ -2431,6 +2558,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671019',
+    purchase_price: 10.2,
   },
   {
     id: '129',
@@ -2450,6 +2578,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671020',
+    purchase_price: 7.09,
   },
   {
     id: '130',
@@ -2469,6 +2598,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671021',
+    purchase_price: 10.93,
   },
   {
     id: '131',
@@ -2488,6 +2618,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671022',
+    purchase_price: 7.72,
   },
   {
     id: '132',
@@ -2507,6 +2638,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671023',
+    purchase_price: 9.91,
   },
   {
     id: '133',
@@ -2526,6 +2658,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671024',
+    purchase_price: 10.15,
   },
   {
     id: '134',
@@ -2545,6 +2678,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671025',
+    purchase_price: 10.51,
   },
   {
     id: '135',
@@ -2564,6 +2698,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671026',
+    purchase_price: 11,
   },
   {
     id: '136',
@@ -2583,6 +2718,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671027',
+    purchase_price: 7.52,
   },
   {
     id: '137',
@@ -2602,6 +2738,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671028',
+    purchase_price: 10.83,
   },
   {
     id: '138',
@@ -2621,6 +2758,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671029',
+    purchase_price: 10.49,
   },
   {
     id: '139',
@@ -2640,6 +2778,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671030',
+    purchase_price: 10.03,
   },
   {
     id: '140',
@@ -2659,6 +2798,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671031',
+    purchase_price: 10.8,
   },
   {
     id: '141',
@@ -2678,6 +2818,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671032',
+    purchase_price: 7.56,
   },
   {
     id: '142',
@@ -2697,6 +2838,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671033',
+    purchase_price: 11.84,
   },
   {
     id: '143',
@@ -2716,6 +2858,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671034',
+    purchase_price: 8.31,
   },
   {
     id: '144',
@@ -2735,6 +2878,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671035',
+    purchase_price: 10.25,
   },
   {
     id: '145',
@@ -2754,6 +2898,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671036',
+    purchase_price: 8.29,
   },
   {
     id: '146',
@@ -2773,6 +2918,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671037',
+    purchase_price: 11.92,
   },
   {
     id: '147',
@@ -2792,6 +2938,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671038',
+    purchase_price: 11.81,
   },
   {
     id: '148',
@@ -2811,6 +2958,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671039',
+    purchase_price: 8.17,
   },
   {
     id: '149',
@@ -2830,6 +2978,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671040',
+    purchase_price: 11.51,
   },
   {
     id: '150',
@@ -2849,6 +2998,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671041',
+    purchase_price: 9.16,
   },
   {
     id: '151',
@@ -2868,6 +3018,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671042',
+    purchase_price: 10,
   },
   {
     id: '152',
@@ -2887,6 +3038,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671043',
+    purchase_price: 8.35,
   },
   {
     id: '153',
@@ -2906,6 +3058,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671044',
+    purchase_price: 7.35,
   },
   {
     id: '154',
@@ -2925,6 +3078,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671045',
+    purchase_price: 9.17,
   },
   {
     id: '155',
@@ -2944,6 +3098,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671046',
+    purchase_price: 7.66,
   },
   {
     id: '156',
@@ -2963,6 +3118,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671047',
+    purchase_price: 12.39,
   },
   {
     id: '157',
@@ -2982,6 +3138,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671048',
+    purchase_price: 10.76,
   },
   {
     id: '158',
@@ -3001,6 +3158,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671049',
+    purchase_price: 12.84,
   },
   {
     id: '159',
@@ -3020,6 +3178,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671050',
+    purchase_price: 8.88,
   },
   {
     id: '160',
@@ -3039,6 +3198,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671051',
+    purchase_price: 7.65,
   },
   {
     id: '161',
@@ -3058,6 +3218,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671052',
+    purchase_price: 10.49,
   },
   {
     id: '162',
@@ -3077,6 +3238,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671053',
+    purchase_price: 9.71,
   },
   {
     id: '163',
@@ -3096,6 +3258,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671054',
+    purchase_price: 9.06,
   },
   {
     id: '164',
@@ -3115,6 +3278,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671055',
+    purchase_price: 7.68,
   },
   {
     id: '165',
@@ -3134,6 +3298,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671056',
+    purchase_price: 10.81,
   },
   {
     id: '166',
@@ -3153,6 +3318,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671057',
+    purchase_price: 8.43,
   },
   {
     id: '167',
@@ -3172,6 +3338,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671058',
+    purchase_price: 7.07,
   },
   {
     id: '168',
@@ -3191,6 +3358,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671059',
+    purchase_price: 9.2,
   },
   {
     id: '169',
@@ -3210,6 +3378,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671060',
+    purchase_price: 11.24,
   },
   {
     id: '170',
@@ -3229,6 +3398,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671061',
+    purchase_price: 12.81,
   },
   {
     id: '171',
@@ -3248,6 +3418,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671062',
+    purchase_price: 9.92,
   },
   {
     id: '172',
@@ -3267,6 +3438,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671063',
+    purchase_price: 8.28,
   },
   {
     id: '173',
@@ -3286,6 +3458,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671064',
+    purchase_price: 10.7,
   },
   {
     id: '174',
@@ -3305,6 +3478,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671065',
+    purchase_price: 8.92,
   },
   {
     id: '175',
@@ -3324,6 +3498,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671066',
+    purchase_price: 9.58,
   },
   {
     id: '176',
@@ -3343,6 +3518,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671067',
+    purchase_price: 11.97,
   },
   {
     id: '177',
@@ -3362,6 +3538,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671068',
+    purchase_price: 8.6,
   },
   {
     id: '178',
@@ -3381,6 +3558,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671069',
+    purchase_price: 9.41,
   },
   {
     id: '179',
@@ -3400,6 +3578,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671070',
+    purchase_price: 9.53,
   },
   {
     id: '180',
@@ -3419,6 +3598,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671071',
+    purchase_price: 8.1,
   },
   {
     id: '181',
@@ -3438,6 +3618,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671072',
+    purchase_price: 9.99,
   },
   {
     id: '182',
@@ -3457,6 +3638,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671073',
+    purchase_price: 11.59,
   },
   {
     id: '183',
@@ -3476,6 +3658,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671074',
+    purchase_price: 8.92,
   },
   {
     id: '184',
@@ -3495,6 +3678,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671075',
+    purchase_price: 11.64,
   },
   {
     id: '185',
@@ -3514,6 +3698,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671076',
+    purchase_price: 7.14,
   },
   {
     id: '186',
@@ -3533,6 +3718,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671077',
+    purchase_price: 8.85,
   },
   {
     id: '187',
@@ -3552,6 +3738,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671078',
+    purchase_price: 12.13,
   },
   {
     id: '188',
@@ -3571,6 +3758,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671079',
+    purchase_price: 11.08,
   },
   {
     id: '189',
@@ -3590,6 +3778,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671080',
+    purchase_price: 10.92,
   },
   {
     id: '190',
@@ -3609,6 +3798,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671081',
+    purchase_price: 9.74,
   },
   {
     id: '191',
@@ -3628,6 +3818,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671082',
+    purchase_price: 9,
   },
   {
     id: '192',
@@ -3647,6 +3838,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671083',
+    purchase_price: 12.6,
   },
   {
     id: '193',
@@ -3666,6 +3858,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671084',
+    purchase_price: 8.44,
   },
   {
     id: '194',
@@ -3685,6 +3878,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671085',
+    purchase_price: 12.69,
   },
   {
     id: '195',
@@ -3704,6 +3898,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671086',
+    purchase_price: 8.88,
   },
   {
     id: '196',
@@ -3723,6 +3918,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671087',
+    purchase_price: 8.7,
   },
   {
     id: '197',
@@ -3742,6 +3938,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671088',
+    purchase_price: 10.74,
   },
   {
     id: '198',
@@ -3761,6 +3958,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671089',
+    purchase_price: 11.26,
   },
   {
     id: '199',
@@ -3780,6 +3978,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671090',
+    purchase_price: 11.56,
   },
   {
     id: '200',
@@ -3799,6 +3998,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671091',
+    purchase_price: 11.84,
   },
   {
     id: '201',
@@ -3818,6 +4018,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671092',
+    purchase_price: 38.34,
   },
   {
     id: '202',
@@ -3837,6 +4038,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671093',
+    purchase_price: 56.44,
   },
   {
     id: '203',
@@ -3856,6 +4058,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671094',
+    purchase_price: 32.37,
   },
   {
     id: '204',
@@ -3875,6 +4078,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671095',
+    purchase_price: 57.55,
   },
   {
     id: '205',
@@ -3894,6 +4098,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671096',
+    purchase_price: 47.87,
   },
   {
     id: '206',
@@ -3913,6 +4118,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671097',
+    purchase_price: 43.64,
   },
   {
     id: '207',
@@ -3932,6 +4138,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671098',
+    purchase_price: 49.89,
   },
   {
     id: '208',
@@ -3951,6 +4158,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671099',
+    purchase_price: 45.15,
   },
   {
     id: '209',
@@ -3970,6 +4178,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671100',
+    purchase_price: 48.12,
   },
   {
     id: '210',
@@ -3989,6 +4198,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671101',
+    purchase_price: 39.67,
   },
   {
     id: '211',
@@ -4008,6 +4218,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671102',
+    purchase_price: 45.65,
   },
   {
     id: '212',
@@ -4027,6 +4238,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671103',
+    purchase_price: 36.1,
   },
   {
     id: '213',
@@ -4046,6 +4258,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671104',
+    purchase_price: 48.86,
   },
   {
     id: '214',
@@ -4065,6 +4278,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671105',
+    purchase_price: 53.08,
   },
   {
     id: '215',
@@ -4084,6 +4298,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671106',
+    purchase_price: 56.41,
   },
   {
     id: '216',
@@ -4103,6 +4318,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671107',
+    purchase_price: 39.33,
   },
   {
     id: '217',
@@ -4122,6 +4338,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671108',
+    purchase_price: 52.1,
   },
   {
     id: '218',
@@ -4141,6 +4358,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671109',
+    purchase_price: 50.83,
   },
   {
     id: '219',
@@ -4160,6 +4378,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671110',
+    purchase_price: 38.62,
   },
   {
     id: '220',
@@ -4179,6 +4398,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671111',
+    purchase_price: 36.09,
   },
   {
     id: '221',
@@ -4198,6 +4418,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671112',
+    purchase_price: 7.68,
   },
   {
     id: '222',
@@ -4217,6 +4438,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671113',
+    purchase_price: 9.08,
   },
   {
     id: '223',
@@ -4236,6 +4458,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671114',
+    purchase_price: 11.37,
   },
   {
     id: '224',
@@ -4255,6 +4478,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671115',
+    purchase_price: 12.33,
   },
   {
     id: '225',
@@ -4274,6 +4498,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671116',
+    purchase_price: 9.13,
   },
   {
     id: '226',
@@ -4293,6 +4518,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671117',
+    purchase_price: 8.01,
   },
   {
     id: '227',
@@ -4312,6 +4538,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671118',
+    purchase_price: 10.26,
   },
   {
     id: '228',
@@ -4331,6 +4558,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671119',
+    purchase_price: 8.13,
   },
   {
     id: '229',
@@ -4350,6 +4578,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671120',
+    purchase_price: 8.77,
   },
   {
     id: '230',
@@ -4369,6 +4598,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671121',
+    purchase_price: 10.85,
   },
   {
     id: '231',
@@ -4388,6 +4618,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671122',
+    purchase_price: 11.29,
   },
   {
     id: '232',
@@ -4407,6 +4638,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671123',
+    purchase_price: 10.35,
   },
   {
     id: '233',
@@ -4426,6 +4658,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671124',
+    purchase_price: 9.81,
   },
   {
     id: '234',
@@ -4445,6 +4678,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671125',
+    purchase_price: 8.35,
   },
   {
     id: '235',
@@ -4464,6 +4698,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671126',
+    purchase_price: 8.69,
   },
   {
     id: '236',
@@ -4483,6 +4718,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671127',
+    purchase_price: 9.24,
   },
   {
     id: '237',
@@ -4502,6 +4738,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671128',
+    purchase_price: 10.01,
   },
   {
     id: '238',
@@ -4521,6 +4758,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671129',
+    purchase_price: 7.05,
   },
   {
     id: '239',
@@ -4540,6 +4778,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671130',
+    purchase_price: 12.91,
   },
   {
     id: '240',
@@ -4559,6 +4798,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671131',
+    purchase_price: 11.52,
   },
   {
     id: '241',
@@ -4578,6 +4818,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671132',
+    purchase_price: 9.79,
   },
   {
     id: '242',
@@ -4597,6 +4838,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671133',
+    purchase_price: 8.31,
   },
   {
     id: '243',
@@ -4616,6 +4858,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671134',
+    purchase_price: 8.8,
   },
   {
     id: '244',
@@ -4635,6 +4878,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671135',
+    purchase_price: 9.35,
   },
   {
     id: '245',
@@ -4654,6 +4898,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671136',
+    purchase_price: 9.07,
   },
   {
     id: '246',
@@ -4673,6 +4918,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671137',
+    purchase_price: 7.42,
   },
   {
     id: '247',
@@ -4692,6 +4938,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671138',
+    purchase_price: 12.7,
   },
   {
     id: '248',
@@ -4711,6 +4958,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671139',
+    purchase_price: 7.5,
   },
   {
     id: '249',
@@ -4730,6 +4978,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671140',
+    purchase_price: 8.07,
   },
   {
     id: '250',
@@ -4749,6 +4998,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671141',
+    purchase_price: 11.88,
   },
   {
     id: '251',
@@ -4768,6 +5018,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671142',
+    purchase_price: 8.3,
   },
   {
     id: '252',
@@ -4787,6 +5038,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671143',
+    purchase_price: 7.19,
   },
   {
     id: '253',
@@ -4806,6 +5058,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671144',
+    purchase_price: 10.82,
   },
   {
     id: '254',
@@ -4825,6 +5078,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671145',
+    purchase_price: 7,
   },
   {
     id: '255',
@@ -4844,6 +5098,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671146',
+    purchase_price: 10.04,
   },
   {
     id: '256',
@@ -4863,6 +5118,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671147',
+    purchase_price: 10.3,
   },
   {
     id: '257',
@@ -4882,6 +5138,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671148',
+    purchase_price: 10.56,
   },
   {
     id: '258',
@@ -4901,6 +5158,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671149',
+    purchase_price: 8.92,
   },
   {
     id: '259',
@@ -4920,6 +5178,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671150',
+    purchase_price: 11.46,
   },
   {
     id: '260',
@@ -4939,6 +5198,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671151',
+    purchase_price: 10.11,
   },
   {
     id: '261',
@@ -4958,6 +5218,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671152',
+    purchase_price: 10.44,
   },
   {
     id: '262',
@@ -4977,6 +5238,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671153',
+    purchase_price: 7.62,
   },
   {
     id: '263',
@@ -4996,6 +5258,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671154',
+    purchase_price: 10.49,
   },
   {
     id: '264',
@@ -5015,6 +5278,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671155',
+    purchase_price: 12.62,
   },
   {
     id: '265',
@@ -5034,6 +5298,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671156',
+    purchase_price: 7.81,
   },
   {
     id: '266',
@@ -5053,6 +5318,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671157',
+    purchase_price: 10.04,
   },
   {
     id: '267',
@@ -5072,6 +5338,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671158',
+    purchase_price: 11.78,
   },
   {
     id: '268',
@@ -5091,6 +5358,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671159',
+    purchase_price: 12.2,
   },
   {
     id: '269',
@@ -5110,6 +5378,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671160',
+    purchase_price: 11.71,
   },
   {
     id: '270',
@@ -5129,6 +5398,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671161',
+    purchase_price: 10.39,
   },
   {
     id: '271',
@@ -5148,6 +5418,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671162',
+    purchase_price: 9.19,
   },
   {
     id: '272',
@@ -5167,6 +5438,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671163',
+    purchase_price: 12.94,
   },
   {
     id: '273',
@@ -5186,6 +5458,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671164',
+    purchase_price: 10.77,
   },
   {
     id: '274',
@@ -5205,6 +5478,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671165',
+    purchase_price: 11.36,
   },
   {
     id: '275',
@@ -5224,6 +5498,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671166',
+    purchase_price: 7.41,
   },
   {
     id: '276',
@@ -5243,6 +5518,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671167',
+    purchase_price: 7.64,
   },
   {
     id: '277',
@@ -5262,6 +5538,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671168',
+    purchase_price: 7.23,
   },
   {
     id: '278',
@@ -5281,6 +5558,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671169',
+    purchase_price: 10.33,
   },
   {
     id: '279',
@@ -5300,6 +5578,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671170',
+    purchase_price: 9.37,
   },
   {
     id: '280',
@@ -5319,6 +5598,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671171',
+    purchase_price: 8.9,
   },
   {
     id: '281',
@@ -5338,6 +5618,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671172',
+    purchase_price: 11.51,
   },
   {
     id: '282',
@@ -5357,6 +5638,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671173',
+    purchase_price: 10.85,
   },
   {
     id: '283',
@@ -5376,6 +5658,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671174',
+    purchase_price: 12,
   },
   {
     id: '284',
@@ -5395,6 +5678,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671175',
+    purchase_price: 11.28,
   },
   {
     id: '285',
@@ -5414,6 +5698,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671176',
+    purchase_price: 9.75,
   },
   {
     id: '286',
@@ -5433,6 +5718,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671177',
+    purchase_price: 10.19,
   },
   {
     id: '287',
@@ -5452,6 +5738,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671178',
+    purchase_price: 8.91,
   },
   {
     id: '288',
@@ -5471,6 +5758,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671179',
+    purchase_price: 10.08,
   },
   {
     id: '289',
@@ -5490,6 +5778,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671180',
+    purchase_price: 8.31,
   },
   {
     id: '290',
@@ -5509,6 +5798,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671181',
+    purchase_price: 9.82,
   },
   {
     id: '291',
@@ -5528,6 +5818,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671182',
+    purchase_price: 7.94,
   },
   {
     id: '292',
@@ -5547,6 +5838,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671183',
+    purchase_price: 8.79,
   },
   {
     id: '293',
@@ -5566,6 +5858,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671184',
+    purchase_price: 7.82,
   },
   {
     id: '294',
@@ -5585,6 +5878,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671185',
+    purchase_price: 12.11,
   },
   {
     id: '295',
@@ -5604,6 +5898,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671186',
+    purchase_price: 8.36,
   },
   {
     id: '296',
@@ -5623,6 +5918,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671187',
+    purchase_price: 8.05,
   },
   {
     id: '297',
@@ -5642,6 +5938,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671188',
+    purchase_price: 8.94,
   },
   {
     id: '298',
@@ -5661,6 +5958,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671189',
+    purchase_price: 7.44,
   },
   {
     id: '299',
@@ -5680,6 +5978,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671190',
+    purchase_price: 10.16,
   },
   {
     id: '300',
@@ -5699,6 +5998,7 @@ export const seedMaterials = [
     image_url: '',
     barcode: '',
     ean: '40012345671191',
+    purchase_price: 11.96,
   }
 ];
 
@@ -5708,6 +6008,7 @@ export const seedCategories = [
     current_stock: 0,
     name: 'Kabel',
     color: '#3B82F6',
+    purchase_price: 10.96,
     active: true,
   },
   {
@@ -5813,8 +6114,7 @@ export const seedCategories = [
 export const seedSuppliers = [
   {
     id: '1',
-    current_stock: 0,
-    name: 'Elektro Grosshandel GmbH',
+    name: 'Sonepar Deutschland GmbH',
     contact_person: 'Hans Mueller',
     phone: '+49 30 1234567',
     email: 'hans@elektro-gh.de',
@@ -5823,8 +6123,7 @@ export const seedSuppliers = [
   },
   {
     id: '2',
-    current_stock: 0,
-    name: 'Kabel & Draht AG',
+    name: 'Rexel Germany GmbH',
     contact_person: 'Klaus Schmidt',
     phone: '+49 40 2345678',
     email: 'klaus@kabel-draht.de',
@@ -5833,8 +6132,7 @@ export const seedSuppliers = [
   },
   {
     id: '3',
-    current_stock: 0,
-    name: 'Licht & Technik OHG',
+    name: 'Hagemeyer Deutschland GmbH',
     contact_person: 'Peter Weber',
     phone: '+49 89 3456789',
     email: 'peter@licht-technik.de',
