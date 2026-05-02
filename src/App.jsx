@@ -43,8 +43,9 @@ const PageLoader = () => (
 
 function RequireAuth({ children }) {
   const { isAuthenticated, loading } = useAuth();
+  // TEMP: Auth deaktiviert für lokale Entwicklung
   if (loading) return <PageLoader />;
-  return isAuthenticated ? children : <Navigate to="/login" replace />;
+  return children;
 }
 
 function AppRoutes() {
