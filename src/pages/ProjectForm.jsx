@@ -18,9 +18,10 @@ export default function ProjectForm() {
   const [form, setForm] = useState({
     name: '',
     customer: '',
-    address: '',
+    location: '',
     status: 'geplant',
-    planned_date: '',
+    start_date: '',
+    end_date: '',
     notes: '',
   });
 
@@ -43,10 +44,10 @@ export default function ProjectForm() {
 
     try {
       if (isNew) {
-        await addProject({ ...form, id: uuid() });
+        await addProject({ ...form, id: uuid(), active: true });
         setToast({ message: 'Baustelle angelegt! ✓', type: 'success' });
       } else {
-        await editProject(id, form);
+        await editProject(id, { ...form, active: existing?.active ?? true });
         setToast({ message: 'Änderungen gespeichert! ✓', type: 'success' });
       }
       setTimeout(() => navigate(-1), 1200);
@@ -91,11 +92,11 @@ export default function ProjectForm() {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Adresse</label>
+            <label className="form-label">Adresse / Standort</label>
             <input
               type="text"
-              value={form.address}
-              onChange={e => handleChange('address', e.target.value)}
+              value={form.location}
+              onChange={e => handleChange('location', e.target.value)}
               placeholder="z.B. Mühlenweg 12, 26721 Emden"
             />
           </div>
@@ -110,11 +111,19 @@ export default function ProjectForm() {
               </select>
             </div>
             <div className="form-group">
-              <label className="form-label">Geplanter Termin</label>
+              <label className="form-label">Start</label>
               <input
                 type="date"
-                value={form.planned_date}
-                onChange={e => handleChange('planned_date', e.target.value)}
+                value={form.start_date}
+                onChange={e => handleChange('start_date', e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Ende</label>
+              <input
+                type="date"
+                value={form.end_date}
+                onChange={e => handleChange('end_date', e.target.value)}
               />
             </div>
           </div>
