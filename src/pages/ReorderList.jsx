@@ -1,13 +1,14 @@
-import { useState } from 'react';
+import { useState, useMemo, lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ShoppingCart, ExternalLink, FileDown, Download } from 'lucide-react';
+import { ChevronLeft, ShoppingCart, ExternalLink, FileDown, CheckCircle } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import { UNIT_LABELS } from '../data/constants';
 import EmptyState from '../components/EmptyState';
 import Toast from '../components/Toast';
-import { CheckCircle } from 'lucide-react';
-import { openSoneparForMaterial, getSoneparSearchUrl, generateOrderMailto } from '../services/sonepar';
-import { generateReorderPDF, generateFullReorderPDF } from '../services/pdfExport';
+import { openSoneparForMaterial, getSoneparSearchUrl } from '../services/sonepar';
+
+// PDF-Export dynamisch laden (spart ~150KB im Haupt-Chunk)
+const pdfExport = lazy(() => import('../services/pdfExport'));
 
 export default function ReorderList() {
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ export default function ReorderList() {
   function handlePDFSingle(items, supplierName) {
     try {
       generateReorderPDF(items, supplierName);
-      setToast({ message: `PDF für ${supplierName} erstellt ✓`, type: 'success' });
+      setToast({ message: `PDF f\xfcr ${supplierName} erstellt \u2713`, type: 'success' });
     } catch (err) {
       setToast({ message: 'PDF-Fehler: ' + err.message, type: 'error' });
     }
@@ -58,7 +59,7 @@ export default function ReorderList() {
   function handlePDFAll() {
     try {
       generateFullReorderPDF(bySupplier);
-      setToast({ message: 'Gesamt-PDF erstellt ✓', type: 'success' });
+      setToast({ message: 'Gesamt-PDF erstellt \u2713', type: 'success' });
     } catch (err) {
       setToast({ message: 'PDF-Fehler: ' + err.message, type: 'error' });
     }
