@@ -1,10 +1,16 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Tag, Truck, ShoppingCart, ArrowDownUp, RotateCcw, ChevronRight, BarChart3, Download, LogOut, ScanBarcode, Users, Wrench } from 'lucide-react';
+import { Tag, Truck, ShoppingCart, ArrowDownUp, RotateCcw, ChevronRight, BarChart3, Download, LogOut, ScanBarcode, Users, Wrench, Keyboard, Hash, Zap, Package, HardHat, Search, HelpCircle, Bell, FileText, FileSpreadsheet } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import { useAuth } from '../hooks/useAuth';
 import { signOut } from '../services/supabase';
 import { exportMaterialsCSV } from '../services/csvExport';
+import {
+  requestNotificationPermission,
+  getNotificationsEnabled,
+  setNotificationsEnabled,
+  getPermissionStatus,
+} from '../services/notifications.js';
 import ConfirmDialog from '../components/ConfirmDialog';
 import Toast from '../components/Toast';
 
@@ -15,6 +21,34 @@ export default function Settings() {
   const [showReset, setShowReset] = useState(false);
   const [showLogout, setShowLogout] = useState(false);
   const [toast, setToast] = useState(null);
+  const [notifEnabled, setNotifEnabled] = useState(getNotificationsEnabled());
+  const [notifStatus, setNotifStatus] = useState(getPermissionStatus());
+
+  async function handleToggleNotifications(enabled) {
+    setNotifEnabled(enabled);
+    setNotificationsEnabled(enabled);
+
+    if (enabled) {
+      const permission = await requestNotificationPermission();
+      setNotifStatus(getPermissionStatus());
+
+      if (permission !== 'granted') {
+        setToast({
+          message: permission === 'denied'
+            ? 'Benachrichtigungen vom Browser blockiert. Bitte in den Browser-Einstellungen erlauben.'
+            : 'Benachrichtigungen nicht erlaubt.',
+          type: 'warning',
+        });
+        setNotifEnabled(false);
+        setNotificationsEnabled(false);
+        return;
+      }
+
+      setToast({ message: 'Push-Benachrichtigungen aktiviert ✓', type: 'success' });
+    } else {
+      setToast({ message: 'Push-Benachrichtigungen deaktiviert', type: 'info' });
+    }
+  }
 
   async function handleReset() {
     try {
@@ -77,10 +111,22 @@ export default function Settings() {
       onClick: () => navigate('/statistiken'),
     },
     {
+      icon: FileText,
+      label: 'Tagesrapport',
+      sub: 'Entnahmen nach Baustelle und Material',
+      onClick: () => navigate('/tagesrapport'),
+    },
+    {
       icon: Download,
       label: 'Materialbestand exportieren',
       sub: `${materials.length} Artikel als CSV`,
       onClick: handleExportMaterials,
+    },
+    {
+      icon: FileSpreadsheet,
+      label: 'Materialien importieren (CSV)',
+      sub: 'Bulk-Import per CSV-Datei',
+      onClick: () => navigate('/csv-import'),
     },
     {
       icon: Tag,
@@ -177,6 +223,60 @@ export default function Settings() {
           )}
         </div>
 
+        {/* Push-Benachrichtigungen Toggle */}
+        <div className="card" style={{ marginBottom: 'var(--space-lg)', padding: 'var(--space-md) var(--space-lg)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-md)' }}>
+              <div style={{
+                width: 40, height: 40, borderRadius: 'var(--radius-md)',
+                background: notifEnabled ? 'var(--color-primary-50)' : 'var(--color-surface)',
+                color: notifEnabled ? 'var(--color-primary)' : 'var(--color-text-tertiary)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                flexShrink: 0,
+              }}>
+                <Bell size={18} />
+              </div>
+              <div>
+                <div className="font-semibold">Push-Benachrichtigungen</div>
+                <div className="text-sm text-secondary">{notifStatus}</div>
+              </div>
+            </div>
+            <label style={{
+              position: 'relative',
+              display: 'inline-block',
+              width: 48, height: 28,
+              cursor: 'pointer',
+            }}>
+              <input
+                type="checkbox"
+                checked={notifEnabled}
+                onChange={(e) => handleToggleNotifications(e.target.checked)}
+                style={{ opacity: 0, width: 0, height: 0 }}
+              />
+              <span style={{
+                position: 'absolute',
+                cursor: 'pointer',
+                top: 0, left: 0, right: 0, bottom: 0,
+                backgroundColor: notifEnabled ? 'var(--color-primary)' : 'var(--color-border)',
+                borderRadius: 28,
+                transition: 'background-color 0.2s',
+              }}>
+                <span style={{
+                  position: 'absolute',
+                  content: '""',
+                  height: 22, width: 22,
+                  left: notifEnabled ? 24 : 3,
+                  bottom: 3,
+                  backgroundColor: 'white',
+                  borderRadius: '50%',
+                  transition: 'left 0.2s',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+                }} />
+              </span>
+            </label>
+          </div>
+        </div>
+
         {/* Menü */}
         <div className="list">
           {menuItems.map((item, i) => {
@@ -238,6 +338,72 @@ export default function Settings() {
               <li>✅ Multi-User Login & Rollen</li>
               <li>✅ Bulk-Scan Inventur</li>
             </ul>
+          </div>
+        </div>
+
+        {/* Keyboard Shortcuts */}
+        <div className="section" style={{ marginTop: 'var(--space-2xl)' }}>
+          <h3 className="detail-section-title">Tastaturkürzel</h3>
+          <div className="card" style={{ background: 'var(--color-primary-50)' }}>
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 'var(--space-sm)',
+              fontSize: 'var(--font-size-sm)',
+              color: 'var(--color-text-secondary)',
+            }}>
+              {[
+                { keys: 'Ctrl + 1', icon: Hash, label: 'Dashboard' },
+                { keys: 'Ctrl + 2', icon: Zap, label: 'Schnell buchen' },
+                { keys: 'Ctrl + 3', icon: Package, label: 'Materialien' },
+                { keys: 'Ctrl + 4', icon: HardHat, label: 'Baustellen' },
+                { keys: 'Ctrl + K', icon: Search, label: 'Suche fokussieren' },
+                { keys: 'Ctrl + ?', icon: HelpCircle, label: 'Hilfe anzeigen' },
+              ].map(item => (
+                <div
+                  key={item.keys}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 'var(--space-sm)',
+                  }}
+                >
+                  <div style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: 'var(--radius-sm)',
+                    background: 'var(--color-primary)',
+                    color: 'white',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}>
+                    <item.icon size={14} />
+                  </div>
+                  <span style={{ flex: 1 }}>{item.label}</span>
+                  <kbd style={{
+                    fontFamily: 'monospace',
+                    fontSize: 'var(--font-size-xs)',
+                    background: 'var(--color-card)',
+                    border: '1px solid var(--color-border)',
+                    borderRadius: 'var(--radius-sm)',
+                    padding: '2px 6px',
+                    whiteSpace: 'nowrap',
+                  }}>
+                    {item.keys}
+                  </kbd>
+                </div>
+              ))}
+            </div>
+            <div style={{
+              marginTop: 'var(--space-md)',
+              fontSize: 'var(--font-size-xs)',
+              color: 'var(--color-text-tertiary)',
+              fontStyle: 'italic',
+            }}>
+              Nur aktiv, wenn kein Textfeld fokussiert ist.
+            </div>
           </div>
         </div>
 

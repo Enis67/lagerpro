@@ -1,6 +1,7 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import { Home, Package, Zap, HardHat, Menu, Bot } from 'lucide-react';
+import { Home, Package, Zap, HardHat, Menu, Bot, WifiOff } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
+import * as offlineQueue from '../services/offlineQueue.js';
 
 const navItems = [
   { to: '/', icon: Home, label: 'Home' },
@@ -12,8 +13,9 @@ const navItems = [
 
 export default function BottomNav() {
   const location = useLocation();
-  const { getCriticalCount } = useStore();
+  const { getCriticalCount, isOnline } = useStore();
   const criticalCount = getCriticalCount();
+  const queueLength = offlineQueue.getQueueLength();
 
   return (
     <nav className="bottom-nav" role="navigation" aria-label="Hauptnavigation">
@@ -31,8 +33,25 @@ export default function BottomNav() {
               className="bottom-nav-item bottom-nav-item--primary"
               aria-label={item.label}
             >
-              <div className="nav-icon-wrapper">
+              <div className="nav-icon-wrapper" style={{ position: 'relative' }}>
                 <Icon size={24} />
+                {queueLength > 0 && (
+                  <span style={{
+                    position: 'absolute',
+                    top: -4,
+                    right: -6,
+                    width: 16,
+                    height: 16,
+                    borderRadius: '50%',
+                    background: 'var(--color-danger)',
+                    color: 'white',
+                    fontSize: '9px',
+                    fontWeight: 700,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>{queueLength > 9 ? '9+' : queueLength}</span>
+                )}
               </div>
               <span className="nav-label">{item.label}</span>
             </NavLink>

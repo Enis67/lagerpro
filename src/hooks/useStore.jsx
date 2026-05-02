@@ -5,6 +5,7 @@ import { isSupabaseAvailable, supabase } from '../services/supabase.js';
 import { useAuth } from './useAuth.jsx';
 import * as cloudDs from '../services/supabaseDataService.js';
 import * as localDs from '../services/dataService.js';
+import * as offlineQueue from '../services/offlineQueue.js';
 
 const StoreContext = createContext(null);
 
@@ -21,6 +22,8 @@ const initialState = {
   syncing: false,
   error: null,
   isCloud: useCloud,
+  isOnline: typeof navigator !== 'undefined' ? navigator.onLine : true,
+  toast: null,
 };
 
 function reducer(state, action) {
@@ -35,6 +38,12 @@ function reducer(state, action) {
       return { ...state, error: action.payload, syncing: false };
     case 'CLEAR_ERROR':
       return { ...state, error: null };
+    case 'SET_ONLINE':
+      return { ...state, isOnline: action.payload };
+    case 'SET_TOAST':
+      return { ...state, toast: action.payload };
+    case 'CLEAR_TOAST':
+      return { ...state, toast: null };
     default:
       return state;
   }
@@ -189,6 +198,21 @@ export function StoreProvider({ children }) {
   const addMovement = useCallback(async (movement) => {
     const enriched = { ...movement, user_id: userId || movement.user_id };
     try {
+      // Offline-Modus: lokal speichern + in Queue puffern
+      if (!navigator.onLine) {
+        localDs.createMovement(enriched);
+        offlineQueue.queueAction(enriched);
+        await refresh();
+        dispatch({
+          type: 'SET_TOAST',
+          payload: {
+            message: 'Offline – wird später synchronisiert',
+            type: 'info',
+          },
+        });
+        return;
+      }
+
       if (useCloud && isAuthenticated && supabase) {
         // Prüfe ob Material in Cloud existiert (Foreign Key Check)
         const { data: matExists } = await supabase
@@ -211,9 +235,17 @@ export function StoreProvider({ children }) {
       }
     } catch (err) {
       console.error('[LagerPro] Bewegung fehlgeschlagen:', err);
-      // Fallback: lokal speichern
+      // Fallback: lokal speichern + in Queue
       localDs.createMovement(enriched);
+      offlineQueue.queueAction(enriched);
       await refresh();
+      dispatch({
+        type: 'SET_TOAST',
+        payload: {
+          message: 'Server nicht erreichbar – lokal zwischengespeichert',
+          type: 'error',
+        },
+      });
       throw err;
     }
   }, [refresh, isAuthenticated, userId]);
@@ -307,6 +339,10 @@ export function StoreProvider({ children }) {
     dispatch({ type: 'CLEAR_ERROR' });
   }, []);
 
+  const clearToast = useCallback(() => {
+    dispatch({ type: 'CLEAR_TOAST' });
+  }, []);
+
   // Auto-clear errors after 8 seconds
   useEffect(() => {
     if (state.error) {
@@ -316,6 +352,78 @@ export function StoreProvider({ children }) {
       return () => clearTimeout(timer);
     }
   }, [state.error]);
+
+  // ── Online/Offline Status ───────────────────────────
+  useEffect(() => {
+    const handleOnline = () => {
+      dispatch({ type: 'SET_ONLINE', payload: true });
+      // Queue automatisch verarbeiten
+      if (offlineQueue.getQueueLength() > 0) {
+        offlineQueue.processQueue().then(({ processed, failed }) => {
+          if (processed > 0) {
+            dispatch({
+              type: 'SET_TOAST',
+              payload: {
+                message: `${processed} Offline-Buchung(en) synchronisiert ✓`,
+                type: 'success',
+              },
+            });
+          }
+          if (failed > 0) {
+            dispatch({
+              type: 'SET_TOAST',
+              payload: {
+                message: `${failed} Buchung(en) konnten nicht synchronisiert werden`,
+                type: 'error',
+              },
+            });
+          }
+          refresh();
+        });
+      }
+    };
+
+    const handleOffline = () => {
+      dispatch({ type: 'SET_ONLINE', payload: false });
+    };
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, [refresh]);
+
+  // Beim Mount: prüfe ob Queue vorhanden und online
+  useEffect(() => {
+    if (navigator.onLine && offlineQueue.getQueueLength() > 0) {
+      offlineQueue.processQueue().then(({ processed }) => {
+        if (processed > 0) {
+          dispatch({
+            type: 'SET_TOAST',
+            payload: {
+              message: `${processed} Offline-Buchung(en) nach Start synchronisiert ✓`,
+              type: 'success',
+            },
+          });
+          refresh();
+        }
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ── Toast Auto-Clear ────────────────────────────────
+  useEffect(() => {
+    if (state.toast) {
+      const timer = setTimeout(() => {
+        dispatch({ type: 'CLEAR_TOAST' });
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [state.toast]);
 
   // ── Memoized Lookups (stabile Referenzen) ─────────────
   const categoryMap = useMemo(() => {
@@ -390,6 +498,7 @@ export function StoreProvider({ children }) {
     ...state,
     refresh,
     clearError,
+    clearToast,
     addMaterial, editMaterial, removeMaterial,
     addProject, editProject, removeProject,
     addMovement,

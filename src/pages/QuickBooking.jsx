@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import {
   ChevronLeft, PackagePlus, PackageMinus, PackageCheck, PenLine,
@@ -18,6 +18,9 @@ const iconMap = {
 
 export default function QuickBooking() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const preselectMaterialId = searchParams.get('material');
+
   const { materials, projects, categories, addMovement, getCategoryName, incrementUsage } = useStore();
   const [step, setStep] = useState(1);
   const [bookingType, setBookingType] = useState('entnahme');
@@ -44,6 +47,19 @@ export default function QuickBooking() {
     p.name.toLowerCase().includes(projectSearch.toLowerCase()) ||
     p.customer.toLowerCase().includes(projectSearch.toLowerCase())
   );
+
+  // Pre-select material from URL ?material=ID
+  useEffect(() => {
+    if (preselectMaterialId && materials.length > 0) {
+      const mat = materials.find(m => m.id === preselectMaterialId);
+      if (mat && !selectedMaterials.find(m => m.id === mat.id)) {
+        setSelectedMaterials(prev => [...prev, mat]);
+        setQuantities(prev => ({ ...prev, [mat.id]: 1 }));
+        // Auto-advance to step 2 (material selection) if we're still on step 1
+        setStep(2);
+      }
+    }
+  }, [preselectMaterialId, materials]);
 
   const needsProject = ['entnahme', 'reservierung', 'reservierung_aufloesen'].includes(bookingType);
 

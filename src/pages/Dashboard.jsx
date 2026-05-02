@@ -10,8 +10,15 @@ import MovementRow from '../components/MovementRow';
 import VoiceBooking from '../components/VoiceBooking';
 import Toast from '../components/Toast';
 import { UNIT_LABELS } from '../data/constants';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
+import {
+  sendNotification,
+  updateBadge,
+  wasNotifiedToday,
+  markNotifiedToday,
+  getNotificationsEnabled,
+} from '../services/notifications.js';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -23,6 +30,25 @@ export default function Dashboard() {
   } = useStore();
   const [showVoice, setShowVoice] = useState(false);
   const [toast, setToast] = useState(null);
+
+  // ── Push Notifications + Badge (einmal pro Tag) ──
+  useEffect(() => {
+    const criticalCount = materials.filter(m => m.active && (m.current_stock || 0) <= m.min_stock).length;
+
+    // Badge immer setzen (auch ohne Notification)
+    updateBadge(criticalCount);
+
+    if (criticalCount > 0 && getNotificationsEnabled() && !wasNotifiedToday()) {
+      sendNotification(
+        `⚠️ ${criticalCount} Artikel kritisch`,
+        {
+          body: `${criticalCount} Artikel befinden sich unter dem Mindestbestand.`,
+          tag: 'lagerpro-critical-daily',
+        }
+      );
+      markNotifiedToday();
+    }
+  }, [materials]);
 
   // ── Statistiken ──
   const totalItems = materials.filter(m => m.active).length;

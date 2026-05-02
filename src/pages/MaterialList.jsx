@@ -1,22 +1,92 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Search, Star, StarOff, LayoutGrid, List, RotateCcw } from 'lucide-react';
+import { Plus, Search, Star, StarOff } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import { UNIT_LABELS } from '../data/constants';
 import SearchBar from '../components/SearchBar';
 import usePullToRefresh from '../hooks/usePullToRefresh';
+import useLongPress from '../hooks/useLongPress';
+import LongPressMenu from '../components/LongPressMenu';
 
+/* ── Einzelne Material-Karte mit Long-Press Context Menu ── */
+function MaterialCard({ material, onOpenMenu }) {
+  const navigate = useNavigate();
+  const { toggleFavorite, getCategoryColor, getCategoryName, getSupplierName } = useStore();
+
+  const lpHandlers = useLongPress({
+    onLongPress: ({ x, y }) => onOpenMenu(material.id, x, y),
+    onClick: () => navigate(`/material/${material.id}`),
+  });
+
+  const categoryColor = getCategoryColor(material.category_id);
+  const isCrit = material.current_stock <= material.min_stock;
+
+  return (
+    <div
+      className="card card-clickable"
+      {...lpHandlers}
+      style={{ width: '100%', position: 'relative', userSelect: 'none', WebkitUserSelect: 'none' }}
+    >
+      <div className="flex justify-between items-start">
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div className="flex items-center gap-sm">
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: categoryColor, flexShrink: 0 }} />
+            <span className="font-semibold">{material.name}</span>
+          </div>
+          <div className="text-xs text-tertiary mt-xs">
+            {material.article_number && <span className="mr-md">Art.Nr.: {material.article_number}</span>}
+            {material.manufacturer_number && <span>Herst.Nr.: {material.manufacturer_number}</span>}
+          </div>
+          <div className="text-xs text-tertiary">
+            {getCategoryName(material.category_id)} · {getSupplierName(material.supplier_id)}
+            {material.storage_location && ` · ${material.storage_location}`}
+          </div>
+          {(material.usage_count || 0) > 0 && (
+            <div className="text-xs" style={{ color: 'var(--color-accent)', marginTop: 2 }}>
+              {material.usage_count}x verwendet
+              {material.last_used && ` · ${new Date(material.last_used).toLocaleDateString('de-DE')}`}
+            </div>
+          )}
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 'var(--space-xs)' }}>
+          {/* Stern / Favorit */}
+          <button
+            className="btn btn-ghost btn-sm"
+            onClick={e => {
+              e.stopPropagation();
+              toggleFavorite(material.id);
+            }}
+            style={{ padding: 4 }}
+          >
+            {material.is_favorite
+              ? <Star size={18} fill="var(--color-accent)" color="var(--color-accent)" />
+              : <StarOff size={18} color="var(--color-text-tertiary)" />
+            }
+          </button>
+
+          <div className="text-sm" style={{
+            color: isCrit ? 'var(--color-danger)' : 'var(--color-text-secondary)',
+            fontWeight: isCrit ? 700 : 400,
+          }}>
+            {material.current_stock} {UNIT_LABELS[material.unit]}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Haupt-Komponente ── */
 export default function MaterialList() {
   const navigate = useNavigate();
-  const {
-    materials, categories, getCategoryName, getCategoryColor, getSupplierName,
-    toggleFavorite, incrementUsage
-  } = useStore();
+  const { materials, categories } = useStore();
 
   const [search, setSearch] = useState('');
   const [activeTab, setActiveTab] = useState('my'); // 'my' | 'all'
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [sortBy, setSortBy] = useState('name');
+  const [contextMenu, setContextMenu] = useState(null); // { materialId, x, y } | null
 
   // Materialien filtern
   const baseMaterials = activeTab === 'my'
@@ -39,6 +109,15 @@ export default function MaterialList() {
 
   const myMaterialsCount = materials.filter(m => m.active && (m.is_favorite || (m.usage_count || 0) > 0)).length;
   const allMaterialsCount = materials.filter(m => m.active).length;
+
+  // Context-Menu
+  const openMenu = useCallback((materialId, x, y) => {
+    setContextMenu({ materialId, x, y });
+  }, []);
+
+  const closeMenu = useCallback(() => setContextMenu(null), []);
+
+
 
   return (
     <>
@@ -159,65 +238,13 @@ export default function MaterialList() {
 
         {/* Liste */}
         <div className="list">
-          {filtered.map(material => {
-            const categoryColor = getCategoryColor(material.category_id);
-            const isCrit = material.current_stock <= material.min_stock;
-            return (
-              <div
-                key={material.id}
-                className="card card-clickable"
-                onClick={() => navigate(`/material/${material.id}`)}
-                style={{ width: '100%' }}
-              >
-                <div className="flex justify-between items-start">
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div className="flex items-center gap-sm">
-                      <div style={{ width: 8, height: 8, borderRadius: '50%', background: categoryColor, flexShrink: 0 }} />
-                      <span className="font-semibold">{material.name}</span>
-                    </div>
-                    <div className="text-xs text-tertiary mt-xs">
-                      {material.article_number && <span className="mr-md">Art.Nr.: {material.article_number}</span>}
-                      {material.manufacturer_number && <span>Herst.Nr.: {material.manufacturer_number}</span>}
-                    </div>
-                    <div className="text-xs text-tertiary">
-                      {getCategoryName(material.category_id)} · {getSupplierName(material.supplier_id)}
-                      {material.storage_location && ` · ${material.storage_location}`}
-                    </div>
-                    {(material.usage_count || 0) > 0 && (
-                      <div className="text-xs" style={{ color: 'var(--color-accent)', marginTop: 2 }}>
-                        {material.usage_count}x verwendet
-                        {material.last_used && ` · ${new Date(material.last_used).toLocaleDateString('de-DE')}`}
-                      </div>
-                    )}
-                  </div>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 'var(--space-xs)' }}>
-                    {/* Stern / Favorit */}
-                    <button
-                      className="btn btn-ghost btn-sm"
-                      onClick={e => {
-                        e.stopPropagation();
-                        toggleFavorite(material.id);
-                      }}
-                      style={{ padding: 4 }}
-                    >
-                      {material.is_favorite
-                        ? <Star size={18} fill="var(--color-accent)" color="var(--color-accent)" />
-                        : <StarOff size={18} color="var(--color-text-tertiary)" />
-                      }
-                    </button>
-
-                    <div className="text-sm" style={{
-                      color: isCrit ? 'var(--color-danger)' : 'var(--color-text-secondary)',
-                      fontWeight: isCrit ? 700 : 400,
-                    }}>
-                      {material.current_stock} {UNIT_LABELS[material.unit]}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+          {filtered.map(material => (
+            <MaterialCard
+              key={material.id}
+              material={material}
+              onOpenMenu={openMenu}
+            />
+          ))}
         </div>
 
         {filtered.length === 0 && (
@@ -247,6 +274,17 @@ export default function MaterialList() {
 
         <div style={{ height: 80 }} />
       </div>
+
+      {contextMenu && (
+        <LongPressMenu
+          materialId={contextMenu.materialId}
+          x={contextMenu.x}
+          y={contextMenu.y}
+          onClose={closeMenu}
+        />
+      )}
     </>
   );
 }
+
+

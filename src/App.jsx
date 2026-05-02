@@ -20,6 +20,7 @@ const OrderList = lazy(() => import('./pages/OrderList'));
 const MovementLog = lazy(() => import('./pages/MovementLog'));
 const Settings = lazy(() => import('./pages/Settings'));
 const Statistics = lazy(() => import('./pages/Statistics'));
+const DailyReport = lazy(() => import('./pages/DailyReport'));
 const CategoryManager = lazy(() => import('./pages/CategoryManager'));
 const SupplierManager = lazy(() => import('./pages/SupplierManager'));
 const BatchBooking = lazy(() => import('./pages/BatchBooking'));
@@ -71,11 +72,13 @@ function AppRoutes() {
           <Route path="/mehrfach" element={<BatchBooking />} />
           <Route path="/bewegungen" element={<MovementLog />} />
           <Route path="/statistiken" element={<Statistics />} />
+          <Route path="/tagesrapport" element={<DailyReport />} />
           <Route path="/kategorien" element={<CategoryManager />} />
           <Route path="/lieferanten" element={<SupplierManager />} />
           <Route path="/inventur" element={<InventoryScan />} />
           <Route path="/assistent" element={<AiAssistant />} />
           <Route path="/werkzeuge" element={<ToolsPage />} />
+          <Route path="/csv-import" element={<CsvImport />} />
           <Route path="/mehr" element={<Settings />} />
         </Route>
       </Routes>
@@ -94,3 +97,4 @@ export default function App() {
     </AuthProvider>
   );
 }
+

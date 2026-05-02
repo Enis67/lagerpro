@@ -1,17 +1,19 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { ChevronLeft, Edit, Trash2, Zap, ExternalLink, Camera } from 'lucide-react';
+import { ChevronLeft, Edit, Trash2, Zap, ExternalLink, Camera, QrCode } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useStore } from '../hooks/useStore';
 import { UNIT_LABELS } from '../data/constants';
 import { openSoneparForMaterial } from '../services/sonepar';
 import MovementRow from '../components/MovementRow';
 import ConfirmDialog from '../components/ConfirmDialog';
+import QRCodeGenerator from '../components/QRCodeGenerator';
 
 export default function MaterialDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { materials, movements, getCategoryName, getSupplierName, removeMaterial } = useStore();
   const [showDelete, setShowDelete] = useState(false);
+  const [showQR, setShowQR] = useState(false);
 
   const material = materials.find(m => m.id === id);
   if (!material) {
@@ -71,6 +73,9 @@ export default function MaterialDetail() {
           }}>
             {material.manufacturer_number?.trim() || material.article_number}
           </span>
+          <button className="page-header-action" onClick={() => setShowQR(true)} aria-label="QR-Code anzeigen">
+            <QrCode size={18} />
+          </button>
           <button className="page-header-action" onClick={() => navigate(`/material/${id}/edit`)}>
             <Edit size={18} />
           </button>
@@ -254,6 +259,13 @@ export default function MaterialDetail() {
             danger
             onCancel={() => setShowDelete(false)}
             onConfirm={handleDelete}
+          />
+        )}
+
+        {showQR && (
+          <QRCodeGenerator
+            material={material}
+            onClose={() => setShowQR(false)}
           />
         )}
       </div>
