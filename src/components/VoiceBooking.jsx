@@ -202,7 +202,7 @@ export default function VoiceBooking({ onClose, onComplete }) {
         material_id: material.id,
         type: 'entnahme',
         quantity,
-        notes: `🎤 Sprachbuchung: "${transcript}"`,
+        note: `🎤 Sprachbuchung: "${transcript}"`,
         created_at: new Date().toISOString(),
       };
 
