@@ -1,28 +1,69 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AlertTriangle, ShoppingCart, ArrowDownUp, PackageMinus, ChevronRight, Mic, RotateCcw } from 'lucide-react';
+import {
+  AlertTriangle, ShoppingCart, ArrowDownUp, PackageMinus, ChevronRight,
+  RotateCcw, Mic, TrendingUp, DollarSign, BarChart3, Archive,
+} from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import KpiCard from '../components/KpiCard';
 import MovementRow from '../components/MovementRow';
 import VoiceBooking from '../components/VoiceBooking';
 import Toast from '../components/Toast';
 import { UNIT_LABELS } from '../data/constants';
+import { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { materials, movements, projects, addMovement, editMaterial, getMaterialName } = useStore();
+  const { materials, movements, projects, categories, addMovement, editMaterial, getMaterialName } = useStore();
   const [showVoice, setShowVoice] = useState(false);
   const [toast, setToast] = useState(null);
 
-  // KPIs berechnen
-  const criticalItems = materials.filter(m => m.active && m.current_stock <= m.min_stock);
-  const reorderCount = criticalItems.length;
+  // ── Statistiken ──
+  const totalItems = materials.filter(m => m.active).length;
 
+  const inventoryValue = materials
+    .filter(m => m.active)
+    .reduce((sum, m) => sum + (m.price_per_unit || 0) * (m.current_stock || 0), 0);
+
+  // Top 5 meistgebuchte Artikel
+  const usageMap = {};
+  movements.forEach(m => {
+    if (m.type === 'entnahme') {
+      usageMap[m.material_id] = (usageMap[m.material_id] || 0) + m.quantity;
+    }
+  });
+  const top5 = Object.entries(usageMap)
+    .map(([id, count]) => {
+      const mat = materials.find(m => m.id === id);
+      return mat ? { ...mat, totalQuantity: count } : null;
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.totalQuantity - a.totalQuantity)
+    .slice(0, 5);
+
+  // Kritische Artikel
+  const criticalItems = materials.filter(m => m.active && m.current_stock <= m.min_stock);
+
+  // Kategorien-Verteilung
+  const catCounts = {};
+  materials.filter(m => m.active).forEach(m => {
+    catCounts[m.category_id] = (catCounts[m.category_id] || 0) + 1;
+  });
+  const catDistribution = categories
+    .filter(c => c.active)
+    .map(c => ({
+      ...c,
+      count: catCounts[c.id] || 0,
+      percent: totalItems > 0 ? ((catCounts[c.id] || 0) / totalItems) * 100 : 0,
+    }))
+    .filter(c => c.count > 0)
+    .sort((a, b) => b.count - a.count);
+  const maxCatCount = Math.max(...catDistribution.map(c => c.count), 1);
+
+  // KPIs für Karten
   const today = new Date().toDateString();
   const todaysWithdrawals = movements.filter(m => m.type === 'entnahme' && new Date(m.created_at).toDateString() === today);
   const todaysWithdrawalCount = todaysWithdrawals.reduce((sum, m) => sum + m.quantity, 0);
-
   const recentMovements = movements.slice(0, 8);
   const activeProjects = projects.filter(p => p.status === 'aktiv');
 
@@ -63,7 +104,6 @@ export default function Dashboard() {
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
-          {/* Sprachbuchung-Button */}
           <button
             onClick={() => setShowVoice(true)}
             style={{
@@ -94,35 +134,35 @@ export default function Dashboard() {
         {/* KPI Grid */}
         <div className="kpi-grid">
           <KpiCard
-            icon={AlertTriangle}
-            value={reorderCount}
-            label="Kritische Artikel"
-            color={reorderCount > 0 ? '#EF4444' : '#10B981'}
-            bgColor={reorderCount > 0 ? '#FEF2F2' : '#ECFDF5'}
-            onClick={() => navigate('/nachbestellen')}
+            icon={Archive}
+            value={totalItems}
+            label="Artikel gesamt"
+            color="#3B82F6"
+            bgColor="#EFF6FF"
+            onClick={() => navigate('/material')}
           />
           <KpiCard
-            icon={ShoppingCart}
-            value={reorderCount}
-            label="Nachbestellen"
-            color="#F59E0B"
-            bgColor="#FFFBEB"
-            onClick={() => navigate('/nachbestellen')}
+            icon={DollarSign}
+            value={`${inventoryValue.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`}
+            label="Lagerwert"
+            color="#10B981"
+            bgColor="#ECFDF5"
+          />
+          <KpiCard
+            icon={AlertTriangle}
+            value={criticalItems.length}
+            label="Kritisch"
+            color={criticalItems.length > 0 ? '#EF4444' : '#10B981'}
+            bgColor={criticalItems.length > 0 ? '#FEF2F2' : '#ECFDF5'}
+            onClick={() => navigate('/order-list')}
           />
           <KpiCard
             icon={ArrowDownUp}
             value={movements.length}
-            label="Buchungen gesamt"
-            color="#3B82F6"
-            bgColor="#EFF6FF"
-            onClick={() => navigate('/bewegungen')}
-          />
-          <KpiCard
-            icon={PackageMinus}
-            value={todaysWithdrawalCount}
-            label="Entnahmen heute"
+            label="Buchungen"
             color="#8B5CF6"
             bgColor="#F5F3FF"
+            onClick={() => navigate('/bewegungen')}
           />
         </div>
 
@@ -157,17 +197,107 @@ export default function Dashboard() {
           </button>
         )}
 
+        {/* Top 5 meistgebuchte Artikel */}
+        {top5.length > 0 && (
+          <div className="section">
+            <div className="section-header">
+              <h2 className="section-title">
+                <TrendingUp size={16} style={{ verticalAlign: 'text-bottom', marginRight: 4 }} />
+                Top 5 meistgebucht
+              </h2>
+            </div>
+            <div className="list">
+              {top5.map((item, idx) => (
+                <div
+                  key={item.id}
+                  className="card card-clickable"
+                  onClick={() => navigate(`/material/${item.id}`)}
+                >
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-sm" style={{ flex: 1, minWidth: 0 }}>
+                      <span style={{
+                        width: 24, height: 24, borderRadius: '50%',
+                        background: idx < 3 ? 'var(--color-primary)' : 'var(--color-border)',
+                        color: idx < 3 ? 'white' : 'var(--color-text-secondary)',
+                        fontSize: 'var(--font-size-xs)', fontWeight: 700,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        flexShrink: 0,
+                      }}>
+                        {idx + 1}
+                      </span>
+                      <div style={{ minWidth: 0 }}>
+                        <div className="font-semibold" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                          {item.name}
+                        </div>
+                        <div className="text-xs text-tertiary">
+                          {item.article_number} · {UNIT_LABELS[item.unit]}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-right" style={{ flexShrink: 0 }}>
+                      <div className="font-bold" style={{ fontSize: '16px', color: 'var(--color-primary)' }}>
+                        {item.totalQuantity}
+                      </div>
+                      <div className="text-xs text-tertiary">gebucht</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Kategorien-Verteilung */}
+        {catDistribution.length > 0 && (
+          <div className="section">
+            <div className="section-header">
+              <h2 className="section-title">
+                <BarChart3 size={16} style={{ verticalAlign: 'text-bottom', marginRight: 4 }} />
+                Kategorien
+              </h2>
+            </div>
+            <div className="card">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
+                {catDistribution.map(cat => (
+                  <div key={cat.id}>
+                    <div className="flex justify-between items-center mb-xs">
+                      <span className="text-sm font-medium">{cat.name}</span>
+                      <span className="text-xs text-secondary">{cat.count} ({cat.percent.toFixed(0)}%)</span>
+                    </div>
+                    <div style={{
+                      width: '100%', height: 8, borderRadius: 4,
+                      background: 'var(--color-border)',
+                      overflow: 'hidden',
+                    }}>
+                      <div style={{
+                        width: `${(cat.count / maxCatCount) * 100}%`,
+                        height: '100%',
+                        background: cat.color,
+                        borderRadius: 4,
+                        transition: 'width 0.5s ease',
+                      }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Kritische Artikel */}
         {criticalItems.length > 0 && (
           <div className="section">
             <div className="section-header">
-              <h2 className="section-title">⚠️ Kritischer Bestand</h2>
-              <button className="section-action" onClick={() => navigate('/nachbestellen')}>
+              <h2 className="section-title" style={{ color: 'var(--color-danger)' }}>
+                <AlertTriangle size={16} style={{ verticalAlign: 'text-bottom', marginRight: 4 }} />
+                Kritischer Bestand
+              </h2>
+              <button className="section-action" onClick={() => navigate('/order-list')}>
                 Alle <ChevronRight size={14} style={{ verticalAlign: 'middle' }} />
               </button>
             </div>
             <div className="list">
-              {criticalItems.slice(0, 3).map(item => {
+              {criticalItems.slice(0, 5).map(item => {
                 const smartId = item.manufacturer_number?.trim()
                   ? item.manufacturer_number
                   : item.article_number;
@@ -179,18 +309,19 @@ export default function Dashboard() {
                     style={{ borderLeft: `4px solid ${item.current_stock === 0 ? 'var(--color-danger)' : 'var(--color-warning)'}` }}
                   >
                     <div className="flex justify-between items-center">
-                      <div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
                         <div className="font-semibold">{item.name}</div>
                         <div className="text-sm text-secondary" style={{ fontFamily: 'monospace' }}>{smartId}</div>
                         {item.storage_location && (
                           <div className="text-xs text-tertiary mt-sm">📍 {item.storage_location}</div>
                         )}
                       </div>
-                      <div className="text-right">
+                      <div className="text-right" style={{ flexShrink: 0 }}>
                         <div className="font-bold" style={{ color: item.current_stock === 0 ? 'var(--color-danger)' : 'var(--color-warning)', fontSize: '18px' }}>
                           {item.current_stock}
                         </div>
                         <div className="text-xs text-tertiary">Min: {item.min_stock}</div>
+                        <div className="text-xs text-danger mt-xs">Fehlt: {item.min_stock - item.current_stock}</div>
                       </div>
                     </div>
                   </div>

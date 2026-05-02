@@ -1,7 +1,7 @@
 // Data Service Layer – Abstraktion über localStorage
 // In Phase 2 wird diese Datei gegen Supabase-Calls getauscht.
 
-import { seedCategories, seedSuppliers, seedMaterials, seedProjects, generateSeedMovements } from '../data/seedData.js';
+import { seedCategories, seedSuppliers, seedMaterials, seedProjects, seedMovements } from '../data/seedData.js';
 
 const STORAGE_KEYS = {
   materials: 'lagerpro_materials',
@@ -56,8 +56,8 @@ export function initializeData() {
   }));
   setStore(STORAGE_KEYS.projects, projects);
 
-  // Lagerbewegungen generieren
-  const movements = generateSeedMovements(materials);
+  // Lagerbewegungen
+  const movements = seedMovements.map(m => ({ ...m, created_at: now }));
   setStore(STORAGE_KEYS.movements, movements);
 
   localStorage.setItem(STORAGE_KEYS.initialized, 'true');

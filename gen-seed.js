@@ -1,4 +1,4 @@
-const fs = require('fs');
+import fs from 'fs';
 
 const materials = [];
 let id = 1;
@@ -35,6 +35,16 @@ add('H05VV-F 3G2.5', 'E-KBL-007', 'H05VV-3G2.5-F', 1, 1, 'meter', 150, 75, 2.10,
 add('H07RN-F 5G2.5', 'E-KBL-008', 'H07RN-5G2.5-F', 1, 2, 'meter', 150, 75, 5.60, 'Regal A8', 'Gummischlauchleitung schwer');
 add('H07RN-F 5G4', 'E-KBL-009', 'H07RN-5G4-F', 1, 2, 'meter', 100, 50, 8.20, 'Regal A9', 'Gummischlauchleitung schwer');
 add('NYCY 4x25/16', 'E-KBL-010', 'NYCY-4G25-16', 1, 2, 'meter', 80, 40, 28.50, 'Regal A10', 'EMV-gerecht geschirmt');
+add('NYY-J 3x1.5', 'E-KBL-011', 'NYY-3G1.5-B2CA', 1, 1, 'meter', 400, 200, 1.80, 'Regal A11', 'Mantelleitung PVC 0,6/1kV');
+add('NYY-J 4x10', 'E-KBL-012', 'NYY-4G10-B2CA', 1, 1, 'meter', 120, 60, 8.50, 'Regal A12', 'Mantelleitung PVC 0,6/1kV');
+add('NYCY 4x50/25', 'E-KBL-013', 'NYCY-4G50-25', 1, 2, 'meter', 50, 25, 52.00, 'Regal A13', 'EMV-gerecht geschirmt');
+add('H07RN-F 3G2.5', 'E-KBL-014', 'H07RN-3G2.5-F', 1, 2, 'meter', 100, 50, 4.20, 'Regal A14', 'Gummischlauchleitung schwer');
+add('H07RN-F 4G6', 'E-KBL-015', 'H07RN-4G6-F', 1, 2, 'meter', 80, 40, 9.80, 'Regal A15', 'Gummischlauchleitung schwer');
+add('H05RR-F 3G1.0', 'E-KBL-016', 'H05RR-3G1.0-F', 1, 1, 'meter', 250, 125, 0.95, 'Regal A16', 'Schlauchleitung leicht');
+add('H05VV-F 2G0.75', 'E-KBL-017', 'H05VV-2G0.75-F', 1, 1, 'meter', 300, 150, 0.65, 'Regal A17', 'Schlauchleitung flexibel');
+add('LiYCY 4x0.5', 'E-KBL-018', 'LIYCY-4G0.5', 1, 3, 'meter', 200, 100, 1.20, 'Regal A18', 'Steuerleitung geschirmt');
+add('LiYCY 8x0.5', 'E-KBL-019', 'LIYCY-8G0.5', 1, 3, 'meter', 150, 75, 2.40, 'Regal A19', 'Steuerleitung geschirmt');
+add('NYCWY 4x35/16', 'E-KBL-020', 'NYCWY-4G35-16', 1, 2, 'meter', 60, 30, 38.00, 'Regal A20', 'EMV-gerecht geschirmt');
 
 // ── LEITUNGEN (Kat 2) ──
 add('NYM-J 3x1.5', 'E-LTG-001', 'NYM-3G1.5-B2CA', 2, 1, 'meter', 300, 150, 1.20, 'Regal B1', 'Mantelleitung halogenfrei');
@@ -47,6 +57,16 @@ add('J-Y(ST)Y 4x2x0.8', 'E-LTG-007', 'JYSTY-4x2x0.8', 2, 3, 'meter', 300, 150, 1
 add('LiYY 2x0.25', 'E-LTG-008', 'LIYY-2G0.25', 2, 3, 'meter', 200, 100, 0.55, 'Regal B8', 'Steuerleitung flexibel');
 add('LiYY 5x0.25', 'E-LTG-009', 'LIYY-5G0.25', 2, 3, 'meter', 150, 75, 0.95, 'Regal B9', 'Steuerleitung flexibel');
 add('Cat.6 Verlegekabel U/UTP', 'E-LTG-010', 'CAT6-UUTP-4P', 2, 3, 'meter', 500, 250, 0.85, 'Regal B10', 'Netzwerkkabel Cat.6');
+add('NYM-J 3x2.5', 'E-LTG-011', 'NYM-3G2.5-B2CA', 2, 1, 'meter', 350, 175, 1.90, 'Regal B11', 'Mantelleitung halogenfrei');
+add('NYM-J 4x1.5', 'E-LTG-012', 'NYM-4G1.5-B2CA', 2, 1, 'meter', 300, 150, 2.50, 'Regal B12', 'Mantelleitung halogenfrei');
+add('NYM-J 5x4', 'E-LTG-013', 'NYM-5G4-B2CA', 2, 1, 'meter', 180, 90, 5.20, 'Regal B13', 'Mantelleitung halogenfrei');
+add('Cat.6A Verlegekabel S/FTP', 'E-LTG-014', 'CAT6A-SFTP-4P', 2, 3, 'meter', 300, 150, 1.40, 'Regal B14', 'Netzwerkkabel Cat.6A geschirmt');
+add('Cat.7 Verlegekabel S/FTP', 'E-LTG-015', 'CAT7-SFTP-4P', 2, 3, 'meter', 200, 100, 2.20, 'Regal B15', 'Netzwerkkabel Cat.7 geschirmt');
+add('J-Y(ST)Y 6x2x0.8', 'E-LTG-016', 'JYSTY-6x2x0.8', 2, 3, 'meter', 250, 125, 2.10, 'Regal B16', 'Telefonleitung');
+add('LiYY 8x0.25', 'E-LTG-017', 'LIYY-8G0.25', 2, 3, 'meter', 120, 60, 1.35, 'Regal B17', 'Steuerleitung flexibel');
+add('LiYY 12x0.25', 'E-LTG-018', 'LIYY-12G0.25', 2, 3, 'meter', 100, 50, 1.80, 'Regal B18', 'Steuerleitung flexibel');
+add('H05RR-F 3G1.0', 'E-LTG-019', 'H05RR-3G1.0-F', 2, 1, 'meter', 150, 75, 0.90, 'Regal B19', 'Schlauchleitung leicht');
+add('H07RN-F 4G4', 'E-LTG-020', 'H07RN-4G4-F', 2, 2, 'meter', 90, 45, 7.50, 'Regal B20', 'Gummischlauchleitung schwer');
 
 // ── KLEMMEN (Kat 3) ──
 add('WAGO 221-415 5-polig', 'E-KLE-001', 'WAGO-221-415', 3, 1, 'stueck', 200, 100, 0.45, 'Regal C1', 'Dosenklemme 5-polig');
@@ -59,6 +79,16 @@ add('Klemmblock 16mm²', 'E-KLE-007', 'KB-16.0-BRASS', 3, 2, 'stueck', 60, 30, 1
 add('Aderendhülsen isoliert 1.5mm²', 'E-KLE-008', 'AEH-1.5-ISO-1000', 3, 1, 'stueck', 1000, 500, 0.03, 'Regal C8', 'VPE 1000 Stück');
 add('Aderendhülsen isoliert 2.5mm²', 'E-KLE-009', 'AEH-2.5-ISO-1000', 3, 1, 'stueck', 800, 400, 0.04, 'Regal C9', 'VPE 1000 Stück');
 add('Aderendhülsen isoliert 4mm²', 'E-KLE-010', 'AEH-4.0-ISO-500', 3, 1, 'stueck', 500, 250, 0.06, 'Regal C10', 'VPE 500 Stück');
+add('WAGO 773-164 3-polig', 'E-KLE-011', 'WAGO-773-164', 3, 1, 'stueck', 150, 75, 0.28, 'Regal C11', 'Verbindungsklemme 3-polig');
+add('WAGO 773-168 8-polig', 'E-KLE-012', 'WAGO-773-168', 3, 1, 'stueck', 100, 50, 0.55, 'Regal C12', 'Verbindungsklemme 8-polig');
+add('WAGO 222-415 5-polig', 'E-KLE-013', 'WAGO-222-415', 3, 1, 'stueck', 120, 60, 0.50, 'Regal C13', 'Hebelklemme 5-polig');
+add('Klemmblock 25mm²', 'E-KLE-014', 'KB-25.0-BRASS', 3, 2, 'stueck', 40, 20, 1.80, 'Regal C14', 'Messing Hutschiene');
+add('Klemmblock 35mm²', 'E-KLE-015', 'KB-35.0-BRASS', 3, 2, 'stueck', 30, 15, 2.50, 'Regal C15', 'Messing Hutschiene');
+add('Aderendhülsen unisoliert 1.5mm²', 'E-KLE-016', 'AEH-1.5-UNI-1000', 3, 1, 'stueck', 800, 400, 0.02, 'Regal C16', 'VPE 1000 Stück');
+add('Aderendhülsen unisoliert 2.5mm²', 'E-KLE-017', 'AEH-2.5-UNI-1000', 3, 1, 'stueck', 600, 300, 0.03, 'Regal C17', 'VPE 1000 Stück');
+add('Aderendhülsen unisoliert 6mm²', 'E-KLE-018', 'AEH-6.0-UNI-500', 3, 1, 'stueck', 400, 200, 0.05, 'Regal C18', 'VPE 500 Stück');
+add('Lüsterklemme 2.5mm²', 'E-KLE-019', 'LK-2.5-POLY', 3, 1, 'stueck', 200, 100, 0.08, 'Regal C19', 'Polyamid transparent');
+add('Isolierhülse 2.5mm² rot', 'E-KLE-020', 'IH-2.5-RT-100', 3, 1, 'stueck', 300, 150, 0.04, 'Regal C20', 'VPE 100 Stück rot');
 
 // ── ABZWEIGDOSEN (Kat 4) ──
 add('Hohlwanddose 60mm tief', 'E-ABD-001', 'HW60-DEEP-PP', 4, 1, 'stueck', 150, 75, 0.65, 'Regal D1', 'Tiefe Dose Schraubdeckel');
@@ -71,6 +101,16 @@ add('Abzweigdose IP65 100x100', 'E-ABD-007', 'AZD-100x100-IP65', 4, 2, 'stueck',
 add('Kabelabzweigkasten 120x80', 'E-ABD-008', 'KAK-120x80-IP55', 4, 2, 'stueck', 30, 15, 6.80, 'Regal D8', 'IP55 mit Klemmen');
 add('Hohlwanddose Schalterdose 60mm', 'E-ABD-009', 'HW60-SD-PP', 4, 1, 'stueck', 150, 75, 0.70, 'Regal D9', 'Mit Schraubkrallen');
 add('Gerätedose 1-fach', 'E-ABD-010', 'GD-1F-60-PP', 4, 1, 'stueck', 200, 100, 0.50, 'Regal D10', 'Universal Gerätedose');
+add('Hohlwanddose 68mm tief', 'E-ABD-011', 'HW68-DEEP-PP', 4, 1, 'stueck', 80, 40, 0.75, 'Regal D11', 'Extra tief Schraubdeckel');
+add('Hohlwanddose 47mm', 'E-ABD-012', 'HW47-SHAL-PP', 4, 1, 'stueck', 150, 75, 0.48, 'Regal D12', 'Standard Dose Schraubdeckel');
+add('Unterputzdose 47mm flach', 'E-ABD-013', 'UP47-FLAT-PP', 4, 1, 'stueck', 80, 40, 0.32, 'Regal D13', 'UP Dose flach');
+add('Abzweigdose IP65 125x125', 'E-ABD-014', 'AZD-125x125-IP65', 4, 2, 'stueck', 25, 12, 7.20, 'Regal D14', 'Feuchtraum Gummidichtung');
+add('Kabelabzweigkasten 190x140', 'E-ABD-015', 'KAK-190x140-IP55', 4, 2, 'stueck', 20, 10, 12.50, 'Regal D15', 'IP55 mit Klemmen');
+add('Gerätedose 2-fach', 'E-ABD-016', 'GD-2F-60-PP', 4, 1, 'stueck', 120, 60, 0.65, 'Regal D16', 'Universal Gerätedose');
+add('Gerätedose 3-fach', 'E-ABD-017', 'GD-3F-60-PP', 4, 1, 'stueck', 80, 40, 0.80, 'Regal D17', 'Universal Gerätedose');
+add('Hohlwanddose 71mm tief', 'E-ABD-018', 'HW71-DEEP-PP', 4, 1, 'stueck', 60, 30, 0.85, 'Regal D18', 'Tiefe Dose Schraubdeckel');
+add('Abzweigdose IP44 80x80', 'E-ABD-019', 'AZD-80x80-IP44', 4, 2, 'stueck', 40, 20, 1.80, 'Regal D19', 'Spritzwassergeschützt');
+add('Kabelabzweigkasten 75x75', 'E-ABD-020', 'KAK-75x75-IP55', 4, 2, 'stueck', 50, 25, 4.20, 'Regal D20', 'IP55 mit Klemmen');
 
 // ── SCHALTER/DOSEN (Kat 5) ──
 add('Schuko-Steckdose weiß', 'E-SDA-001', 'SCHUKO-16A-WS', 5, 1, 'stueck', 100, 50, 3.20, 'Regal E1', '16A weiß UP');
@@ -83,6 +123,16 @@ add('Doppel-Schuko-Steckdose', 'E-SDA-007', 'DSCHUKO-16A-WS', 5, 1, 'stueck', 50
 add('RJ45 Dose Cat.6', 'E-SDA-008', 'RJ45-CAT6-UP', 5, 3, 'stueck', 50, 25, 8.90, 'Regal E8', 'Netzwerkdose Cat.6 UP');
 add('RJ45 Dose Cat.6A', 'E-SDA-009', 'RJ45-CAT6A-UP', 5, 3, 'stueck', 30, 15, 12.50, 'Regal E9', 'Netzwerkdose Cat.6A UP');
 add('TV/SAT Dose 3-fach', 'E-SDA-010', 'TV-SAT-3F-UP', 5, 3, 'stueck', 25, 12, 15.00, 'Regal E10', 'TV+SAT+Radio Enddose');
+add('Schuko-Steckdose USB-A+C', 'E-SDA-011', 'SCHUKO-USB-WS', 5, 1, 'stueck', 40, 20, 18.50, 'Regal E11', 'Mit USB-A und USB-C Ladeports');
+add('Schalter Treppenhaus', 'E-SDA-012', 'SW-TH-10A-WS', 5, 1, 'stueck', 50, 25, 3.20, 'Regal E12', '10A Treppenhausautomat UP');
+add('Taster unbeleuchtet', 'E-SDA-013', 'TAST-UNB-WS', 5, 1, 'stueck', 60, 30, 2.80, 'Regal E13', 'Taster UP weiß');
+add('Dreifach-Schuko-Steckdose', 'E-SDA-014', 'TSCHUKO-16A-WS', 5, 1, 'stueck', 30, 15, 8.50, 'Regal E14', '3-fach 16A weiß UP');
+add('Schuko-Steckdose mit Klappdeckel', 'E-SDA-015', 'SCHUKO-KD-WS', 5, 1, 'stueck', 35, 18, 5.20, 'Regal E15', 'IP44 Klappdeckel weiß');
+add('Schalter Wechsel weiß', 'E-SDA-016', 'SW-WECH-10A-AN', 5, 1, 'stueck', 40, 20, 3.50, 'Regal E16', '10A Wechselschaltung anthrazit');
+add('Klingeltaster beleuchtet', 'E-SDA-017', 'KLT-BEL-LED-WS', 5, 2, 'stueck', 25, 12, 5.80, 'Regal E17', 'LED Klingeltaster UP');
+add('RJ45 Dose Cat.5e', 'E-SDA-018', 'RJ45-CAT5E-UP', 5, 3, 'stueck', 40, 20, 6.50, 'Regal E18', 'Netzwerkdose Cat.5e UP');
+add('USB Ladestation 2-fach', 'E-SDA-019', 'USB-LAD-2F-WS', 5, 1, 'stueck', 20, 10, 22.00, 'Regal E19', '2 USB-A Ports weiß UP');
+add('Bewegungsmelder 180°', 'E-SDA-020', 'BM-180-WS', 5, 2, 'stueck', 15, 8, 28.00, 'Regal E20', '180° Bewegungsmelder UP');
 
 // ── BELEUCHTUNG (Kat 6) ──
 add('LED Panel 60x60 4000K 36W', 'E-BEL-001', 'LED-6060-40K-36W', 6, 2, 'stueck', 30, 15, 45.00, 'Regal F1', '36W 4000K Rahmen weiß');
@@ -95,6 +145,16 @@ add('Notleuchte LED 3h', 'E-BEL-007', 'NL-LED-3H-AUTO', 6, 2, 'stueck', 20, 10, 
 add('Notleuchte LED Wand 1h', 'E-BEL-008', 'NL-LED-W1H', 6, 2, 'stueck', 15, 8, 45.00, 'Regal F8', 'Wandmontage 1h Akku');
 add('LED Streifen 5m 3000K', 'E-BEL-009', 'LED-STR-5M-30K', 6, 2, 'stueck', 25, 12, 28.00, 'Regal F9', '5m selbstklebend 3000K');
 add('LED Streifen 5m RGB', 'E-BEL-010', 'LED-STR-5M-RGB', 6, 2, 'stueck', 20, 10, 32.00, 'Regal F10', '5m selbstklebend RGB');
+add('LED Panel 30x30 4000K 18W', 'E-BEL-011', 'LED-3030-40K-18W', 6, 2, 'stueck', 35, 18, 28.00, 'Regal F11', '18W 4000K klein');
+add('LED Downlight 20W 4000K', 'E-BEL-012', 'LED-DL-20W-40K', 6, 2, 'stueck', 25, 12, 32.00, 'Regal F12', '20W 4000K Einbau');
+add('LED Röhre 60cm 9W', 'E-BEL-013', 'LED-ROE-60-9W-40K', 6, 2, 'stueck', 80, 40, 9.50, 'Regal F13', '60cm 9W 4000K');
+add('LED Spot GU10 5W 2700K', 'E-BEL-014', 'LED-GU10-5W-27K', 6, 2, 'stueck', 100, 50, 4.50, 'Regal F14', 'GU10 5W 2700K dimmbar');
+add('LED Spot GU10 7W 4000K', 'E-BEL-015', 'LED-GU10-7W-40K', 6, 2, 'stueck', 80, 40, 6.20, 'Regal F15', 'GU10 7W 4000K dimmbar');
+add('LED Fluter 50W 4000K', 'E-BEL-016', 'LED-FL-50W-40K', 6, 2, 'stueck', 15, 8, 35.00, 'Regal F16', '50W 4000K Außen IP65');
+add('LED Fluter 100W 4000K', 'E-BEL-017', 'LED-FL-100W-40K', 6, 2, 'stueck', 10, 5, 55.00, 'Regal F17', '100W 4000K Außen IP65');
+add('Notleuchte Rettungszeichen', 'E-BEL-018', 'NL-RETT-LED-3H', 6, 2, 'stueck', 12, 6, 78.00, 'Regal F18', 'Rettungszeichen LED 3h');
+add('LED Streifen 10m 4000K', 'E-BEL-019', 'LED-STR-10M-40K', 6, 2, 'stueck', 15, 8, 45.00, 'Regal F19', '10m selbstklebend 4000K');
+add('LED Einbaustrahler 7W dimmbar', 'E-BEL-020', 'LED-ES-7W-DIM-40K', 6, 2, 'stueck', 40, 20, 16.50, 'Regal F20', '7W 4000K dimmbar schwenkbar');
 
 // ── SCHIENEN/SICHERUNGEN (Kat 7) ──
 add('Hutschiene 35x7.5 2m', 'E-SCH-001', 'HS-35x7.5-STZN-2M', 7, 1, 'meter', 100, 50, 4.20, 'Regal G1', 'Stahl verzinkt 35x7.5mm');
@@ -107,6 +167,16 @@ add('Sicherung 32A B', 'E-SCH-007', 'SIC-32A-B-LS', 7, 2, 'stueck', 50, 25, 9.20
 add('FI-Schalter 40/30mA', 'E-SCH-008', 'FI-40A-30MA-2P', 7, 2, 'stueck', 30, 15, 45.00, 'Regal G8', '2-polig 40A 30mA Typ A');
 add('FI-Schalter 63/30mA', 'E-SCH-009', 'FI-63A-30MA-4P', 7, 2, 'stueck', 20, 10, 68.00, 'Regal G9', '4-polig 63A 30mA Typ A');
 add('Hauptschalter 63A 3P', 'E-SCH-010', 'HS-63A-3P', 7, 2, 'stueck', 15, 8, 35.00, 'Regal G10', '3-polig 63A Lasttrennschalter');
+add('Sicherung 10A B', 'E-SCH-011', 'SIC-10A-B-LS', 7, 2, 'stueck', 120, 60, 8.50, 'Regal G11', 'LS B-Charakteristik 10A');
+add('Sicherung 13A B', 'E-SCH-012', 'SIC-13A-B-LS', 7, 2, 'stueck', 100, 50, 8.50, 'Regal G12', 'LS B-Charakteristik 13A');
+add('Sicherung 16A C', 'E-SCH-013', 'SIC-16A-C-LS', 7, 2, 'stueck', 80, 40, 8.80, 'Regal G13', 'LS C-Charakteristik 16A');
+add('Sicherung 20A C', 'E-SCH-014', 'SIC-20A-C-LS', 7, 2, 'stueck', 70, 35, 8.80, 'Regal G14', 'LS C-Charakteristik 20A');
+add('FI-Schalter 25/30mA', 'E-SCH-015', 'FI-25A-30MA-2P', 7, 2, 'stueck', 40, 20, 38.00, 'Regal G15', '2-polig 25A 30mA Typ A');
+add('FI-Schalter 40/300mA', 'E-SCH-016', 'FI-40A-300MA-4P', 7, 2, 'stueck', 15, 8, 72.00, 'Regal G16', '4-polig 40A 300mA Typ B');
+add('Hauptschalter 100A 3P', 'E-SCH-017', 'HS-100A-3P', 7, 2, 'stueck', 10, 5, 48.00, 'Regal G17', '3-polig 100A Lasttrennschalter');
+add('Sammelschiene 3-phasig 12 Mod', 'E-SCH-018', 'SS-3PH-12M', 7, 2, 'stueck', 30, 15, 12.00, 'Regal G18', '3-phasig 12 Module');
+add('Sammelschiene 3-phasig 18 Mod', 'E-SCH-019', 'SS-3PH-18M', 7, 2, 'stueck', 20, 10, 16.00, 'Regal G19', '3-phasig 18 Module');
+add('Endkappe Sammelschiene', 'E-SCH-020', 'EK-SS-3PH', 7, 2, 'stueck', 50, 25, 1.20, 'Regal G20', 'Isolierte Endkappe');
 
 // ── ZAEHLERSCHRAENKE (Kat 8) ──
 add('Zaehlerschrank 1-feldig AP', 'E-ZS-001', 'ZS-1F-AP-IP30', 8, 1, 'stueck', 20, 10, 45.00, 'Regal H1', 'Aufputz 1-Feld IP30 Stahlblech');
@@ -119,6 +189,16 @@ add('Zaehlerschrank 5-feldig UP', 'E-ZS-007', 'ZS-5F-UP-IP30', 8, 2, 'stueck', 8
 add('Zaehlerschrank 8-feldig UP', 'E-ZS-008', 'ZS-8F-UP-IP30', 8, 2, 'stueck', 6, 3, 125.00, 'Regal H8', 'Unterputz 8-Felder IP30');
 add('Zaehlerschrank 12-feldig UP', 'E-ZS-009', 'ZS-12F-UP-IP30', 8, 2, 'stueck', 5, 3, 165.00, 'Regal H9', 'Unterputz 12-Felder IP30');
 add('Kleinverteiler 2-reihig 24PLE', 'E-ZS-010', 'VERT-2R-24PLE', 8, 1, 'stueck', 10, 5, 55.00, 'Regal H10', 'Kleinverteiler 2-reihig 24 PLE');
+add('Zaehlerschrank 1-feldig UP', 'E-ZS-011', 'ZS-1F-UP-IP30', 8, 2, 'stueck', 15, 8, 55.00, 'Regal H11', 'Unterputz 1-Feld IP30');
+add('Zaehlerschrank 16-feldig AP', 'E-ZS-012', 'ZS-16F-AP-IP30', 8, 1, 'stueck', 5, 3, 185.00, 'Regal H12', 'Aufputz 16-Felder IP30');
+add('Kleinverteiler 1-reihig 12PLE', 'E-ZS-013', 'VERT-1R-12PLE', 8, 1, 'stueck', 15, 8, 32.00, 'Regal H13', 'Kleinverteiler 1-reihig 12 PLE');
+add('Kleinverteiler 3-reihig 36PLE', 'E-ZS-014', 'VERT-3R-36PLE', 8, 1, 'stueck', 8, 4, 78.00, 'Regal H14', 'Kleinverteiler 3-reihig 36 PLE');
+add('Zaehlerschrank 2-feldig AP', 'E-ZS-015', 'ZS-2F-AP-IP30', 8, 1, 'stueck', 12, 6, 52.00, 'Regal H15', 'Aufputz 2-Felder IP30');
+add('Zaehlerschrank 4-feldig UP', 'E-ZS-016', 'ZS-4F-UP-IP30', 8, 2, 'stueck', 8, 4, 85.00, 'Regal H16', 'Unterputz 4-Felder IP30');
+add('Kleinverteiler 4-reihig 48PLE', 'E-ZS-017', 'VERT-4R-48PLE', 8, 1, 'stueck', 5, 3, 95.00, 'Regal H17', 'Kleinverteiler 4-reihig 48 PLE');
+add('Zaehlerschrank 6-feldig AP', 'E-ZS-018', 'ZS-6F-AP-IP30', 8, 1, 'stueck', 8, 4, 98.00, 'Regal H18', 'Aufputz 6-Felder IP30');
+add('Kleinverteiler mit Tür 2-reihig', 'E-ZS-019', 'VERT-TUR-2R-24', 8, 1, 'stueck', 6, 3, 68.00, 'Regal H19', 'Mit Tür 2-reihig 24 PLE');
+add('Zaehlerschrank 20-feldig AP', 'E-ZS-020', 'ZS-20F-AP-IP30', 8, 1, 'stueck', 3, 2, 220.00, 'Regal H20', 'Aufputz 20-Felder IP30');
 
 // ── KABELKANAELE (Kat 9) ──
 add('Kabelkanal PVC 15x10', 'E-KK-001', 'KK-PVC-15x10-WE', 9, 1, 'meter', 200, 100, 1.20, 'Regal I1', 'PVC weiß mit Deckel selbstklebend');
@@ -131,6 +211,16 @@ add('Kabelkanal Alu 50x30', 'E-KK-007', 'KK-AL-50x30-EL', 9, 3, 'meter', 50, 25,
 add('Leitungsfuehrungskanal 60x60', 'E-KK-008', 'LFK-60x60-ST', 9, 2, 'meter', 40, 20, 15.00, 'Regal I8', 'Stahl schwerlast mit Deckel');
 add('Bodenkanal BK 70', 'E-KK-009', 'BK-70-ALU-EL', 9, 3, 'meter', 30, 15, 28.00, 'Regal I9', 'Aluminium Bodenkanal 70mm breit');
 add('Kabelbinder schwarz 100x2.5', 'E-KK-010', 'KB-100x2.5-SW', 9, 1, 'stueck', 1000, 500, 0.02, 'Regal I10', 'Nylon UV-stabil 100mm lang');
+add('Kabelkanal PVC 12x12', 'E-KK-011', 'KK-PVC-12x12-WE', 9, 1, 'meter', 300, 150, 0.80, 'Regal I11', 'PVC weiß mit Deckel');
+add('Kabelkanal PVC 20x10', 'E-KK-012', 'KK-PVC-20x10-WE', 9, 1, 'meter', 250, 125, 1.00, 'Regal I12', 'PVC weiß mit Deckel');
+add('Kabelkanal Stahl 100x50', 'E-KK-013', 'KK-ST-100x50-FZ', 9, 2, 'meter', 40, 20, 18.00, 'Regal I13', 'Stahl feuerverzinkt mit Deckel');
+add('Kabelkanal Alu 75x50', 'E-KK-014', 'KK-AL-75x50-EL', 9, 3, 'meter', 30, 15, 14.50, 'Regal I14', 'Aluminium eloxiert mit Deckel');
+add('Kabelbinder schwarz 140x3.6', 'E-KK-015', 'KB-140x3.6-SW', 9, 1, 'stueck', 800, 400, 0.03, 'Regal I15', 'Nylon UV-stabil 140mm lang');
+add('Kabelbinder schwarz 200x4.8', 'E-KK-016', 'KB-200x4.8-SW', 9, 1, 'stueck', 500, 250, 0.05, 'Regal I16', 'Nylon UV-stabil 200mm lang');
+add('Kabelbinder wiederlösbar', 'E-KK-017', 'KB-WIED-150-SW', 9, 1, 'stueck', 300, 150, 0.08, 'Regal I17', 'Wiederlösbar 150mm');
+add('Kabelkanal Verbindungsstück 25x16', 'E-KK-018', 'KK-VB-25x16-WE', 9, 1, 'stueck', 100, 50, 0.35, 'Regal I18', 'PVC Verbindung');
+add('Kabelkanal T-Stück 25x16', 'E-KK-019', 'KK-T-25x16-WE', 9, 1, 'stueck', 80, 40, 0.65, 'Regal I19', 'PVC T-Stück');
+add('Kabelkanal Endstück 25x16', 'E-KK-020', 'KK-END-25x16-WE', 9, 1, 'stueck', 120, 60, 0.25, 'Regal I20', 'PVC Endstück');
 
 // ── ERdung (Kat 10) ──
 add('Erdungsstange Cu 1.5m', 'E-ERD-001', 'ES-CU-1.5M-16MM', 10, 2, 'stueck', 30, 15, 18.50, 'Regal J1', 'Kupfer 1.5m 16mm Durchmesser');
@@ -143,6 +233,16 @@ add('Potentialausgleich Erdungsbox', 'E-ERD-007', 'PAE-BOX-IP65', 10, 2, 'stueck
 add('Fundamenterder FeCu 1m', 'E-ERD-008', 'FE-FECU-1M-20MM', 10, 2, 'stueck', 20, 10, 28.00, 'Regal J8', 'Feuerverzinkt/Stahl 1m 20mm');
 add('Erdungsklemme CuZn M8', 'E-ERD-009', 'EK-CUZN-M8', 10, 2, 'stueck', 40, 20, 3.20, 'Regal J9', 'Kupfer/Zink M8 Anschluss');
 add('Erdungsring 16mm² 2m', 'E-ERD-010', 'ER-16MM-2M', 10, 2, 'stueck', 25, 12, 15.00, 'Regal J10', 'Ring 2m mit Klemme 16mm²');
+add('Erdungsstange Cu 2m', 'E-ERD-011', 'ES-CU-2M-16MM', 10, 2, 'stueck', 20, 10, 24.00, 'Regal J11', 'Kupfer 2m 16mm Durchmesser');
+add('Erdungsband Cu 25x3', 'E-ERD-012', 'EB-CU-25x3-R50', 10, 2, 'meter', 120, 60, 3.60, 'Regal J12', 'Kupferband 25x3mm Ring 50m');
+add('Potentialausgleichsschiene 10-fach', 'E-ERD-013', 'PAS-10x16-CU', 10, 2, 'stueck', 25, 12, 18.00, 'Regal J13', '10 Anschlüsse 16mm² Kupfer');
+add('Erdungsklemme NYY 4x10', 'E-ERD-014', 'EK-NYY-4G10', 10, 1, 'stueck', 40, 20, 5.50, 'Regal J14', 'Haupt Erdungsklemme NYY 4x10');
+add('Blitzschutz Ableiter T2', 'E-ERD-015', 'BS-T2-255', 10, 3, 'stueck', 20, 10, 45.00, 'Regal J15', 'Ableiter Typ 2 255V');
+add('Erdungsbuchse M10', 'E-ERD-016', 'EB-M10-CUZN', 10, 2, 'stueck', 50, 25, 1.80, 'Regal J16', 'M10 Kupfer/Zink');
+add('Erdungswinkel verstellbar', 'E-ERD-017', 'EW-VER-TZN', 10, 2, 'stueck', 40, 20, 3.80, 'Regal J17', 'Stahl verzinkt verstellbar');
+add('Potentialausgleich Erdungsbox 12', 'E-ERD-018', 'PAE-BOX-12-IP65', 10, 2, 'stueck', 15, 8, 28.00, 'Regal J18', 'Klemmenbox 12 Anschlüsse IP65');
+add('Fundamenterder FeCu 1.5m', 'E-ERD-019', 'FE-FECU-1.5M-20MM', 10, 2, 'stueck', 15, 8, 38.00, 'Regal J19', 'Feuerverzinkt/Stahl 1.5m 20mm');
+add('Erdungsband Al 30x3', 'E-ERD-020', 'EB-AL-30x3-R50', 10, 3, 'meter', 80, 40, 2.80, 'Regal J20', 'Aluminiumband 30x3mm Ring 50m');
 
 // ── WERKZEUG (Kat 11) ──
 add('Abisolierzange 0.2-6mm²', 'E-WZ-001', 'AZ-0.2-6.0-PRO', 11, 3, 'stueck', 15, 8, 24.50, 'Regal K1', 'Automatisch Knipex-Style');
@@ -155,6 +255,16 @@ add('Drehmomentschluessel 5-25Nm', 'E-WZ-007', 'DS-5-25NM-1/4', 11, 3, 'stueck',
 add('Kabelzieher Nylon 15m', 'E-WZ-008', 'KZ-NYL-15M', 11, 3, 'stueck', 10, 5, 18.00, 'Regal K8', 'Nylon 15m mit Schlaufe');
 add('Isolierschraubendreher Set', 'E-WZ-009', 'ISD-SET-VDE-7', 11, 3, 'set', 12, 6, 35.00, 'Regal K9', 'VDE geprüft 7-teilig');
 add('Digitaler Phasenprüfer', 'E-WZ-010', 'DPP-PHASE-LED', 11, 3, 'stueck', 15, 8, 12.50, 'Regal K10', 'Zweipolig LED-Anzeige');
+add('Abisolierzange 0.08-6mm²', 'E-WZ-011', 'AZ-0.08-6.0-PRO', 11, 3, 'stueck', 12, 6, 28.00, 'Regal K11', 'Feinabisolierung automatisch');
+add('Crimpzange 0.1-10mm²', 'E-WZ-012', 'CZ-0.1-10.0-RATCH', 11, 3, 'stueck', 8, 4, 38.00, 'Regal K12', 'Ratsche unisoliert');
+add('Spannungsprüfer zweipolig', 'E-WZ-013', 'SP-2P-12-1000V', 11, 3, 'stueck', 25, 12, 18.00, 'Regal K13', 'Zweipolig LED+LCD');
+add('Multimeter analog', 'E-WZ-014', 'MM-ANA-600V', 11, 3, 'stueck', 10, 5, 22.00, 'Regal K14', 'Analog 600V');
+add('Kabelschere hydraulisch 40mm', 'E-WZ-015', 'KS-40MM-HYD', 11, 3, 'stueck', 5, 3, 120.00, 'Regal K15', 'Hydraulisch 40mm');
+add('Lochsaege 68mm', 'E-WZ-016', 'LS-68-BIM', 11, 3, 'stueck', 15, 8, 12.00, 'Regal K16', 'Bi-Metall 68mm für Unterputzdosen');
+add('Drehmomentschluessel 2-10Nm', 'E-WZ-017', 'DS-2-10NM-1/4', 11, 3, 'stueck', 8, 4, 35.00, 'Regal K17', '1/4 Antrieb Feinmechanik');
+add('Kabelzieher Stahl 20m', 'E-WZ-018', 'KZ-ST-20M', 11, 3, 'stueck', 8, 4, 25.00, 'Regal K18', 'Stahl 20m mit Schlaufe');
+add('Kombizange 180mm', 'E-WZ-019', 'KZ-180-ISO', 11, 3, 'stueck', 15, 8, 16.50, 'Regal K19', 'VDE isoliert 180mm');
+add('Seitenschneider 160mm', 'E-WZ-020', 'SS-160-ISO', 11, 3, 'stueck', 18, 9, 14.00, 'Regal K20', 'VDE isoliert 160mm');
 
 // ── MONTAGEMATERIAL (Kat 12) ──
 add('Schraube TX25 5x50', 'E-MM-001', 'SCR-TX25-5x50', 12, 1, 'stueck', 500, 250, 0.05, 'Regal L1', 'Torx 25 5x50 verzinkt');
@@ -167,6 +277,16 @@ add('Schelle 16-20mm', 'E-MM-007', 'SCL-16-20-100', 12, 1, 'stueck', 300, 150, 0
 add('Schelle 25-32mm', 'E-MM-008', 'SCL-25-32-100', 12, 1, 'stueck', 250, 125, 0.12, 'Regal L8', 'Kabelschelle 25-32mm VPE 100');
 add('Montageklebeband 19mm', 'E-MM-009', 'MK-19-DBL-50', 12, 1, 'stueck', 100, 50, 3.50, 'Regal L9', 'Doppelseitig 19mm 50m');
 add('Federstecker Hohlwand', 'E-MM-010', 'FS-HW-METALL', 12, 1, 'stueck', 300, 150, 0.10, 'Regal L10', 'Metall Hohlwandbefestigung');
+add('Schraube TX30 8x80', 'E-MM-011', 'SCR-TX30-8x80', 12, 1, 'stueck', 300, 150, 0.10, 'Regal L11', 'Torx 30 8x80 verzinkt');
+add('Dübel 12mm universal', 'E-MM-012', 'DUEB-12-UNI-50', 12, 1, 'stueck', 300, 150, 0.08, 'Regal L12', 'Universal 12mm VPE 50');
+add('Dübel 14mm universal', 'E-MM-013', 'DUEB-14-UNI-25', 12, 1, 'stueck', 200, 100, 0.12, 'Regal L13', 'Universal 14mm VPE 25');
+add('Hakenluester 50mm', 'E-MM-014', 'HL-50-STAHL', 12, 1, 'stueck', 300, 150, 0.10, 'Regal L14', 'Stahl verzinkt 50mm');
+add('Schelle 10-14mm', 'E-MM-015', 'SCL-10-14-100', 12, 1, 'stueck', 400, 200, 0.06, 'Regal L15', 'Kabelschelle 10-14mm VPE 100');
+add('Schelle 35-40mm', 'E-MM-016', 'SCL-35-40-50', 12, 1, 'stueck', 150, 75, 0.18, 'Regal L16', 'Kabelschelle 35-40mm VPE 50');
+add('Montageklebeband 25mm', 'E-MM-017', 'MK-25-DBL-50', 12, 1, 'stueck', 80, 40, 4.50, 'Regal L17', 'Doppelseitig 25mm 50m');
+add('Federstecker Gipskarton', 'E-MM-018', 'FS-GK-METALL', 12, 1, 'stueck', 400, 200, 0.08, 'Regal L18', 'Metall Gipskartonbefestigung');
+add('Schraube Holz 4x40', 'E-MM-019', 'SCR-HZ-4x40', 12, 1, 'stueck', 600, 300, 0.03, 'Regal L19', 'Holzschraube 4x40 verzinkt');
+add('Dübelrahmen 6x30', 'E-MM-020', 'DR-6x30-100', 12, 1, 'stueck', 500, 250, 0.04, 'Regal L20', 'Dübelrahmen 6x30 VPE 100');
 
 // ── KOMMUNIKATION (Kat 13) ──
 add('Patchkabel Cat.6 2m blau', 'E-KOM-001', 'PK-CAT6-2M-BL', 13, 3, 'stueck', 50, 25, 4.50, 'Regal M1', 'RJ45 2m blau Cat.6');
@@ -179,6 +299,16 @@ add('WLAN Access Point', 'E-KOM-007', 'AP-WLAN-AC1200', 13, 3, 'stueck', 12, 6, 
 add('Koaxialkabel 75 Ohm 100m', 'E-KOM-008', 'KOAX-75-100', 13, 3, 'stueck', 20, 10, 45.00, 'Regal M8', '75 Ohm 100m Ring');
 add('LWL Kabel OM3 4-faser', 'E-KOM-009', 'LWL-OM3-4F-500', 13, 3, 'stueck', 15, 8, 120.00, 'Regal M9', 'Multimode OM3 500m');
 add('LWL Patchkabel LC-LC 3m', 'E-KOM-010', 'LWL-LCLC-3M-OM3', 13, 3, 'stueck', 25, 12, 15.00, 'Regal M10', 'Duplex LC-LC 3m OM3');
+add('Patchkabel Cat.6A 2m rot', 'E-KOM-011', 'PK-CAT6A-2M-RT', 13, 3, 'stueck', 30, 15, 6.50, 'Regal M11', 'RJ45 2m rot Cat.6A geschirmt');
+add('Patchkabel Cat.6A 5m rot', 'E-KOM-012', 'PK-CAT6A-5M-RT', 13, 3, 'stueck', 25, 12, 9.80, 'Regal M12', 'RJ45 5m rot Cat.6A geschirmt');
+add('Patchpanel 48-port Cat.6', 'E-KOM-013', 'PP-48P-CAT6', 13, 3, 'stueck', 10, 5, 120.00, 'Regal M13', '19" 48 Port Cat.6');
+add('Switch 24-port Gigabit PoE', 'E-KOM-014', 'SW-24P-GBIT-POE', 13, 3, 'stueck', 5, 3, 185.00, 'Regal M14', '24 Port Gigabit PoE+');
+add('WLAN Access Point Outdoor', 'E-KOM-015', 'AP-WLAN-AC1200-OD', 13, 3, 'stueck', 8, 4, 125.00, 'Regal M15', 'Outdoor Dual-Band AC1200 PoE');
+add('Koaxialkabel 75 Ohm 50m', 'E-KOM-016', 'KOAX-75-50', 13, 3, 'stueck', 30, 15, 25.00, 'Regal M16', '75 Ohm 50m Ring');
+add('LWL Kabel OS2 2-faser', 'E-KOM-017', 'LWL-OS2-2F-500', 13, 3, 'stueck', 10, 5, 150.00, 'Regal M17', 'Singlemode OS2 500m');
+add('LWL Patchkabel SC-SC 5m', 'E-KOM-018', 'LWL-SCSC-5M-OS2', 13, 3, 'stueck', 15, 8, 22.00, 'Regal M18', 'Duplex SC-SC 5m OS2');
+add('Patchkabel Cat.5e 2m grau', 'E-KOM-019', 'PK-CAT5E-2M-GR', 13, 3, 'stueck', 60, 30, 3.20, 'Regal M19', 'RJ45 2m grau Cat.5e');
+add('Keystone Jack Cat.6', 'E-KOM-020', 'KJ-CAT6-TOOL', 13, 3, 'stueck', 50, 25, 3.50, 'Regal M20', 'Toolless Keystone Cat.6');
 
 // ── PV/SOLAR (Kat 14) ──
 add('PV-Kabel 4mm² schwarz', 'E-PV-001', 'PV-KBL-4-SW', 14, 2, 'meter', 300, 150, 1.80, 'Regal N1', 'Solarleitung 4mm² schwarz');
@@ -191,6 +321,16 @@ add('Solarzähler bidirektional', 'E-PV-007', 'SZ-BIDIR-3PH', 14, 3, 'stueck', 8
 add('Dachhaken Edelstahl', 'E-PV-008', 'DH-ED-SET-4', 14, 2, 'stueck', 40, 20, 12.00, 'Regal N8', 'Edelstahl Set 4 Stück');
 add('Schienenverbinder 40x40', 'E-PV-009', 'SV-40x40-AL', 14, 2, 'stueck', 60, 30, 3.50, 'Regal N9', 'Aluminium Schienenverbinder');
 add('Endklemme Modul 30-50mm', 'E-PV-010', 'EK-MOD-30-50', 14, 2, 'stueck', 80, 40, 1.80, 'Regal N10', 'Modulendklemme verstellbar');
+add('PV-Kabel 2.5mm² schwarz', 'E-PV-011', 'PV-KBL-2.5-SW', 14, 2, 'meter', 400, 200, 1.20, 'Regal N11', 'Solarleitung 2.5mm² schwarz');
+add('PV-Kabel 2.5mm² rot', 'E-PV-012', 'PV-KBL-2.5-RT', 14, 2, 'meter', 400, 200, 1.20, 'Regal N12', 'Solarleitung 2.5mm² rot');
+add('PV-Kabel 10mm² schwarz', 'E-PV-013', 'PV-KBL-10-SW', 14, 2, 'meter', 150, 75, 4.20, 'Regal N13', 'Solarleitung 10mm² schwarz');
+add('PV-Ableiter Typ 1+2', 'E-PV-014', 'PV-T1T2-1000V', 14, 3, 'stueck', 15, 8, 55.00, 'Regal N14', 'Kombiableiter 1000V DC');
+add('Wechselrichter 3kW', 'E-PV-015', 'WR-3K-1PH', 14, 3, 'stueck', 8, 4, 520.00, 'Regal N15', '1-phasig 3kW');
+add('Wechselrichter 8kW', 'E-PV-016', 'WR-8K-3PH', 14, 3, 'stueck', 3, 2, 1200.00, 'Regal N16', '3-phasig 8kW Hybrid');
+add('Mittelklemme Modul 30-50mm', 'E-PV-017', 'MK-MOD-30-50', 14, 2, 'stueck', 100, 50, 1.50, 'Regal N17', 'Modulmittelklemme verstellbar');
+add('Dachhaken Aluminium', 'E-PV-018', 'DH-AL-SET-4', 14, 2, 'stueck', 50, 25, 8.50, 'Regal N18', 'Aluminium Set 4 Stück');
+add('Schienenverbinder 35x35', 'E-PV-019', 'SV-35x35-AL', 14, 2, 'stueck', 80, 40, 3.20, 'Regal N19', 'Aluminium Schienenverbinder');
+add('Erdungsklemme Modul', 'E-PV-020', 'EK-MOD-ERD', 14, 2, 'stueck', 60, 30, 2.20, 'Regal N20', 'Modulerdungsklemme');
 
 // ── HEIZUNG/KLIMA (Kat 15) ──
 add('Thermostat digital weiß', 'E-HK-001', 'TH-DIG-WS-PROG', 15, 3, 'stueck', 30, 15, 45.00, 'Regal O1', 'Digital programmierbar weiß');
@@ -203,7 +343,18 @@ add('Raumtemperatursensor', 'E-HK-007', 'RTS-NTC10K', 15, 3, 'stueck', 30, 15, 1
 add('Fussbodentemperatursensor', 'E-HK-008', 'FTS-NTC10K-3M', 15, 3, 'stueck', 25, 12, 15.00, 'Regal O8', 'NTC 10K 3m Kabel');
 add('Klimasteckdose 16A', 'E-HK-009', 'KS-16A-WS', 15, 1, 'stueck', 40, 20, 8.50, 'Regal O9', 'Klimagerät Steckdose 16A');
 add('Kondensatpumpe mini', 'E-HK-010', 'KP-MINI-230V', 15, 3, 'stueck', 15, 8, 65.00, 'Regal O10', 'Klimakondensatpumpe 230V');
+add('Thermostat analog weiß', 'E-HK-011', 'TH-ANA-WS', 15, 3, 'stueck', 40, 20, 22.00, 'Regal O11', 'Analog einfach weiß');
+add('Thermostat Funk', 'E-HK-012', 'TH-FUNK-SET', 15, 3, 'stueck', 15, 8, 85.00, 'Regal O12', 'Funkthermostat Set');
+add('Stellantrieb 230V NO', 'E-HK-013', 'SA-230V-NO-M30', 15, 3, 'stueck', 35, 18, 15.00, 'Regal O13', 'M30x1.5 NO 230V');
+add('Ventil 2-Wege DN15', 'E-HK-014', 'V-2W-DN15-IT', 15, 3, 'stueck', 30, 15, 28.00, 'Regal O14', 'Innengewinde DN15');
+add('Ventil 3-Wege DN15', 'E-HK-015', 'V-3W-DN15-IT', 15, 3, 'stueck', 25, 12, 35.00, 'Regal O15', 'Innengewinde DN15');
+add('Verteiler Heizkreis 4-fach', 'E-HK-016', 'VH-4F-HEIZ', 15, 3, 'stueck', 20, 10, 55.00, 'Regal O16', 'Heizkreisverteiler 4-fach');
+add('Verteiler Heizkreis 6-fach', 'E-HK-017', 'VH-6F-HEIZ', 15, 3, 'stueck', 15, 8, 75.00, 'Regal O17', 'Heizkreisverteiler 6-fach');
+add('Verteiler Heizkreis 8-fach', 'E-HK-018', 'VH-8F-HEIZ', 15, 3, 'stueck', 10, 5, 95.00, 'Regal O18', 'Heizkreisverteiler 8-fach');
+add('Durchflussmesser', 'E-HK-019', 'DFM-HEIZ-1-4', 15, 3, 'stueck', 25, 12, 8.50, 'Regal O19', 'Heizkreis 1-4 l/min');
+add('Klimagerät Split 3.5kW', 'E-HK-020', 'KG-SPLIT-3.5KW', 15, 3, 'stueck', 5, 3, 450.00, 'Regal O20', 'Split Klimagerät 3.5kW');
 
+// ── Generator ──────────────────────────────────────────
 const lines = [
   "// Alle Materialien mit Herstellernummern und Artikelnummern (Eigene Codierung: E-{KATEGORIE}-{NUMMER})",
   "export const seedMaterials = [",
@@ -241,8 +392,8 @@ lines.push("];");
 lines.push("");
 lines.push("export const seedSuppliers = [");
 lines.push("  { id: '1', name: 'Elektro Grosshandel GmbH', contact_person: 'Hans Mueller', phone: '+49 30 1234567', email: 'hans@elektro-gh.de', address: 'Berlin', active: true },");
-lines.push("  { id: '2', name: 'Kabel & Draht AG', contact_person: 'Klaus Schmidt', phone: '+49 40 2345678', email: 'klaus@kabel-draht.de', address: 'Hamburg', active: true },");
-lines.push("  { id: '3', name: 'Licht & Technik OHG', contact_person: 'Peter Weber', phone: '+49 89 3456789', email: 'peter@licht-technik.de', address: 'Muenchen', active: true },");
+lines.push("  { id: '2', name: 'Kabel \u0026 Draht AG', contact_person: 'Klaus Schmidt', phone: '+49 40 2345678', email: 'klaus@kabel-draht.de', address: 'Hamburg', active: true },");
+lines.push("  { id: '3', name: 'Licht \u0026 Technik OHG', contact_person: 'Peter Weber', phone: '+49 89 3456789', email: 'peter@licht-technik.de', address: 'Muenchen', active: true },");
 lines.push("];");
 lines.push("");
 lines.push("export const seedProjects = [");

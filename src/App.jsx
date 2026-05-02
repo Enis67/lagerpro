@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './hooks/useAuth';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import QuickBooking from './pages/QuickBooking';
+import DeliveryBooking from './pages/DeliveryBooking';
 import MaterialList from './pages/MaterialList';
 import MaterialDetail from './pages/MaterialDetail';
 import MaterialForm from './pages/MaterialForm';
@@ -11,11 +12,13 @@ import ProjectList from './pages/ProjectList';
 import ProjectDetail from './pages/ProjectDetail';
 import ProjectForm from './pages/ProjectForm';
 import ReorderList from './pages/ReorderList';
+import OrderList from './pages/OrderList';
 import MovementLog from './pages/MovementLog';
 import Settings from './pages/Settings';
 import Statistics from './pages/Statistics';
 import CategoryManager from './pages/CategoryManager';
 import SupplierManager from './pages/SupplierManager';
+import BatchBooking from './pages/BatchBooking';
 import Auth from './pages/Auth';
 import InventoryScan from './pages/InventoryScan';
 import AiAssistant from './pages/AiAssistant';
@@ -46,6 +49,9 @@ function AppRoutes() {
         <Route path="/baustellen/:id" element={<ProjectDetail />} />
         <Route path="/baustellen/:id/edit" element={<ProjectForm />} />
         <Route path="/nachbestellen" element={<ReorderList />} />
+        <Route path="/bestellliste" element={<OrderList />} />
+        <Route path="/lieferung" element={<DeliveryBooking />} />
+        <Route path="/mehrfach" element={<BatchBooking />} />
         <Route path="/bewegungen" element={<MovementLog />} />
         <Route path="/statistiken" element={<Statistics />} />
         <Route path="/kategorien" element={<CategoryManager />} />
