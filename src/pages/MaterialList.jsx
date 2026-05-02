@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Search, Star, StarOff, LayoutGrid, List } from 'lucide-react';
+import { Plus, Search, Star, StarOff, LayoutGrid, List, RotateCcw } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import { UNIT_LABELS } from '../data/constants';
 import SearchBar from '../components/SearchBar';
+import usePullToRefresh from '../hooks/usePullToRefresh';
 
 export default function MaterialList() {
   const navigate = useNavigate();
