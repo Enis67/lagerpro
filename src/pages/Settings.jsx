@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Tag, Truck, ShoppingCart, ArrowDownUp, RotateCcw, ChevronRight, BarChart3, Download, LogOut, ScanBarcode, Users } from 'lucide-react';
+import { Tag, Truck, ShoppingCart, ArrowDownUp, RotateCcw, ChevronRight, BarChart3, Download, LogOut, ScanBarcode, Users, Wrench } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import { useAuth } from '../hooks/useAuth';
 import { signOut } from '../services/supabase';
@@ -46,6 +46,12 @@ export default function Settings() {
   }
 
   const menuItems = [
+    {
+      icon: Wrench,
+      label: 'Werkzeuge & Equipment',
+      sub: 'Alle Werkzeuge im Überblick',
+      onClick: () => navigate('/werkzeuge'),
+    },
     {
       icon: ScanBarcode,
       label: 'Inventur (Bulk-Scan)',

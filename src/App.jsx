@@ -22,6 +22,7 @@ import BatchBooking from './pages/BatchBooking';
 import Auth from './pages/Auth';
 import InventoryScan from './pages/InventoryScan';
 import AiAssistant from './pages/AiAssistant';
+import ToolsPage from './pages/ToolsPage';
 
 function RequireAuth({ children }) {
   const { isAuthenticated, loading } = useAuth();
@@ -58,6 +59,7 @@ function AppRoutes() {
         <Route path="/lieferanten" element={<SupplierManager />} />
         <Route path="/inventur" element={<InventoryScan />} />
         <Route path="/assistent" element={<AiAssistant />} />
+        <Route path="/werkzeuge" element={<ToolsPage />} />
         <Route path="/mehr" element={<Settings />} />
       </Route>
     </Routes>
