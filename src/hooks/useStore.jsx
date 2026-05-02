@@ -262,6 +262,38 @@ export function StoreProvider({ children }) {
     );
   }, [asyncAction]);
 
+  // ── Favorite ────────────────────────────────────────
+  const toggleFavorite = useCallback(async (id) => {
+    const material = state.materials.find(m => m.id === id);
+    if (!material) return;
+    const newFavorite = !material.is_favorite;
+    try {
+      if (useCloud && isAuthenticated && supabase) {
+        await supabase.from('materials').update({ is_favorite: newFavorite }).eq('id', id);
+      }
+      localDs.updateMaterial(id, { is_favorite: newFavorite });
+      dispatch({ type: 'REFRESH', payload: { ...state, materials: state.materials.map(m => m.id === id ? { ...m, is_favorite: newFavorite } : m) } });
+    } catch (err) {
+      console.error('[LagerPro] toggleFavorite fehlgeschlagen:', err);
+    }
+  }, [state, isAuthenticated]);
+
+  // ── Increment usage ────────────────────────────────
+  const incrementUsage = useCallback(async (id) => {
+    const material = state.materials.find(m => m.id === id);
+    if (!material) return;
+    const newCount = (material.usage_count || 0) + 1;
+    try {
+      if (useCloud && isAuthenticated && supabase) {
+        await supabase.from('materials').update({ usage_count: newCount, last_used: new Date().toISOString() }).eq('id', id);
+      }
+      localDs.updateMaterial(id, { usage_count: newCount, last_used: new Date().toISOString() });
+      dispatch({ type: 'REFRESH', payload: { ...state, materials: state.materials.map(m => m.id === id ? { ...m, usage_count: newCount, last_used: new Date().toISOString() } : m) } });
+    } catch (err) {
+      console.error('[LagerPro] incrementUsage fehlgeschlagen:', err);
+    }
+  }, [state, isAuthenticated]);
+
   // ── Reset ───────────────────────────────────────────
   const resetData = useCallback(async () => {
     await asyncAction(
@@ -295,12 +327,22 @@ export function StoreProvider({ children }) {
     addCategory, editCategory, removeCategory,
     addSupplier, editSupplier, removeSupplier,
     resetData,
+    toggleFavorite,
+    incrementUsage,
     // Computed
     getCategoryName: (id) => state.categories.find(c => c.id === id)?.name || '',
     getCategoryColor: (id) => state.categories.find(c => c.id === id)?.color || '#6B7280',
     getSupplierName: (id) => state.suppliers.find(s => s.id === id)?.name || '',
     getProjectName: (id) => state.projects.find(p => p.id === id)?.name || '',
     getMaterialName: (id) => state.materials.find(m => m.id === id)?.name || '',
+    getMyMaterials: () => state.materials
+      .filter(m => m.active && (m.is_favorite || (m.usage_count || 0) > 0))
+      .sort((a, b) => {
+        // Favoriten zuerst, dann nach usage_count, dann nach last_used
+        if (a.is_favorite && !b.is_favorite) return -1;
+        if (!a.is_favorite && b.is_favorite) return 1;
+        return (b.usage_count || 0) - (a.usage_count || 0) || new Date(b.last_used || 0) - new Date(a.last_used || 0);
+      }),
     getReorderList: () => {
       return state.materials
         .filter(m => m.active && m.current_stock <= m.min_stock)

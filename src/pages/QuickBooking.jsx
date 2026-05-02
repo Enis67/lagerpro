@@ -18,7 +18,7 @@ const iconMap = {
 
 export default function QuickBooking() {
   const navigate = useNavigate();
-  const { materials, projects, categories, addMovement, getCategoryName } = useStore();
+  const { materials, projects, categories, addMovement, getCategoryName, incrementUsage } = useStore();
   const [step, setStep] = useState(1);
   const [bookingType, setBookingType] = useState('entnahme');
   const [selectedMaterials, setSelectedMaterials] = useState([]);
@@ -97,6 +97,8 @@ export default function QuickBooking() {
           quantity: Number(quantities[material.id] || 1),
           note,
         });
+        // Nutzung zählen für "Meine Artikel"
+        incrementUsage(material.id);
       }
 
       setToast({
