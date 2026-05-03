@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import { StoreProvider } from './hooks/useStore';
 import { AuthProvider, useAuth } from './hooks/useAuth';
