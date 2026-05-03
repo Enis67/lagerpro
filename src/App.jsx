@@ -92,9 +92,9 @@ export default function App() {
   return (
     <AuthProvider>
       <StoreProvider>
-        <BrowserRouter>
+        <HashRouter>
           <AppRoutes />
-        </BrowserRouter>
+        </HashRouter>
       </StoreProvider>
     </AuthProvider>
   );
