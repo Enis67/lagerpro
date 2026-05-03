@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, TrendingUp, Package, Euro, BarChart3, ArrowDownUp } from 'lucide-react';
+import { ChevronLeft, TrendingUp, Package, Euro, BarChart3, ArrowDownUp, CalendarDays, Activity } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import { MOVEMENT_TYPE_LABELS, MOVEMENT_TYPE_COLORS, UNIT_LABELS } from '../data/constants';
 

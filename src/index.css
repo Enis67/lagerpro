@@ -2283,6 +2283,18 @@ button, a, input, select, textarea, [role="button"] {
   }
 }
 
+/* ── Dark Mode (class-based, overrides system preference) ── */
+body.dark {
+  --color-bg: #0F172A;
+  --color-surface: #1E293B;
+  --color-surface-elevated: #334155;
+  --color-border: #334155;
+  --color-border-light: #1E293B;
+  --color-text: #F1F5F9;
+  --color-text-secondary: #94A3B8;
+  --color-text-tertiary: #64748B;
+}
+
 /* ── Dark Mode Support (System) ─────────────────────── */
 @media (prefers-color-scheme: dark) {
   :root {

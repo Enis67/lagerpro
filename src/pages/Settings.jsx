@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Tag, Truck, ShoppingCart, ArrowDownUp, RotateCcw, ChevronRight, BarChart3, Download, LogOut, ScanBarcode, Users, Wrench, Keyboard, Hash, Zap, Package, HardHat, Search, HelpCircle, Bell, FileText, FileSpreadsheet } from 'lucide-react';
+import { Tag, Truck, ShoppingCart, ArrowDownUp, RotateCcw, ChevronRight, BarChart3, Download, LogOut, ScanBarcode, Users, Wrench, Keyboard, Hash, Zap, Package, HardHat, Search, HelpCircle, Bell, FileText, FileSpreadsheet, Moon } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import { useAuth } from '../hooks/useAuth';
 import { signOut } from '../services/supabase';
@@ -23,6 +23,20 @@ export default function Settings() {
   const [toast, setToast] = useState(null);
   const [notifEnabled, setNotifEnabled] = useState(getNotificationsEnabled());
   const [notifStatus, setNotifStatus] = useState(getPermissionStatus());
+  const [darkMode, setDarkMode] = useState(() => localStorage.getItem('lagerpro-theme') === 'dark');
+
+  async function handleToggleDarkMode(enabled) {
+    setDarkMode(enabled);
+    if (enabled) {
+      document.body.classList.add('dark');
+      localStorage.setItem('lagerpro-theme', 'dark');
+      setToast({ message: 'Dark Mode aktiviert 🌙', type: 'info' });
+    } else {
+      document.body.classList.remove('dark');
+      localStorage.setItem('lagerpro-theme', 'light');
+      setToast({ message: 'Light Mode aktiviert ☀️', type: 'info' });
+    }
+  }
 
   async function handleToggleNotifications(enabled) {
     setNotifEnabled(enabled);
@@ -266,6 +280,60 @@ export default function Settings() {
                   content: '""',
                   height: 22, width: 22,
                   left: notifEnabled ? 24 : 3,
+                  bottom: 3,
+                  backgroundColor: 'white',
+                  borderRadius: '50%',
+                  transition: 'left 0.2s',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+                }} />
+              </span>
+            </label>
+          </div>
+        </div>
+
+        {/* Dark Mode Toggle */}
+        <div className="card" style={{ marginBottom: 'var(--space-lg)', padding: 'var(--space-md) var(--space-lg)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-md)' }}>
+              <div style={{
+                width: 40, height: 40, borderRadius: 'var(--radius-md)',
+                background: darkMode ? 'var(--color-primary-50)' : 'var(--color-surface)',
+                color: darkMode ? 'var(--color-primary)' : 'var(--color-text-tertiary)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                flexShrink: 0,
+              }}>
+                <Moon size={18} />
+              </div>
+              <div>
+                <div className="font-semibold">Dark Mode</div>
+                <div className="text-sm text-secondary">{darkMode ? 'Aktiviert' : 'Deaktiviert'}</div>
+              </div>
+            </div>
+            <label style={{
+              position: 'relative',
+              display: 'inline-block',
+              width: 48, height: 28,
+              cursor: 'pointer',
+            }}>
+              <input
+                type="checkbox"
+                checked={darkMode}
+                onChange={(e) => handleToggleDarkMode(e.target.checked)}
+                style={{ opacity: 0, width: 0, height: 0 }}
+              />
+              <span style={{
+                position: 'absolute',
+                cursor: 'pointer',
+                top: 0, left: 0, right: 0, bottom: 0,
+                backgroundColor: darkMode ? 'var(--color-primary)' : 'var(--color-border)',
+                borderRadius: 28,
+                transition: 'background-color 0.2s',
+              }}>
+                <span style={{
+                  position: 'absolute',
+                  content: '""',
+                  height: 22, width: 22,
+                  left: darkMode ? 24 : 3,
                   bottom: 3,
                   backgroundColor: 'white',
                   borderRadius: '50%',

@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from 'react-router-dom';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import BottomNav from './BottomNav';
 import PWAInstallPrompt from './PWAInstallPrompt';
 import Toast from './Toast';
@@ -16,6 +16,16 @@ export default function Layout() {
   const handleCloseHelp = useCallback(() => setShowHelp(false), []);
 
   useKeyboardShortcuts({ onShowHelp: handleShowHelp });
+
+  // Dark Mode Initialisierung
+  useEffect(() => {
+    const saved = localStorage.getItem('lagerpro-theme');
+    if (saved === 'dark') {
+      document.body.classList.add('dark');
+    } else if (saved === 'light') {
+      document.body.classList.remove('dark');
+    }
+  }, []);
 
   if (loading) {
     return (
