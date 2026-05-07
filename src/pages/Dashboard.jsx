@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   AlertTriangle, ShoppingCart, ArrowDownUp, PackageMinus, ChevronRight,
   RotateCcw, Mic, TrendingUp, DollarSign, BarChart3, Archive, Wrench,
-  Zap, ScanBarcode, HardHat, Package, Calendar, ArrowUpRight,
+  Zap, ScanBarcode, HardHat, Package, Calendar, ArrowUpRight, CheckSquare, ClipboardList, Truck,
 } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import KpiCard from '../components/KpiCard';
@@ -112,6 +112,58 @@ export default function Dashboard() {
   const lastWithdrawal = movements.find(m => m.type === 'entnahme');
   const lastMaterial = lastWithdrawal ? materials.find(m => m.id === lastWithdrawal.material_id) : null;
 
+
+  const workflowChecks = useMemo(() => {
+    const active = materials.filter(m => m.active);
+    const missingSupplier = active.filter(m => !m.supplier_id).length;
+    const missingLocation = active.filter(m => !m.storage_location || !m.storage_location.trim()).length;
+    const missingReorderQty = active.filter(m => (m.min_stock || 0) > 0 && (m.reorder_quantity || 0) <= 0).length;
+    const dueReorders = active.filter(m => (m.current_stock || 0) <= (m.min_stock || 0)).length;
+
+    return [
+      {
+        id: 'ops',
+        owner: 'Lagerleitung',
+        label: 'Kritische Nachbestellungen heute',
+        icon: ClipboardList,
+        color: dueReorders > 0 ? '#EF4444' : '#10B981',
+        count: dueReorders,
+        cta: 'Zur Bestellliste',
+        onClick: () => navigate('/bestellliste'),
+      },
+      {
+        id: 'procurement',
+        owner: 'Einkauf',
+        label: 'Artikel ohne Lieferantenzuordnung',
+        icon: Truck,
+        color: missingSupplier > 0 ? '#F59E0B' : '#10B981',
+        count: missingSupplier,
+        cta: 'Lieferanten pflegen',
+        onClick: () => navigate('/lieferanten'),
+      },
+      {
+        id: 'masterdata',
+        owner: 'Stammdaten',
+        label: 'Artikel ohne Lagerplatz',
+        icon: Package,
+        color: missingLocation > 0 ? '#F59E0B' : '#10B981',
+        count: missingLocation,
+        cta: 'Materialliste prüfen',
+        onClick: () => navigate('/material'),
+      },
+      {
+        id: 'quality',
+        owner: 'QA',
+        label: 'Artikel mit Min-Bestand ohne Bestellmenge',
+        icon: CheckSquare,
+        color: missingReorderQty > 0 ? '#F59E0B' : '#10B981',
+        count: missingReorderQty,
+        cta: 'Bestandsdaten korrigieren',
+        onClick: () => navigate('/material'),
+      },
+    ];
+  }, [materials, navigate]);
+
   async function handleQuickRepeat() {
     if (!lastWithdrawal || !lastMaterial) return;
     try {
@@ -178,6 +230,37 @@ export default function Dashboard() {
           <QuickAction icon={Wrench} label="Werkzeuge" color="#3B82F6" onClick={() => navigate('/werkzeuge')} />
           <QuickAction icon={ScanBarcode} label="Inventur" color="#10B981" onClick={() => navigate('/inventur')} />
           <QuickAction icon={HardHat} label="Baustellen" color="#8B5CF6" onClick={() => navigate('/baustellen')} />
+        </div>
+
+
+
+        <div className="card" style={{ marginBottom: 'var(--space-lg)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 'var(--space-md)' }}>
+            <CheckSquare size={18} color="var(--color-primary)" />
+            <div className="font-semibold">Betriebsbereit-Board</div>
+          </div>
+          <div style={{ display: 'grid', gap: 'var(--space-sm)' }}>
+            {workflowChecks.map(item => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.id}
+                  onClick={item.onClick}
+                  className="btn btn-ghost"
+                  style={{ justifyContent: 'space-between', border: '1px solid var(--color-border)', padding: 'var(--space-sm) var(--space-md)' }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, textAlign: 'left' }}>
+                    <Icon size={16} style={{ color: item.color, flexShrink: 0 }} />
+                    <div>
+                      <div className="text-sm" style={{ fontWeight: 600 }}>{item.label}</div>
+                      <div className="text-xs text-tertiary">Owner: {item.owner} · {item.cta}</div>
+                    </div>
+                  </div>
+                  <div style={{ fontSize: 'var(--font-size-lg)', fontWeight: 700, color: item.color }}>{item.count}</div>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* KPI Grid */}
